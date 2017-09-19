@@ -1,0 +1,19 @@
+platform :ios, '9.0'
+
+target 'MealQuest' do
+  use_frameworks!
+
+  # Pods for MealQuest
+  pod 'Alamofire', '4.4.0'
+
+  target 'MealQuestTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+  target 'MealQuestUITests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+end
