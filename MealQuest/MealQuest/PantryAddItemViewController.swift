@@ -55,7 +55,7 @@ class PantryAddItemViewController: UIViewController, UIPickerViewDelegate, UIPic
                 itemGroupSuggestion = "Other Grocery"
             }
             // itemGroup.text = Constants.groups[0]
-            let row = Constants.groups.index{$0 == itemGroupSuggestion}
+            let row = Constants.pantryGroups.index{$0 == itemGroupSuggestion}
             groupPickerView.selectRow(row!, inComponent: 0, animated: true)
             
             let dateFormatter = DateFormatter()
@@ -90,7 +90,7 @@ class PantryAddItemViewController: UIViewController, UIPickerViewDelegate, UIPic
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         if (pickerView.tag == 1) {
-            return Constants.groups.count
+            return Constants.pantryGroups.count
         } else if (pickerView.tag == 2) {
             return Constants.units.count
         } else {
@@ -100,7 +100,7 @@ class PantryAddItemViewController: UIViewController, UIPickerViewDelegate, UIPic
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         if (pickerView.tag == 1) {
-            return Constants.groups[row]
+            return Constants.pantryGroups[row]
         } else if (pickerView.tag == 2) {
             return Constants.units[row]
         } else {
@@ -110,7 +110,7 @@ class PantryAddItemViewController: UIViewController, UIPickerViewDelegate, UIPic
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if (pickerView.tag == 1) {
-            itemGroup.text = Constants.groups[row]
+            itemGroup.text = Constants.pantryGroups[row]
         } else if (pickerView.tag == 2) {
             itemUnit.text = Constants.units[row]
         }
