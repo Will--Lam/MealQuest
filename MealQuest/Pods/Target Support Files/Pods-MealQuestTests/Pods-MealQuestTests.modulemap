@@ -1,6 +1,0 @@
-framework module Pods_MealQuestTests {
-  umbrella header "Pods-MealQuestTests-umbrella.h"
-
-  export *
-  module * { export * }
-}
