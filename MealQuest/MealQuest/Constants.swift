@@ -16,35 +16,54 @@ struct Constants {
     public static let UnitKG = "KG"
     public static let UnitLB = "LB"
     
-    // constants for Group
+    // constants for Pantry
     public static let PantryAll = "All"
     public static let PantryDairy = "Dairy"
     public static let PantryProteins = "Proteins"
     public static let PantryVeggies = "Fruits and Veggies"
     public static let PantryBakery = "Wheat and Bakery"
     public static let PantryOther = "Other Grocery"
+    public static let PantryBakingGood = "Baking Goods"
+    public static let PantryFrozen = "Frozen"
+    public static let PantryNonPerish = "Non-perishables"
+    public static let PantryHousehold = "Household"
+    public static let PantryPasta = "Pasta & Rice"
+    public static let PantryCondiment = "Condiments"
+    public static let PantrySnacks = "Snacks"
+    public static let PantryOil = "Oils & Vinegar"
+    public static let PantryDrinks = "Drinks"
+    public static let PantrySpreads = "Spreads"
     
-    // constants for Trophies
-    public static let TrophyPlatinum = "platinumTrophy"
-    public static let TrophyGold = "goldTrophy"
-    public static let TrophySilver = "silverTrophy"
-    public static let TrophyBronze = "bronzeTrophy"
+    public static let pantryGroups = [Constants.PantryDairy, Constants.PantryProteins, Constants.PantryVeggies, Constants.PantryBakery, Constants.PantryOther, Constants.PantryBakingGood, Constants.PantryFrozen, Constants.PantryNonPerish, Constants.PantryHousehold, Constants.PantryPasta, Constants.PantryCondiment, Constants.PantrySnacks, Constants.PantryOil, Constants.PantryDrinks, Constants.PantrySpreads]
     
-    // callories required per day
-    public static let caloriesRequired: Double = 2000
+    // constants for Recipe
+    public static let RecipeAll = "All"
+    public static let RecipeBreakfast = "Breakfast"
+    public static let RecipeLunch = "Lunch"
+    public static let RecipeBeverage = "Beverage"
+    public static let RecipeAppetizer = "Appetizers"
+    public static let RecipeSnacks = "Snacks"
+    public static let RecipeSoups = "Soups"
+    public static let RecipeSalads = "Salads"
+    public static let RecipeBeef = "Beef Entree"
+    public static let RecipeChicken = "Poultry Entree"
+    public static let RecipePork = "Pork Entree"
+    public static let RecipeSeafood = "Seafood Entree"
+    public static let RecipeVegetarian = "Vegetarian Entree"
+    public static let RecipeVeggie = "Vegetable Entree"
+    public static let RecipeOther = "Other"
+    public static let RecipeDesserts = "Desserts"
+    public static let RecipeCan = "Canning/Freezing"
+    public static let RecipeBreads = "Breads"
+    public static let RecipeHolidays = "Holidays"
+    public static let RecipeEntertaining = "Entertaining"
+    
+    public static let recipeGroups = [Constants.RecipeBreakfast, Constants.RecipeLunch, Constants.RecipeBeverage, Constants.RecipeAppetizer, Constants.RecipeSnacks, Constants.RecipeSoups, Constants.RecipeSalads, Constants.RecipeBeef, Constants.RecipeChicken, Constants.RecipePork, Constants.RecipeSeafood, Constants.RecipeVegetarian, Constants.RecipeVeggie, Constants.RecipeOther, Constants.RecipeDesserts, Constants.RecipeCan, Constants.RecipeBreads, Constants.RecipeHolidays, Constants.RecipeEntertaining]
     
     // constant for rounding
     public static let roundingPlaces = 5
     
-    public static let groups = ["Dairy", "Proteins", "Fruits and Veggies", "Wheat and Bakery", "Other Grocery"]
     public static let units = ["mg", "g", "kg", "tsp", "tbsp", "lb", "ton", "oz", "pt", "gal", "ml", "l", "kl", "cup"]
-    public static let weightUnit = ["kg", "lb"]
-    public static let heightUnit = ["cm", "in"]
-    public static let gender = ["Male", "Female", "Other"]
-    public static let activityLevel = ["Low", "Medium", "High"]
-    
-    // Time in Seconds
-    public static let dayInSeconds = 86400.0
     
     public static let mqWhiteColour = UIColor(red: 239.0/255.0, green: 248.0/255.0, blue: 249.0/255.0, alpha: 1.0)
     public static let mqBlueColour = UIColor(red: 112.0/255.0, green: 208.0/255.0, blue: 236.0/255.0, alpha: 1.0)
@@ -91,43 +110,6 @@ struct Constants {
         "in": [
             "in": 1,
         ],
-    ]
-    
-    public static let servingConversionTable: [String:[String:Double]] = [
-        // Dairy
-        Constants.groups[0]: [
-            "g": 1000,
-            "tsp": 202.884,
-            "oz": 33.814,
-            "lb": 2.2046,
-            "cup": 4.22675,
-            "l": 1,
-        ],
-        // Proteins
-        Constants.groups[1]: [
-            "l": 0.001,
-            "g": 1,
-            "lb": 0.00220462,
-            "oz": 0.035274,
-            "tsp": 0.2,
-            "cup": 0.00422675281986,
-        ],
-        // Fruits and Veggies
-        Constants.groups[2]: [
-            "g": 5,
-            "oz": 1,
-            "l": 0.0295735,
-            "tsp": 2,
-            "cup": 0.125,
-        ],
-        // Wheat and Bakery
-        Constants.groups[3]: [
-            "tsp": 1,
-            "l": 0.00492892,
-            "oz": 0.5,
-            "g": 5,
-            "cup": 0.0208333
-        ]
     ]
     
     public static let baseConversionTable: [String:[String:Double]] = [
@@ -188,23 +170,6 @@ struct Constants {
             "cm": 2.54,
         ]
     ]
-    
-    // Challenges
-    
-    public static let skills = ["Bake", "Boil", "Chop", "Cut", "Dice", "Fillet", "Fry", "Grill", "Mince", "Mix", "Peel", "Roast", "Sauté", "Simmer", "Slice", "Steam", "Toast", "Whisk"]
-    
-    public static let trophies = ["bronzeTrophy", "silverTrophy", "goldTrophy", "platinumTrophy"]
-
-    public static let itemNames = ["water"]
-    
-    public static let xpIncreaseForApplySkill = 50
-
-    // User EXP
-    public static let levelBase = 1.05809
-    public static let levelMultiplier = 200
-    
-    // Recommended Calories
-    public static let PACoefficient = 1.25
     
 }
 
