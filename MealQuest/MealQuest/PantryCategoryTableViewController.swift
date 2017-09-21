@@ -14,6 +14,8 @@ class PantryCategoryTableViewController: UITableViewController {
     @IBOutlet weak var addItemButton: UIBarButtonItem!
     @IBOutlet var pantryCategoryTable: UITableView!
     
+    var categorySelected = ""
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -37,8 +39,9 @@ class PantryCategoryTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "PantryCategoryTableViewCell", for: indexPath) as! PantryCategoryTableViewCell
 
-        cell.categoryName.text = Constants.pantryGroups[indexPath.item][0]
-        cell.categoryIcon.image = UIImage(named: Constants.pantryGroups[indexPath.item][1])
+        let category = Constants.pantryGroups[indexPath.item]
+        cell.categoryName.text = category
+        cell.categoryIcon.image = UIImage(named: Constants.pantryIconMap[category]!)
         return cell
     }
 
@@ -51,8 +54,10 @@ class PantryCategoryTableViewController: UITableViewController {
         print("You selected cell #\(indexPath.row)!")
         
         // Get Cell Label
-        // let indexPath = tableView.indexPathForSelectedRow!
-        // let currentCell = tableView.cellForRow(at: indexPath)! as! PantryCategoryTableViewCell
+        let indexPath = tableView.indexPathForSelectedRow!
+        let currentCell = tableView.cellForRow(at: indexPath)! as! PantryCategoryTableViewCell
+        
+        categorySelected = currentCell.categoryName.text!
         
         performSegue(withIdentifier: "viewCategory", sender: self)
     }
@@ -61,8 +66,9 @@ class PantryCategoryTableViewController: UITableViewController {
         
         if (segue.identifier == "viewCategory") {
             // initialize new view controller and cast it as your view controller
-            // let categoryVC = segue.destination as! PantryGroupTableViewController
+            let categoryVC = segue.destination as! PantryGroupTableViewController
             
+            categoryVC.group = categorySelected
         }
     }
 

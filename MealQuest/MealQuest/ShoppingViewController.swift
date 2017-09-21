@@ -81,7 +81,7 @@ class ShoppingViewController: UIViewController, UITableViewDataSource, UITableVi
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        print("drawing table now")
+        // print("drawing table now")
         return shoppingItemList.count
     }
     

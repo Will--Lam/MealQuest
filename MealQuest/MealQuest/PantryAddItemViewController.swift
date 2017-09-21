@@ -99,7 +99,7 @@ class PantryAddItemViewController: UIViewController, UIPickerViewDelegate, UIPic
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         if (pickerView.tag == 1) {
-            return Constants.pantryGroups[row][0]
+            return Constants.pantryGroups[row]
         } else if (pickerView.tag == 2) {
             return Constants.units[row]
         } else {
@@ -109,7 +109,7 @@ class PantryAddItemViewController: UIViewController, UIPickerViewDelegate, UIPic
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if (pickerView.tag == 1) {
-            itemGroup.text = Constants.pantryGroups[row][0]
+            itemGroup.text = Constants.pantryGroups[row]
         } else if (pickerView.tag == 2) {
             itemUnit.text = Constants.units[row]
         }

@@ -14,7 +14,6 @@ class PantryGroupTableViewController: UITableViewController {
     @IBOutlet weak var newItemButton: UIBarButtonItem!
     
     var group = "Group View"
-    var groupIcon = "Pantry_Group_Bakery"
     
     var numSections = ["Expiring", "All Other"]
     var expiringArray = [PantryItem]()
@@ -65,7 +64,7 @@ class PantryGroupTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        print("drawing table now")
+        // sprint("drawing table now")
         return allItemsArray[section].count
     }
     
@@ -92,7 +91,7 @@ class PantryGroupTableViewController: UITableViewController {
         }
         cell.itemExpire.text = dateText
         
-        cell.icon.image = UIImage(named: allItemsArray[indexPath.section][indexPath.row].group)
+        cell.icon.image = UIImage(named: Constants.pantryIconMap[allItemsArray[indexPath.section][indexPath.row].group]!)
         
         cell.currentItem = allItemsArray[indexPath.section][indexPath.row]
         

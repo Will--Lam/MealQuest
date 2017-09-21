@@ -54,7 +54,7 @@ class ShoppingHistoryDetailsViewController: UIViewController, UITableViewDataSou
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        print("drawing table now")
+        // print("drawing table now")
         return listDetails.count
     }
     
