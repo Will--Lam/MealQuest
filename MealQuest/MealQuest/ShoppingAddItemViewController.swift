@@ -48,7 +48,7 @@ class ShoppingAddItemViewController: UIViewController, UIPickerViewDelegate, UIP
         groupPickerView.delegate = self
         groupPickerView.tag = 1
         groupTextField.inputView = groupPickerView
-        groupTextField.text = Constants.pantryGroups[0]
+        groupTextField.text = Constants.pantryGroups[0][0]
         
         unitPickerView.delegate = self
         unitPickerView.tag = 2
@@ -79,7 +79,7 @@ class ShoppingAddItemViewController: UIViewController, UIPickerViewDelegate, UIP
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         if (pickerView.tag == 1) {
-            return Constants.pantryGroups[row]
+            return Constants.pantryGroups[row][0]
         } else if (pickerView.tag == 2) {
             return Constants.units[row]
         } else {
@@ -89,7 +89,7 @@ class ShoppingAddItemViewController: UIViewController, UIPickerViewDelegate, UIP
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if (pickerView.tag == 1) {
-            groupTextField.text = Constants.pantryGroups[row]
+            groupTextField.text = Constants.pantryGroups[row][0]
         } else if (pickerView.tag == 2) {
             unitTextField.text = Constants.units[row]
         }

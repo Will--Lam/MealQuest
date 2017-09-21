@@ -154,7 +154,7 @@ func sendMissingIngredientsToShoppingCart(_ recipeID: Int64) {
             let relevantItem = SQLiteDB.instance.getShoppingItemByName(listID: activeListID!, name: name.lowercased())
             
             if(relevantItem.listID == -1) {
-                var itemGroup = Constants.pantryGroups[4]
+                var itemGroup = Constants.pantryGroups[4][0]
                 for item in pantryItems {
                     if(item.group != "") {
                         itemGroup = item.group
@@ -186,8 +186,6 @@ func consumePantryItemsFromRecipe(_ recipeID: Int64, _ multiplier :Double) {
         ingredientsArray.append(tempDict)
     }
     
-    var groups = ["Fruits and Veggies" : Double(0),"Wheat and Bakery" : Double(0), "Dairy" : Double(0), "Proteins" : Double(0), "Other Grocery" : Double(0)]
-    
     for ingredient in ingredientsArray {
         let amountVal = Double(ingredient["amount"]!)!
         let unit = ingredient["unit"]!
@@ -196,8 +194,7 @@ func consumePantryItemsFromRecipe(_ recipeID: Int64, _ multiplier :Double) {
         let pantryItems = SQLiteDB.instance.getPantryItemsByName(itemName: name)
         var amountLeft = amountVal
         if(pantryItems.count > 0) {
-            let groupName = (pantryItems.first!).group
-            groups[groupName]! += convertToServing(amountVal, unit, groupName)
+//**            Need to re-evaluate how to decrement ingredients from recipe creation
         }
         // while amountLeft is positive, keep deleting pantry items
         for item in pantryItems {

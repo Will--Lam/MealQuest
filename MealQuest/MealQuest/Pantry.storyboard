@@ -9,147 +9,74 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Pantry View Controller-->
-        <scene sceneID="wg7-f3-ORb">
+        <!--Pantry Category Table View Controller-->
+        <scene sceneID="TZQ-Cf-ucG">
             <objects>
-                <viewController id="8rJ-Kc-sve" customClass="PantryViewController" customModule="MealQuest" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="L7p-HK-0SC"/>
-                        <viewControllerLayoutGuide type="bottom" id="Djb-ko-YwX"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="QS5-Rx-YEW">
+                <tableViewController id="fyF-OV-oMv" customClass="PantryCategoryTableViewController" customModule="MealQuest" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="60" sectionHeaderHeight="28" sectionFooterHeight="28" id="Kxn-lb-CE8">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Other Grocery" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aox-P5-pGw">
-                                <rect key="frame" x="36" y="555" width="127" height="66"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Fruits &amp; Vegetables" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aO9-T6-MTA">
-                                <rect key="frame" x="182" y="394" width="175" height="66"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Dairy Products" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iqR-rK-XqG">
-                                <rect key="frame" x="33" y="394" width="132" height="66"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Proteins" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yIC-r6-f7y">
-                                <rect key="frame" x="227" y="214" width="73" height="66"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="All" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Rb-Sb-2MU">
-                                <rect key="frame" x="71" y="214" width="58" height="66"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Wheat &amp; Bakery" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IX0-rE-3GG">
-                                <rect key="frame" x="188" y="555" width="144" height="66"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7Pc-Pn-aww" userLabel="All_Button">
-                                <rect key="frame" x="23" y="92" width="126" height="133"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" image="All"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="PantryCategoryTableViewCell" rowHeight="60" id="JdP-eL-R5i" customClass="PantryCategoryTableViewCell" customModule="MealQuest" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="375" height="60"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="JdP-eL-R5i" id="EEN-at-ZqX">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="59.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TWo-Hd-9OT">
+                                            <rect key="frame" x="64" y="19" width="303" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UtU-QP-t6h">
+                                            <rect key="frame" x="16" y="8" width="40" height="40"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        </imageView>
+                                    </subviews>
+                                </tableViewCellContentView>
                                 <connections>
-                                    <action selector="goToAllAction:" destination="8rJ-Kc-sve" eventType="touchUpInside" id="9dh-Gh-nw3"/>
-                                    <segue destination="B9E-m7-1Lg" kind="show" id="XeR-Ff-e5u"/>
+                                    <outlet property="categoryIcon" destination="UtU-QP-t6h" id="vwJ-E5-tHV"/>
+                                    <outlet property="categoryName" destination="TWo-Hd-9OT" id="9fG-hz-4J7"/>
                                 </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xuB-bG-vES" userLabel="Pro_Button">
-                                <rect key="frame" x="211" y="92" width="131" height="132"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" image="Proteins"/>
-                                <connections>
-                                    <action selector="goToProteinAction:" destination="8rJ-Kc-sve" eventType="touchUpInside" id="vRD-UE-Yhs"/>
-                                    <segue destination="B9E-m7-1Lg" kind="show" id="3be-gm-HEu"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dMQ-nt-B2w" userLabel="Dai_Button">
-                                <rect key="frame" x="36" y="286" width="121" height="110"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Button" image="Dairy"/>
-                                <connections>
-                                    <action selector="goToDiaryAction:" destination="8rJ-Kc-sve" eventType="touchUpInside" id="nqQ-jU-V65"/>
-                                    <segue destination="B9E-m7-1Lg" kind="show" id="ey6-6d-TL4"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kaj-PS-qHG" userLabel="Veg_Button">
-                                <rect key="frame" x="177" y="271" width="172" height="132"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" image="Fruits and Veggies"/>
-                                <connections>
-                                    <action selector="goToVeggiesAction:" destination="8rJ-Kc-sve" eventType="touchUpInside" id="9z3-1p-xde"/>
-                                    <segue destination="B9E-m7-1Lg" kind="show" id="Dwu-Kp-F6i"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wCH-HB-Kip" userLabel="Oth_Button">
-                                <rect key="frame" x="36" y="452" width="121" height="125"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" image="Other Grocery"/>
-                                <connections>
-                                    <action selector="goToOtherAction:" destination="8rJ-Kc-sve" eventType="touchUpInside" id="eGH-mD-afq"/>
-                                    <segue destination="B9E-m7-1Lg" kind="show" id="Jw0-KE-gNv"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M0K-04-Kre" userLabel="Bak_Button">
-                                <rect key="frame" x="223" y="455" width="109" height="109"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" image="Wheat and Bakery"/>
-                                <connections>
-                                    <action selector="goToBakeryAction:" destination="8rJ-Kc-sve" eventType="touchUpInside" id="h6J-sX-lIf"/>
-                                    <segue destination="B9E-m7-1Lg" kind="show" id="wMu-qX-qhz"/>
-                                </connections>
-                            </button>
-                        </subviews>
-                        <color key="backgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
-                    </view>
-                    <navigationItem key="navigationItem" id="Hf4-sO-G5M">
-                        <barButtonItem key="leftBarButtonItem" style="plain" id="Bkv-Rp-MFf">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="OOx-xd-tjw">
-                                <rect key="frame" x="16" y="9" width="79" height="25"/>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="fyF-OV-oMv" id="wTQ-vM-Cv3"/>
+                            <outlet property="delegate" destination="fyF-OV-oMv" id="nDR-Ep-Lr2"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="NpX-xV-wrd">
+                        <barButtonItem key="leftBarButtonItem" style="plain" id="NxF-fN-CRm">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Slo-Ai-u4E">
+                                <rect key="frame" x="16" y="9" width="25" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" image="historyIcon"/>
                                 <connections>
-                                    <segue destination="rOJ-2q-Rhi" kind="show" identifier="viewHistory" id="Zoz-5e-uiZ"/>
+                                    <segue destination="rOJ-2q-Rhi" kind="show" id="vgG-tD-o48"/>
                                 </connections>
                             </button>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" style="plain" systemItem="add" id="hcU-4o-KZG">
+                        <barButtonItem key="rightBarButtonItem" style="plain" systemItem="add" id="bNS-Ci-zUC">
                             <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
-                                <segue destination="wqb-Bc-FrO" kind="show" identifier="addItem" id="SRr-Kr-PXB"/>
+                                <segue destination="wqb-Bc-FrO" kind="show" id="XNS-y0-JzY"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="allButton" destination="7Pc-Pn-aww" id="BaY-U9-hUQ"/>
-                        <outlet property="bakeryButton" destination="M0K-04-Kre" id="xaI-zs-m1D"/>
-                        <outlet property="diaryButton" destination="dMQ-nt-B2w" id="Jle-Sw-tx9"/>
-                        <outlet property="otherButton" destination="wCH-HB-Kip" id="poW-8I-sGb"/>
-                        <outlet property="proteinButton" destination="xuB-bG-vES" id="M4B-Dx-Nx4"/>
-                        <outlet property="veggiesButton" destination="Kaj-PS-qHG" id="KGf-ex-3YC"/>
+                        <outlet property="addItemButton" destination="bNS-Ci-zUC" id="a58-7j-SuJ"/>
+                        <outlet property="historyButton" destination="Slo-Ai-u4E" id="88i-Iz-ssS"/>
+                        <outlet property="pantryCategoryTable" destination="Kxn-lb-CE8" id="p77-Ga-Img"/>
+                        <segue destination="B9E-m7-1Lg" kind="show" identifier="viewCategory" id="dcE-nl-9vP"/>
                     </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="4Nw-L8-lE0" sceneMemberID="firstResponder"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="qTT-gS-tn6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-199" y="-773"/>
+            <point key="canvasLocation" x="-47.200000000000003" y="-774.06296851574223"/>
         </scene>
         <!--Pantry Group Table View Controller-->
         <scene sceneID="6J7-Uo-igf">
@@ -167,20 +94,16 @@
                     <navigationItem key="navigationItem" id="1sR-3d-j3l">
                         <barButtonItem key="rightBarButtonItem" style="plain" systemItem="add" id="kLU-ie-4Gr">
                             <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                            <connections>
-                                <segue destination="wqb-Bc-FrO" kind="show" identifier="addItem" id="3Hf-cy-qmo"/>
-                            </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="itemTable" destination="UUa-es-5FK" id="T2U-5d-RDo"/>
                         <outlet property="newItemButton" destination="kLU-ie-4Gr" id="yFq-G9-4om"/>
-                        <segue destination="wqb-Bc-FrO" kind="show" identifier="viewItem" id="9rj-qd-kyS"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UoV-Co-2jS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="674" y="-774"/>
+            <point key="canvasLocation" x="724" y="-774"/>
         </scene>
         <!--Pantry Add Item View Controller-->
         <scene sceneID="Sf5-SY-aqz">
@@ -350,7 +273,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Zdz-GY-VVd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="674" y="130"/>
+            <point key="canvasLocation" x="377" y="130"/>
         </scene>
         <!--Pantry-->
         <scene sceneID="YZ0-cl-88W">
@@ -365,7 +288,7 @@
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="8rJ-Kc-sve" kind="relationship" relationship="rootViewController" id="4K6-nF-tCN"/>
+                        <segue destination="fyF-OV-oMv" kind="relationship" relationship="rootViewController" id="3KY-LC-INk"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BiX-sO-hrY" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -414,17 +337,11 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Twf-Vi-Wgi" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-201" y="69"/>
+            <point key="canvasLocation" x="-385" y="70"/>
         </scene>
     </scenes>
     <resources>
-        <image name="All" width="256" height="256"/>
-        <image name="Dairy" width="256" height="256"/>
-        <image name="Fruits and Veggies" width="170" height="132"/>
-        <image name="Other Grocery" width="256" height="256"/>
         <image name="Pantry_Add_Icon" width="130" height="132"/>
-        <image name="Proteins" width="256" height="256"/>
-        <image name="Wheat and Bakery" width="256" height="256"/>
         <image name="background" width="1082" height="1537"/>
         <image name="calendarIcon" width="25" height="25"/>
         <image name="dropDownIcon" width="25" height="25"/>
@@ -432,8 +349,4 @@
         <image name="pantryIcon" width="25" height="25"/>
         <image name="shoppingWhiteIcon" width="25" height="25"/>
     </resources>
-    <inferredMetricsTieBreakers>
-        <segue reference="SRr-Kr-PXB"/>
-        <segue reference="3be-gm-HEu"/>
-    </inferredMetricsTieBreakers>
 </document>

@@ -34,7 +34,23 @@ struct Constants {
     public static let PantryDrinks = "Drinks"
     public static let PantrySpreads = "Spreads"
     
-    public static let pantryGroups = [Constants.PantryDairy, Constants.PantryProteins, Constants.PantryVeggies, Constants.PantryBakery, Constants.PantryOther, Constants.PantryBakingGood, Constants.PantryFrozen, Constants.PantryNonPerish, Constants.PantryHousehold, Constants.PantryPasta, Constants.PantryCondiment, Constants.PantrySnacks, Constants.PantryOil, Constants.PantryDrinks, Constants.PantrySpreads]
+    public static let pantryGroups = [
+        [Constants.PantryAll, "allCategory"],
+        [Constants.PantryDairy, "dairyCategory"],
+        [Constants.PantryProteins, "proteinCategory"],
+        [Constants.PantryVeggies, "veggieCategory"],
+        [Constants.PantryBakery, "bakeryCategory"],
+        [Constants.PantryOther, "otherCategory"],
+        [Constants.PantryBakingGood, "bakingCategory"],
+        [Constants.PantryFrozen, "freezerCategory"], 
+        [Constants.PantryNonPerish, "nonPerishCategory"],
+        [Constants.PantryHousehold, "householdCategory"],
+        [Constants.PantryPasta, "pastaCategory"],
+        [Constants.PantryCondiment, "condimentCategory"],
+        [Constants.PantrySnacks, "snackCategory"],
+        [Constants.PantryOil, "oilCategory"],
+        [Constants.PantryDrinks, "drinkCategory"],
+        [Constants.PantrySpreads, "spreadCategory"]]
     
     // constants for Recipe
     public static let RecipeAll = "All"
