@@ -23,8 +23,8 @@ class PantryGroupTableViewController: UITableViewController {
     var viewItem = PantryItem(id: 1)
     
     func redrawTable( ) {
-        expiringArray = SQLiteDB.instance.getGroupPantryItemStale(pantryGroup: group)
-        otherArray = SQLiteDB.instance.getGroupPantryItemFresh(pantryGroup: group)
+        expiringArray = getGroupPantryItemStale(pantryGroup: group)
+        otherArray = getGroupPantryItemFresh(pantryGroup: group)
         allItemsArray = [expiringArray, otherArray]
         itemTable.reloadData()
     }
@@ -47,8 +47,8 @@ class PantryGroupTableViewController: UITableViewController {
         self.navigationItem.title = group
         self.navigationController!.navigationBar.titleTextAttributes = titleAttributes
         
-        otherArray = SQLiteDB.instance.getGroupPantryItemFresh(pantryGroup: group)
-        expiringArray = SQLiteDB.instance.getGroupPantryItemStale(pantryGroup: group)
+        otherArray = getGroupPantryItemFresh(pantryGroup: group)
+        expiringArray = getGroupPantryItemStale(pantryGroup: group)
         
         allItemsArray = [expiringArray, otherArray]
     }

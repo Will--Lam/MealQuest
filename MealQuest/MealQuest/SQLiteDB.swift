@@ -45,12 +45,6 @@ class SQLiteDB {
     private let pantryItemPurchase = Expression<Date>("purchase")
     private let pantryItemArchive = Expression<Date?>("archive")
     
-    // expiration factors - expiring within factor => stale
-    private let dairyStaleFactor = 5
-    private let proteinStaleFactor = 2
-    private let veggieStaleFactor = 2
-    private let bakeryStaleFactor = 5
-    
     // Shopping Lists Table
     private let shoppingListsTable = Table("shoppingLists")
     private let shoppingListsID = Expression<Int64>("listID")
@@ -365,94 +359,45 @@ class SQLiteDB {
         }
     }
     
-    func sortByName(this: PantryItem, that: PantryItem) -> Bool {
-        return this.name.lowercased() < that.name.lowercased()
-    }
-    
-    /* TODO:
-        Obs: this would get insanely long and complex with the pantry group enhancements
-        1) refactor to iterate through each group in a for loop
-            a) to do this: the stale dates need to be either included in a class with the pantryGroup or have a way to match them
-     */
-    // return a group of fresh pantry items as list of objects
-    func getGroupPantryItemFresh(pantryGroup: String) -> [PantryItem] {
+    // Get pantry items in a depending on group and whether it is stale
+    func getPantryItems(pantryGroup: String, isFresh: Bool) -> [PantryItem] {
         var items = [PantryItem]()
         
         do {
-            if (pantryGroup == Constants.PantryAll) {
-                var dairyStaleDate: Date {
-                    return NSCalendar.current.date(byAdding: .day, value: dairyStaleFactor, to: Date())!
-                }
-                var selectQuery = pantryTable.filter(pantryItemGroup == Constants.PantryDairy && pantryItemArchived == 0 && pantryItemArchived == 0 && (pantryItemExpiration == nil || pantryItemExpiration > dairyStaleDate))
-                for pItem in try db!.prepare(selectQuery) {
-                    let item = PantryItem(id: pItem[pantryItemId], name: pItem[pantryItemName], group: pItem[pantryItemGroup],  quantity: pItem[pantryItemQuantity], unit: pItem[pantryItemUnit], calories: pItem[pantryItemCalories]!, isArchive: pItem[pantryItemArchived], expiration: pItem[pantryItemExpiration]!, purchase: pItem[pantryItemPurchase], archive: Date(), toggle: pItem[pantryItemToggle], search: pItem[pantryItemSearch])
-                    items.append(item)
-                }
-                
-                var proteinStaleDate: Date {
-                    return NSCalendar.current.date(byAdding: .day, value: proteinStaleFactor, to: Date())!
-                }
-                selectQuery = pantryTable.filter(pantryItemGroup == Constants.PantryProteins && pantryItemArchived == 0 && pantryItemArchived == 0 && (pantryItemExpiration == nil || pantryItemExpiration > proteinStaleDate))
-                for pItem in try db!.prepare(selectQuery) {
-                    let item = PantryItem(id: pItem[pantryItemId], name: pItem[pantryItemName], group: pItem[pantryItemGroup],  quantity: pItem[pantryItemQuantity], unit: pItem[pantryItemUnit], calories: pItem[pantryItemCalories]!, isArchive: pItem[pantryItemArchived], expiration: pItem[pantryItemExpiration]!, purchase: pItem[pantryItemPurchase], archive: Date(), toggle: pItem[pantryItemToggle], search: pItem[pantryItemSearch])
-                    items.append(item)
-                }
-                
-                var veggieStaleDate: Date {
-                    return NSCalendar.current.date(byAdding: .day, value: veggieStaleFactor, to: Date())!
-                }
-                selectQuery = pantryTable.filter(pantryItemGroup == Constants.PantryVeggies && pantryItemArchived == 0 && pantryItemArchived == 0 && (pantryItemExpiration == nil || pantryItemExpiration > veggieStaleDate))
-                for pItem in try db!.prepare(selectQuery) {
-                    let item = PantryItem(id: pItem[pantryItemId], name: pItem[pantryItemName], group: pItem[pantryItemGroup],  quantity: pItem[pantryItemQuantity], unit: pItem[pantryItemUnit], calories: pItem[pantryItemCalories]!, isArchive: pItem[pantryItemArchived], expiration: pItem[pantryItemExpiration]!, purchase: pItem[pantryItemPurchase], archive: Date(), toggle: pItem[pantryItemToggle], search: pItem[pantryItemSearch])
-                    items.append(item)
-                }
-                
-                var bakeryStaleDate: Date {
-                    return NSCalendar.current.date(byAdding: .day, value: bakeryStaleFactor, to: Date())!
-                }
-                selectQuery = pantryTable.filter(pantryItemGroup == Constants.PantryBakery && pantryItemArchived == 0 && pantryItemArchived == 0 && (pantryItemExpiration == nil || pantryItemExpiration > bakeryStaleDate))
-                for pItem in try db!.prepare(selectQuery) {
-                    let item = PantryItem(id: pItem[pantryItemId], name: pItem[pantryItemName], group: pItem[pantryItemGroup],  quantity: pItem[pantryItemQuantity], unit: pItem[pantryItemUnit], calories: pItem[pantryItemCalories]!, isArchive: pItem[pantryItemArchived], expiration: pItem[pantryItemExpiration]!, purchase: pItem[pantryItemPurchase], archive: Date(), toggle: pItem[pantryItemToggle], search: pItem[pantryItemSearch])
-                    items.append(item)
-                }
-                
-                items.sort(by: sortByName)
-                
-                return items
-                
-            } else {
-                var staleFactor = 0
-                if (pantryGroup == Constants.PantryDairy) {
-                    staleFactor = dairyStaleFactor
-                } else if (pantryGroup == Constants.PantryProteins) {
-                    staleFactor = proteinStaleFactor
-                } else if (pantryGroup == Constants.PantryVeggies) {
-                    staleFactor = veggieStaleFactor
-                } else if (pantryGroup == Constants.PantryBakery) {
-                    staleFactor = bakeryStaleFactor
-                }
             
-                var staleDate: Date {
-                    return NSCalendar.current.date(byAdding: .day, value: staleFactor, to: Date())!
-                }
+            var staleDate: Date {
+                return NSCalendar.current.date(byAdding: .day, value: Constants.pantryStaleMap[pantryGroup]!, to: Date())!
+            }
             
-                var selectQuery = pantryTable.filter(pantryItemGroup == pantryGroup && pantryItemArchived == 0 && pantryItemArchived == 0 && ( pantryItemExpiration == nil || pantryItemExpiration > staleDate)).order(pantryItemName.lowercaseString)
+            let selectQuery = pantryTable.filter(
+                pantryItemGroup == pantryGroup  &&
+                pantryItemArchived == 0         &&
+                ((pantryItemExpiration == nil || pantryItemExpiration > staleDate) == isFresh))
             
-                if (pantryGroup == Constants.PantryAll) {
-                    selectQuery = pantryTable.filter(pantryItemArchived == 0 && pantryItemArchived == 0 && (pantryItemExpiration == nil || pantryItemExpiration > staleDate)).order(pantryItemName.lowercaseString)
-                }
-            
-                for pItem in try db!.prepare(selectQuery) {
-                    let item = PantryItem(id: pItem[pantryItemId], name: pItem[pantryItemName], group: pItem[pantryItemGroup], quantity: pItem[pantryItemQuantity], unit: pItem[pantryItemUnit], calories: pItem[pantryItemCalories]!, isArchive: pItem[pantryItemArchived], expiration: pItem[pantryItemExpiration]!, purchase: pItem[pantryItemPurchase], archive: Date(), toggle: pItem[pantryItemToggle], search: pItem[pantryItemSearch])
-                    items.append(item)
-                }
-            
-                return items
+            for pItem in try db!.prepare(selectQuery) {
+                
+                let item = PantryItem(
+                    id:             pItem[pantryItemId],
+                    name:           pItem[pantryItemName],
+                    group:          pItem[pantryItemGroup],
+                    quantity:       pItem[pantryItemQuantity],
+                    unit:           pItem[pantryItemUnit],
+                    calories:       pItem[pantryItemCalories]!,
+                    isArchive:      pItem[pantryItemArchived],
+                    expiration:     pItem[pantryItemExpiration]!,
+                    purchase:       pItem[pantryItemPurchase],
+                    archive:        Date(),
+                    toggle:         pItem[pantryItemToggle],
+                    search:         pItem[pantryItemSearch])
+                
+                items.append(item)
             }
         } catch {
             print("Get group of fresh pantry item failed")
             return items
         }
+    
+        return items
     }
     
     // return archived pantry items as list of objects
@@ -485,98 +430,6 @@ class SQLiteDB {
             return items
         } catch {
             print("Get archived of pantry item failed")
-            return items
-        }
-    }
-    
-    func sortByExpiration(this: PantryItem, that: PantryItem) -> Bool {
-        return this.expiration < that.expiration
-    }
-    
-    /* TODO: this was skipped; this is probably the exact same function as getting the fresh pantry items with a small modification to the query
-     *  1) Create a handler to get fresh and stale items
-        2) Modify the function above to account for that logic
-        3) Then remove this
-     */
-    
-    // return a group of "stale" pantry items as list of objects
-    func getGroupPantryItemStale(pantryGroup: String) -> [PantryItem] {
-        var items = [PantryItem]()
-        
-        do {
-            if (pantryGroup == Constants.PantryAll) {
-                var dairyStaleDate: Date {
-                    return NSCalendar.current.date(byAdding: .day, value: dairyStaleFactor, to: Date())!
-                }
-                var selectQuery = pantryTable.filter(pantryItemGroup == Constants.PantryDairy && pantryItemArchived == 0 && pantryItemExpiration <= dairyStaleDate)
-                for pItem in try db!.prepare(selectQuery) {
-                    let item = PantryItem(id: pItem[pantryItemId], name: pItem[pantryItemName], group: pItem[pantryItemGroup],  quantity: pItem[pantryItemQuantity], unit: pItem[pantryItemUnit], calories: pItem[pantryItemCalories]!, isArchive: pItem[pantryItemArchived], expiration: pItem[pantryItemExpiration]!, purchase: pItem[pantryItemPurchase], archive: Date(), toggle: pItem[pantryItemToggle], search: pItem[pantryItemSearch])
-                    items.append(item)
-                }
-                
-                var proteinStaleDate: Date {
-                    return NSCalendar.current.date(byAdding: .day, value: proteinStaleFactor, to: Date())!
-                }
-                selectQuery = pantryTable.filter(pantryItemGroup == Constants.PantryProteins && pantryItemArchived == 0 && pantryItemExpiration <= proteinStaleDate)
-                for pItem in try db!.prepare(selectQuery) {
-                    let item = PantryItem(id: pItem[pantryItemId], name: pItem[pantryItemName], group: pItem[pantryItemGroup],  quantity: pItem[pantryItemQuantity], unit: pItem[pantryItemUnit], calories: pItem[pantryItemCalories]!, isArchive: pItem[pantryItemArchived], expiration: pItem[pantryItemExpiration]!, purchase: pItem[pantryItemPurchase], archive: Date(), toggle: pItem[pantryItemToggle], search: pItem[pantryItemSearch])
-                    items.append(item)
-                }
-                
-                var veggieStaleDate: Date {
-                    return NSCalendar.current.date(byAdding: .day, value: veggieStaleFactor, to: Date())!
-                }
-                selectQuery = pantryTable.filter(pantryItemGroup == Constants.PantryVeggies && pantryItemArchived == 0 && pantryItemExpiration <= veggieStaleDate)
-                
-                for pItem in try db!.prepare(selectQuery) {
-                    let item = PantryItem(id: pItem[pantryItemId], name: pItem[pantryItemName], group: pItem[pantryItemGroup],  quantity: pItem[pantryItemQuantity], unit: pItem[pantryItemUnit], calories: pItem[pantryItemCalories]!, isArchive: pItem[pantryItemArchived], expiration: pItem[pantryItemExpiration]!, purchase: pItem[pantryItemPurchase], archive: Date(), toggle: pItem[pantryItemToggle], search: pItem[pantryItemSearch])
-                    items.append(item)
-                }
-                
-                var bakeryStaleDate: Date {
-                    return NSCalendar.current.date(byAdding: .day, value: bakeryStaleFactor, to: Date())!
-                }
-                selectQuery = pantryTable.filter(pantryItemGroup == Constants.PantryBakery && pantryItemArchived == 0 && pantryItemExpiration <= bakeryStaleDate)
-                for pItem in try db!.prepare(selectQuery) {
-                    let item = PantryItem(id: pItem[pantryItemId], name: pItem[pantryItemName], group: pItem[pantryItemGroup],  quantity: pItem[pantryItemQuantity], unit: pItem[pantryItemUnit], calories: pItem[pantryItemCalories]!, isArchive: pItem[pantryItemArchived], expiration: pItem[pantryItemExpiration]!, purchase: pItem[pantryItemPurchase], archive: Date(), toggle: pItem[pantryItemToggle], search: pItem[pantryItemSearch])
-                    items.append(item)
-                }
-                
-                items.sort(by: sortByExpiration)
-                
-                return items
-                
-            } else {
-                var staleFactor = 0
-                if (pantryGroup == Constants.PantryDairy) {
-                    staleFactor = dairyStaleFactor
-                } else if (pantryGroup == Constants.PantryProteins) {
-                    staleFactor = proteinStaleFactor
-                } else if (pantryGroup == Constants.PantryVeggies) {
-                    staleFactor = veggieStaleFactor
-                } else if (pantryGroup == Constants.PantryBakery) {
-                    staleFactor = bakeryStaleFactor
-                }
-            
-                var staleDate: Date {
-                    return NSCalendar.current.date(byAdding: .day, value: staleFactor, to: Date())!
-                }
-            
-                var selectQuery = pantryTable.filter(pantryItemGroup == pantryGroup && pantryItemArchived == 0 && (pantryItemExpiration <= staleDate || pantryItemExpiration == nil)).order(pantryItemExpiration)
-            
-                if (pantryGroup == Constants.PantryAll) {
-                    selectQuery = pantryTable.filter(pantryItemArchived == 0 && pantryItemExpiration <= staleDate).order(pantryItemExpiration)
-                }
-            
-                for pItem in try db!.prepare(selectQuery) {
-                    let item = PantryItem(id: pItem[pantryItemId], name: pItem[pantryItemName], group: pItem[pantryItemGroup],  quantity: pItem[pantryItemQuantity], unit: pItem[pantryItemUnit], calories: pItem[pantryItemCalories]!, isArchive: pItem[pantryItemArchived], expiration: pItem[pantryItemExpiration]!, purchase: pItem[pantryItemPurchase], archive: Date(), toggle: pItem[pantryItemToggle], search: pItem[pantryItemSearch])
-                    items.append(item)
-                }
-                
-                return items
-            }
-        } catch {
-            print("Get stale group of pantry item failed")
             return items
         }
     }

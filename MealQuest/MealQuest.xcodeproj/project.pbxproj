@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1B1FABED1F74667D00900442 /* PantryRequestHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B1FABEC1F74667D00900442 /* PantryRequestHandler.swift */; };
+		1B1FABF61F7478DD00900442 /* PantryUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B1FABF51F7478DD00900442 /* PantryUtility.swift */; };
 		1B8A1DDB1F0DCE310079C265 /* ShoppingItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8A1DD91F0DCE310079C265 /* ShoppingItem.swift */; };
 		1B8A1DDC1F0DCE310079C265 /* ShoppingLists.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8A1DDA1F0DCE310079C265 /* ShoppingLists.swift */; };
 		1B8A1DE51F0DCE470079C265 /* ShoppingRequestHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8A1DE41F0DCE470079C265 /* ShoppingRequestHandler.swift */; };
@@ -156,6 +158,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		1B1FABEC1F74667D00900442 /* PantryRequestHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PantryRequestHandler.swift; sourceTree = "<group>"; };
+		1B1FABF51F7478DD00900442 /* PantryUtility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PantryUtility.swift; sourceTree = "<group>"; };
 		1B8A1DD91F0DCE310079C265 /* ShoppingItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShoppingItem.swift; sourceTree = "<group>"; };
 		1B8A1DDA1F0DCE310079C265 /* ShoppingLists.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShoppingLists.swift; sourceTree = "<group>"; };
 		1B8A1DE41F0DCE470079C265 /* ShoppingRequestHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShoppingRequestHandler.swift; sourceTree = "<group>"; };
@@ -318,6 +322,7 @@
 		BE0D9CBB1EE77A4A00407471 /* Pantry */ = {
 			isa = PBXGroup;
 			children = (
+				1B1FABEC1F74667D00900442 /* PantryRequestHandler.swift */,
 				BE3051491F7458FA0094BC15 /* PantryCategoryTableViewController.swift */,
 				BE3051481F7458FA0094BC15 /* PantryCategoryTableViewCell.swift */,
 				BED4B3B11F13E716001E41A6 /* PantryGroupTableViewController.swift */,
@@ -476,6 +481,7 @@
 				BE8A20E31F1008D900FD1DA5 /* UnitConverter.swift */,
 				BED5C6E51EF5CC6F00D98D0B /* Extensions.swift */,
 				1BE99FE11F7335E600F104ED /* DateConverter.swift */,
+				1B1FABF51F7478DD00900442 /* PantryUtility.swift */,
 			);
 			name = "Utility Files";
 			sourceTree = "<group>";
@@ -741,8 +747,10 @@
 				3CB41CC31F0F21640062CFD1 /* PantryArchiveCell.swift in Sources */,
 				BE47B1221EEDBF170012A905 /* IngredientsView.swift in Sources */,
 				BEC637001F194AA9009B57C5 /* RecipeIngredientsExtension.swift in Sources */,
+				1B1FABF61F7478DD00900442 /* PantryUtility.swift in Sources */,
 				BEC637041F194BA5009B57C5 /* RecipeButtonExtension.swift in Sources */,
 				BE8A14971EE8FCA100377566 /* RecipeViewController.swift in Sources */,
+				1B1FABED1F74667D00900442 /* PantryRequestHandler.swift in Sources */,
 				BED5C7281EF745E000D98D0B /* PantryAddItemViewController.swift in Sources */,
 				3C8C18E61F0B0AA9007E7930 /* PantryGroupCell.swift in Sources */,
 				BED5C6E41EF5C7F000D98D0B /* SearchViewController.swift in Sources */,
