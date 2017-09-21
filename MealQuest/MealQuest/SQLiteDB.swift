@@ -110,8 +110,14 @@ class SQLiteDB {
     
     func storeRecipeToDB(recipeID: Int64, field: String, data: String) -> Int64? {
         do {
-            let insert = recipeTable.insert(recipeAPIId <- recipeID, recipeField <- field, recipeFieldData <- data, isFavourite <- 0)
+            let insert = recipeTable.insert(
+                recipeAPIId <- recipeID,
+                recipeField <- field,
+                recipeFieldData <- data,
+                isFavourite <- 0)
+            
             let id = try db!.run(insert)
+            
             return id
         } catch {
             print("Insert recipe field failed")
@@ -121,8 +127,12 @@ class SQLiteDB {
     
     func updateRecipeInDB(recipeID: Int64, field: String, data: String) -> Int64? {
         do {
-            let updateQuery = recipeTable.filter(recipeAPIId == recipeID && recipeField == field)
+            let updateQuery = recipeTable.filter(
+                recipeAPIId == recipeID &&
+                recipeField == field)
+            
             let id = try db!.run(updateQuery.update(recipeFieldData <- data))
+            
             return Int64(id)
         } catch {
             print("Update recipe field failed")
@@ -134,7 +144,8 @@ class SQLiteDB {
         var recipeFields = [String: String]()
         
         do {
-            let selectQuery = recipeTable.filter(recipeAPIId == recipeID)
+            let selectQuery = recipeTable.filter(
+                recipeAPIId == recipeID)
         
             for recipe in try db!.prepare(selectQuery) {
                 recipeFields[recipe[recipeField]!] = recipe[recipeFieldData]
@@ -152,10 +163,12 @@ class SQLiteDB {
         
         do {
             
-            let selectQuery = recipeTable.filter(isFavourite == 1)
+            let selectQuery = recipeTable.filter(
+                isFavourite == 1)
             
             for recipe in try db!.prepare(selectQuery) {
-                favRecipeIds.insert(recipe[recipeAPIId])
+                favRecipeIds.insert(
+                    recipe[recipeAPIId])
             }
             
             return Array(favRecipeIds)
@@ -167,8 +180,11 @@ class SQLiteDB {
     
     func deleteRecipeFromDB(recipeID: Int64) -> Int64 {
         do {
-            let deleteQuery = recipeTable.filter(recipeAPIId == recipeID)
+            let deleteQuery = recipeTable.filter(
+                recipeAPIId == recipeID)
+            
             let id = try db!.run(deleteQuery.delete())
+            
             return Int64(id)
         } catch {
             print("Delete recipe failed")
@@ -178,8 +194,13 @@ class SQLiteDB {
     
     func addRecipeToFavouriteDB(recipeID: Int64) -> Int64 {
         do {
-            let updateQuery = recipeTable.filter(recipeAPIId == recipeID)
-            let id = try db!.run(updateQuery.update(isFavourite <- 1))
+            let updateQuery = recipeTable.filter(
+                recipeAPIId == recipeID)
+            
+            let id = try db!.run(
+                updateQuery.update(
+                    isFavourite <- 1))
+            
             return Int64(id)
         } catch {
             print("Mark recipe as favourite failed")
@@ -189,8 +210,13 @@ class SQLiteDB {
     
     func unmarkFavouriteRecipeDB(recipeID: Int64) -> Int64 {
         do {
-            let updateQuery = recipeTable.filter(recipeAPIId == recipeID)
-            let id = try db!.run(updateQuery.update(isFavourite <- 0))
+            let updateQuery = recipeTable.filter(
+                recipeAPIId == recipeID)
+            
+            let id = try db!.run(
+                updateQuery.update(
+                    isFavourite <- 0))
+            
             return Int64(id)
         } catch {
             print("Unmark favourite recipe failed")
@@ -200,8 +226,12 @@ class SQLiteDB {
     
     func deleteNonFavouriteRecipeDB() -> Int64 {
         do {
-            let deleteQuery = recipeTable.filter(isFavourite == 0)
-            let id = try db!.run(deleteQuery.delete())
+            let deleteQuery = recipeTable.filter(
+                isFavourite == 0)
+            
+            let id = try db!.run(
+                deleteQuery.delete())
+            
             return Int64(id)
         } catch {
             print("Delete all non-favourite recipe failed")
@@ -236,18 +266,6 @@ class SQLiteDB {
         }
     }
     
-    // ensure date conversion does not throw errors due to empty string
-    func convertDate(dateString: String) -> Date? {
-        var date: Date?
-        date = nil
-        
-        if (dateString != "") {
-            date = Date.fromDatatypeValue(dateString)
-        }
-        
-        return date
-    }
-    
     // insert a new pantry item
     func storePantryItem(name: String, group: String, quantity: Double, unit: String, calories: Int, expiration: String, purchase: String, archive: String) -> Int64? {
         do {
@@ -255,8 +273,21 @@ class SQLiteDB {
             let purchaseDate = convertDate(dateString: purchase)
             let expirationDate = convertDate(dateString: expiration)
 
-            let insert = pantryTable.insert(pantryItemName <- name, pantryItemGroup <- group, pantryItemQuantity <- quantity, pantryItemUnit <- unit,pantryItemCalories <- calories, pantryItemArchived <- 0, pantryItemExpiration <- expirationDate, pantryItemPurchase <- purchaseDate!, pantryItemArchive <- archiveDate, pantryItemToggle <- 0, pantryItemSearch <- 0)
+            let insert = pantryTable.insert(
+                pantryItemName          <- name,
+                pantryItemGroup         <- group,
+                pantryItemQuantity      <- quantity,
+                pantryItemUnit          <- unit,
+                pantryItemCalories      <- calories,
+                pantryItemArchived      <- 0,
+                pantryItemExpiration    <- expirationDate,
+                pantryItemPurchase      <- purchaseDate!,
+                pantryItemArchive       <- archiveDate,
+                pantryItemToggle        <- 0,
+                pantryItemSearch        <- 0)
+            
             let id = try db!.run(insert)
+            
             return id
         } catch {
             print("Insert pantry item failed")
@@ -273,7 +304,19 @@ class SQLiteDB {
             let selectQuery = pantryTable.filter(pantryItemId == pantryId)
             
             for pItem in try db!.prepare(selectQuery) {
-                item = PantryItem(id: pantryId, name: pItem[pantryItemName], group: pItem[pantryItemGroup], quantity: pItem[pantryItemQuantity], unit: pItem[pantryItemUnit], calories: pItem[pantryItemCalories]!, isArchive: pItem[pantryItemArchived], expiration: pItem[pantryItemExpiration]!, purchase: pItem[pantryItemPurchase], archive: Date(), toggle: pItem[pantryItemToggle], search: pItem[pantryItemSearch])
+                item = PantryItem(
+                    id:          pantryId,
+                    name:        pItem[pantryItemName],
+                    group:       pItem[pantryItemGroup],
+                    quantity:    pItem[pantryItemQuantity],
+                    unit:        pItem[pantryItemUnit],
+                    calories:    pItem[pantryItemCalories]!,
+                    isArchive:   pItem[pantryItemArchived],
+                    expiration:  pItem[pantryItemExpiration]!,
+                    purchase:    pItem[pantryItemPurchase],
+                    archive:     Date(),
+                    toggle:      pItem[pantryItemToggle],
+                    search:      pItem[pantryItemSearch])
             }
             
             return item
@@ -288,16 +331,31 @@ class SQLiteDB {
         var items = [PantryItem]()
         
         do {
-            var selectQuery = pantryTable.filter(pantryItemGroup == pantryGroup && pantryItemArchived == 0)
+            var selectQuery = pantryTable.filter(
+                pantryItemGroup == pantryGroup &&
+                pantryItemArchived == 0)
             
             if (pantryGroup == Constants.PantryAll) {
-                selectQuery = pantryTable.filter(pantryItemArchived == 0)
+                selectQuery = pantryTable.filter(
+                    pantryItemArchived == 0)
             }
             
             for pItem in try db!.prepare(selectQuery) {
-                let item = PantryItem(id: pItem[pantryItemId], name: pItem[pantryItemName], group: pItem[pantryItemGroup], quantity: pItem[pantryItemQuantity], unit: pItem[pantryItemUnit], calories: pItem[pantryItemCalories]!, isArchive: pItem[pantryItemArchived], expiration: pItem[pantryItemExpiration]!, purchase: pItem[pantryItemPurchase], archive: Date(), toggle: pItem[pantryItemToggle], search: pItem[pantryItemSearch])
-                items.append(item)
+                let item = PantryItem(
+                    id:         pItem[pantryItemId],
+                    name:       pItem[pantryItemName],
+                    group:      pItem[pantryItemGroup],
+                    quantity:   pItem[pantryItemQuantity],
+                    unit:       pItem[pantryItemUnit],
+                    calories:   pItem[pantryItemCalories]!,
+                    isArchive:  pItem[pantryItemArchived],
+                    expiration: pItem[pantryItemExpiration]!,
+                    purchase:   pItem[pantryItemPurchase],
+                    archive:    Date(),
+                    toggle:     pItem[pantryItemToggle],
+                    search:     pItem[pantryItemSearch])
                 
+                items.append(item)
             }
             
             return items
@@ -311,6 +369,11 @@ class SQLiteDB {
         return this.name.lowercased() < that.name.lowercased()
     }
     
+    /* TODO:
+        Obs: this would get insanely long and complex with the pantry group enhancements
+        1) refactor to iterate through each group in a for loop
+            a) to do this: the stale dates need to be either included in a class with the pantryGroup or have a way to match them
+     */
     // return a group of fresh pantry items as list of objects
     func getGroupPantryItemFresh(pantryGroup: String) -> [PantryItem] {
         var items = [PantryItem]()
@@ -397,10 +460,24 @@ class SQLiteDB {
         var items = [PantryItem]()
         
         do {
-            let selectQuery = pantryTable.filter(pantryItemArchived == 1).order(pantryItemArchived)
+            let selectQuery = pantryTable.filter(
+                pantryItemArchived == 1).order(pantryItemArchived)
             
             for pItem in try db!.prepare(selectQuery) {
-                let item = PantryItem(id: pItem[pantryItemId], name: pItem[pantryItemName], group: pItem[pantryItemGroup], quantity: pItem[pantryItemQuantity], unit: pItem[pantryItemUnit], calories: pItem[pantryItemCalories]!, isArchive: pItem[pantryItemArchived], expiration: pItem[pantryItemExpiration]!, purchase: pItem[pantryItemPurchase], archive: pItem[pantryItemArchive]!, toggle: pItem[pantryItemToggle], search: pItem[pantryItemSearch])
+                let item = PantryItem(
+                    id: pItem[pantryItemId],
+                    name: pItem[pantryItemName],
+                    group: pItem[pantryItemGroup],
+                    quantity: pItem[pantryItemQuantity],
+                    unit: pItem[pantryItemUnit],
+                    calories: pItem[pantryItemCalories]!,
+                    isArchive: pItem[pantryItemArchived],
+                    expiration: pItem[pantryItemExpiration]!,
+                    purchase: pItem[pantryItemPurchase],
+                    archive: pItem[pantryItemArchive]!,
+                    toggle: pItem[pantryItemToggle],
+                    search: pItem[pantryItemSearch])
+                
                 items.append(item)
                 
             }
@@ -415,6 +492,12 @@ class SQLiteDB {
     func sortByExpiration(this: PantryItem, that: PantryItem) -> Bool {
         return this.expiration < that.expiration
     }
+    
+    /* TODO: this was skipped; this is probably the exact same function as getting the fresh pantry items with a small modification to the query
+     *  1) Create a handler to get fresh and stale items
+        2) Modify the function above to account for that logic
+        3) Then remove this
+     */
     
     // return a group of "stale" pantry items as list of objects
     func getGroupPantryItemStale(pantryGroup: String) -> [PantryItem] {
@@ -507,8 +590,21 @@ class SQLiteDB {
                 archiveDate = Date.fromDatatypeValue(archive)
             }
 
-            let updateQuery = pantryTable.filter(pantryItemId == pantryId)
-            let id = try db!.run(updateQuery.update(pantryItemName <- name, pantryItemGroup <- group, pantryItemQuantity <- quantity, pantryItemUnit <- unit,pantryItemCalories <- calories, pantryItemArchived <- 0, pantryItemExpiration <- Date.fromDatatypeValue(expiration), pantryItemPurchase <- Date.fromDatatypeValue(purchase), pantryItemArchive <- archiveDate))
+            let updateQuery = pantryTable.filter(
+                pantryItemId == pantryId)
+            
+            let id = try db!.run(
+                updateQuery.update(
+                    pantryItemName <- name,
+                    pantryItemGroup <- group,
+                    pantryItemQuantity <- quantity,
+                    pantryItemUnit <- unit,
+                    pantryItemCalories <- calories,
+                    pantryItemArchived <- 0,
+                    pantryItemExpiration <- Date.fromDatatypeValue(expiration),
+                    pantryItemPurchase <- Date.fromDatatypeValue(purchase),
+                    pantryItemArchive <- archiveDate))
+            
             return Int64(id)
         } catch {
             print("Update pantry item failed")
@@ -519,8 +615,11 @@ class SQLiteDB {
     // delete pantry item entry
     func deletePantryItem(pantryId: Int64) -> Int64 {
         do {
-            let deleteQuery = pantryTable.filter(pantryItemId == pantryId)
+            let deleteQuery = pantryTable.filter(
+                pantryItemId == pantryId)
+            
             let id = try db!.run(deleteQuery.delete())
+            
             return Int64(id)
         } catch {
             print("Delete pantry item failed")
@@ -528,12 +627,17 @@ class SQLiteDB {
         }
     }
     
-    // archive a pantry item
-    // mark as archived & update archive date
+    // archive a pantry item and mark as archived & update archive date
     func archivePantryItem(pantryId: Int64) -> Int64 {
         do {
-            let updateQuery = pantryTable.filter(pantryItemId == pantryId)
-            let id = try db!.run(updateQuery.update(pantryItemArchived <- 1, pantryItemArchive <- Date()))
+            let updateQuery = pantryTable.filter(
+                pantryItemId == pantryId)
+            
+            let id = try db!.run(
+                updateQuery.update(
+                    pantryItemArchived <- 1,
+                    pantryItemArchive <- Date()))
+            
             return Int64(id)
         } catch {
             print("Archive pantry item failed")
@@ -541,12 +645,16 @@ class SQLiteDB {
         }
     }
     
-    // toggle a pantry item
-    // mark as toggle
+    // toggle a pantry item and mark as toggle
     func togglePantryItem(pantryId: Int64, current: Int) -> Int64 {
         do {
-            let updateQuery = pantryTable.filter(pantryItemId == pantryId)
-            let id = try db!.run(updateQuery.update(pantryItemToggle <- 1-current))
+            let updateQuery = pantryTable.filter(
+                pantryItemId == pantryId)
+            
+            let id = try db!.run(
+                updateQuery.update(
+                    pantryItemToggle <- 1-current))
+            
             return Int64(id)
         } catch {
             print("Toggle pantry item failed")
@@ -557,8 +665,13 @@ class SQLiteDB {
     // mark a pantry item for search
     func setSearchPantryItem(pantryId: Int64, current: Int) -> Int64 {
         do {
-            let updateQuery = pantryTable.filter(pantryItemId == pantryId)
-            let id = try db!.run(updateQuery.update(pantryItemSearch <- 1-current))
+            let updateQuery = pantryTable.filter(
+                pantryItemId == pantryId)
+            
+            let id = try db!.run(
+                updateQuery.update(
+                    pantryItemSearch <- 1-current))
+            
             return Int64(id)
         } catch {
             print("Mark pantry item as search failed")
@@ -574,7 +687,20 @@ class SQLiteDB {
             let selectQuery = pantryTable.filter(pantryItemToggle == 1)
             
             for pItem in try db!.prepare(selectQuery) {
-                let item = PantryItem(id: pItem[pantryItemId], name: pItem[pantryItemName], group: pItem[pantryItemGroup], quantity: pItem[pantryItemQuantity], unit: pItem[pantryItemUnit], calories: pItem[pantryItemCalories]!, isArchive: pItem[pantryItemArchived], expiration: pItem[pantryItemExpiration]!, purchase: pItem[pantryItemPurchase], archive: Date(), toggle: pItem[pantryItemToggle], search: pItem[pantryItemSearch])
+                let item = PantryItem(
+                    id:             pItem[pantryItemId],
+                    name:           pItem[pantryItemName],
+                    group:          pItem[pantryItemGroup],
+                    quantity:       pItem[pantryItemQuantity],
+                    unit:           pItem[pantryItemUnit],
+                    calories:       pItem[pantryItemCalories]!,
+                    isArchive:      pItem[pantryItemArchived],
+                    expiration:     pItem[pantryItemExpiration]!,
+                    purchase:       pItem[pantryItemPurchase],
+                    archive:        Date(),
+                    toggle:         pItem[pantryItemToggle],
+                    search:         pItem[pantryItemSearch])
+                
                 items.append(item)
             }
             
@@ -593,7 +719,20 @@ class SQLiteDB {
             let selectQuery = pantryTable.filter(pantryItemSearch == 1)
             
             for pItem in try db!.prepare(selectQuery) {
-                let item = PantryItem(id: pItem[pantryItemId], name: pItem[pantryItemName], group: pItem[pantryItemGroup], quantity: pItem[pantryItemQuantity], unit: pItem[pantryItemUnit], calories: pItem[pantryItemCalories]!, isArchive: pItem[pantryItemArchived], expiration: pItem[pantryItemExpiration]!, purchase: pItem[pantryItemPurchase], archive: Date(), toggle: pItem[pantryItemToggle], search: pItem[pantryItemSearch])
+                let item = PantryItem(
+                    id:             pItem[pantryItemId],
+                    name:           pItem[pantryItemName],
+                    group:          pItem[pantryItemGroup],
+                    quantity:       pItem[pantryItemQuantity],
+                    unit:           pItem[pantryItemUnit],
+                    calories:       pItem[pantryItemCalories]!,
+                    isArchive:      pItem[pantryItemArchived],
+                    expiration:     pItem[pantryItemExpiration]!,
+                    purchase:       pItem[pantryItemPurchase],
+                    archive:        Date(),
+                    toggle:         pItem[pantryItemToggle],
+                    search:         pItem[pantryItemSearch])
+                
                 items.append(item)
             }
             
@@ -607,8 +746,11 @@ class SQLiteDB {
     // delete all toggled Pantry Items
     func deleteToggledPantryItems() -> Int64 {
         do {
-            let deleteQuery = pantryTable.filter(pantryItemToggle == 1)
+            let deleteQuery = pantryTable.filter(
+                pantryItemToggle == 1)
+            
             let id = try db!.run(deleteQuery.delete())
+            
             return Int64(id)
 
         } catch {
@@ -620,8 +762,13 @@ class SQLiteDB {
     // revert all Pantry Items marked as search
     func revertSearchPantryItems() -> Int64 {
         do {
-            let revertQuery = pantryTable.filter(pantryItemSearch == 1)
-            let id = try db!.run(revertQuery.update(pantryItemSearch <- 0))
+            let revertQuery = pantryTable.filter(
+                pantryItemSearch == 1)
+            
+            let id = try db!.run(
+                revertQuery.update(
+                    pantryItemSearch <- 0))
+            
             return Int64(id)
             
         } catch {
@@ -635,10 +782,26 @@ class SQLiteDB {
         var items = [PantryItem]()
         
         do {
-            let selectQuery = pantryTable.filter(pantryItemName.lowercaseString == itemName.lowercased() && pantryItemArchived == 0).order(pantryItemExpiration)
+            let selectQuery = pantryTable.filter(
+                pantryItemName.lowercaseString == itemName.lowercased() &&
+                pantryItemArchived == 0).order(
+                    pantryItemExpiration)
             
             for pItem in try db!.prepare(selectQuery) {
-                let item = PantryItem(id: pItem[pantryItemId], name: pItem[pantryItemName], group: pItem[pantryItemGroup], quantity: pItem[pantryItemQuantity], unit: pItem[pantryItemUnit], calories: pItem[pantryItemCalories]!, isArchive: pItem[pantryItemArchived], expiration: pItem[pantryItemExpiration]!, purchase: pItem[pantryItemPurchase], archive: Date(), toggle: pItem[pantryItemToggle], search: pItem[pantryItemSearch])
+                let item = PantryItem(
+                    id:             pItem[pantryItemId],
+                    name:           pItem[pantryItemName],
+                    group:          pItem[pantryItemGroup],
+                    quantity:       pItem[pantryItemQuantity],
+                    unit:           pItem[pantryItemUnit],
+                    calories:       pItem[pantryItemCalories]!,
+                    isArchive:      pItem[pantryItemArchived],
+                    expiration:     pItem[pantryItemExpiration]!,
+                    purchase:       pItem[pantryItemPurchase],
+                    archive:        Date(),
+                    toggle:         pItem[pantryItemToggle],
+                    search:         pItem[pantryItemSearch])
+                
                 items.append(item)
             }
             
@@ -654,10 +817,25 @@ class SQLiteDB {
         var items = [PantryItem]()
         
         do {
-            let selectQuery = pantryTable.filter(pantryItemArchived == 0).order(pantryItemExpiration)
+            let selectQuery = pantryTable.filter(
+                pantryItemArchived == 0).order(
+                    pantryItemExpiration)
             
             for pItem in try db!.prepare(selectQuery) {
-                let item = PantryItem(id: pItem[pantryItemId], name: pItem[pantryItemName], group: pItem[pantryItemGroup], quantity: pItem[pantryItemQuantity], unit: pItem[pantryItemUnit], calories: pItem[pantryItemCalories]!, isArchive: pItem[pantryItemArchived], expiration: pItem[pantryItemExpiration]!, purchase: pItem[pantryItemPurchase], archive: Date(), toggle: pItem[pantryItemToggle], search: pItem[pantryItemSearch])
+                let item = PantryItem(
+                    id:             pItem[pantryItemId],
+                    name:           pItem[pantryItemName],
+                    group:          pItem[pantryItemGroup],
+                    quantity:       pItem[pantryItemQuantity],
+                    unit:           pItem[pantryItemUnit],
+                    calories:       pItem[pantryItemCalories]!,
+                    isArchive:      pItem[pantryItemArchived],
+                    expiration:     pItem[pantryItemExpiration]!,
+                    purchase:       pItem[pantryItemPurchase],
+                    archive:        Date(),
+                    toggle:         pItem[pantryItemToggle],
+                    search:         pItem[pantryItemSearch])
+                
                 items.append(item)
             }
             
@@ -690,8 +868,13 @@ class SQLiteDB {
     // Insert new list into the historic list
     func insertNewList(listCost: Double, listDate: Date, isActive: Bool) -> Int64? {
         do {
-            let insert = shoppingListsTable.insert(shoppingListsCost <- listCost, shoppingListsDate <- listDate, shoppingListsIsActive <- isActive)
+            let insert = shoppingListsTable.insert(
+                shoppingListsCost <- listCost,
+                shoppingListsDate <- listDate,
+                shoppingListsIsActive <- isActive)
+            
             let id = try db!.run(insert)
+            
             print("insert new list successful")
             return id
         } catch {
@@ -703,8 +886,13 @@ class SQLiteDB {
     // Update an existing historic list
     func updateList(listID: Int64, listCost: Double, listDate: Date, isActive: Bool) -> Int64? {
         do {
-            let updateQuery = shoppingListsTable.filter(shoppingListsID == listID)
-            let id = try db!.run(updateQuery.update(shoppingListsCost <- listCost, shoppingListsDate <- listDate, shoppingListsIsActive <- isActive))
+            let updateQuery = shoppingListsTable.filter(
+                shoppingListsID == listID)
+            let id = try db!.run(
+                updateQuery.update(
+                    shoppingListsCost <- listCost,
+                    shoppingListsDate <- listDate,
+                    shoppingListsIsActive <- isActive))
             return Int64(id)
         } catch {
             print("Update shopping list failed")
@@ -715,8 +903,11 @@ class SQLiteDB {
     // Delete an existing historic list
     func deleteList(listID: Int64) -> Int64? {
         do {
-            let deleteQuery = shoppingListsTable.filter(shoppingListsID == listID)
+            let deleteQuery = shoppingListsTable.filter(
+                shoppingListsID == listID)
+            
             let id = try db!.run(deleteQuery.delete())
+            
             return Int64(id)
         } catch {
             print("Delete shopping list failed")
@@ -728,10 +919,14 @@ class SQLiteDB {
     func getActiveListID() -> Int64? {
         do {
             var id = Int64(0)
-            let selectQuery = shoppingListsTable.filter(shoppingListsIsActive == true)
+            
+            let selectQuery = shoppingListsTable.filter(
+                shoppingListsIsActive == true)
+            
             for returnRow in try db!.prepare(selectQuery) {
                 id = returnRow[shoppingListsID]
             }
+            
             return id
         } catch {
             print("Fetching active list id failed")
@@ -747,7 +942,11 @@ class SQLiteDB {
             let selectQuery = shoppingListsTable.filter(shoppingListsID == listID)
             
             for sList in try db!.prepare(selectQuery) {
-                list = ShoppingLists(listID: listID, listCost: sList[shoppingListsCost], listDate: sList[shoppingListsDate], isActive: sList[shoppingListsIsActive])
+                list = ShoppingLists(
+                    listID: listID,
+                    listCost: sList[shoppingListsCost],
+                    listDate: sList[shoppingListsDate],
+                    isActive: sList[shoppingListsIsActive])
             }
             return list
         } catch {
@@ -759,7 +958,10 @@ class SQLiteDB {
     // Check if a list is active
     func isActive(listID: Int64) -> Bool {
         do {
-            let selectQuery = shoppingListsTable.filter(shoppingListsID == listID && shoppingListsIsActive == true)
+            let selectQuery = shoppingListsTable.filter(
+                shoppingListsID == listID &&
+                shoppingListsIsActive == true)
+            
             for _ in try db!.prepare(selectQuery) {
                 return true
             }
@@ -775,10 +977,13 @@ class SQLiteDB {
         var inactiveIDs = Set<Int64>()
         
         do {
-            let selectQuery = shoppingListsTable.filter(shoppingListsIsActive == false)
+            let selectQuery = shoppingListsTable.filter(
+                shoppingListsIsActive == false)
+            
             for list in try db!.prepare(selectQuery) {
                 inactiveIDs.insert(list[shoppingListsID])
             }
+            
             return Array(inactiveIDs)
         } catch {
             print("Cannot get inactive shopping lists")
@@ -816,8 +1021,19 @@ class SQLiteDB {
     // Insert a new shopping item into the active list
     func insertNewItem(listID: Int64, itemName: String, itemCost: Double, unit: String, quantity: Double, group: String, purchased: Bool, expirationDate: Date, repurchase: Bool) -> Int64? {
         do {
-            let insert = shoppingItemTable.insert(shoppingItemListID <- listID, shoppingItemName <- itemName, shoppingItemCost <- itemCost, shoppingItemUnit <- unit, shoppingItemQuantity <- quantity, shoppingItemCategory <- group, shoppingItemPurchased <- purchased, shoppingItemExpirationDate <- expirationDate, shoppingItemRepurchase <- repurchase)
+            let insert = shoppingItemTable.insert(
+                shoppingItemListID <- listID,
+                shoppingItemName <- itemName,
+                shoppingItemCost <- itemCost,
+                shoppingItemUnit <- unit,
+                shoppingItemQuantity <- quantity,
+                shoppingItemCategory <- group,
+                shoppingItemPurchased <- purchased,
+                shoppingItemExpirationDate <- expirationDate,
+                shoppingItemRepurchase <- repurchase)
+            
             let id = try db!.run(insert)
+            
             print("insert sucessful")
             return id
         } catch {
@@ -830,7 +1046,19 @@ class SQLiteDB {
     func updateItem(listID: Int64, itemID: Int64, itemName: String, itemCost: Double, unit: String, quantity: Double, group: String, purchased: Bool, expirationDate: Date, repurchase: Bool) -> Int64? {
         do {
             let updateQuery = shoppingItemTable.filter(shoppingItemListID == listID && shoppingItemID == itemID)
-            let id = try db!.run(updateQuery.update(shoppingItemListID <- listID, shoppingItemName <- itemName, shoppingItemCost <- itemCost, shoppingItemUnit <- unit, shoppingItemQuantity <- quantity, shoppingItemCategory <- group, shoppingItemPurchased <- purchased, shoppingItemExpirationDate <- expirationDate, shoppingItemRepurchase <- repurchase))
+    
+            let id = try db!.run(
+                updateQuery.update(
+                    shoppingItemListID <- listID,
+                    shoppingItemName <- itemName,
+                    shoppingItemCost <- itemCost,
+                    shoppingItemUnit <- unit,
+                    shoppingItemQuantity <- quantity,
+                    shoppingItemCategory <- group,
+                    shoppingItemPurchased <- purchased,
+                    shoppingItemExpirationDate <- expirationDate,
+                    shoppingItemRepurchase <- repurchase))
+            
             print("update item succesful")
             return Int64(id)
         } catch {
@@ -842,8 +1070,12 @@ class SQLiteDB {
     // Delete an existing item
     func deleteItem(listID: Int64, itemID: Int64) -> Int64? {
         do {
-            let deleteQuery = shoppingItemTable.filter(shoppingItemListID == listID && shoppingItemID == itemID)
+            let deleteQuery = shoppingItemTable.filter(
+                shoppingItemListID == listID &&
+                    shoppingItemID == itemID)
+            
             let id = try db!.run(deleteQuery.delete())
+            
             print("item successfully deleted")
             return Int64(id)
         } catch {
@@ -855,7 +1087,11 @@ class SQLiteDB {
     // Verify if an item has been purchased
     func isPurchased(listID: Int64, itemID: Int64) -> Bool {
         do {
-            let selectQuery = shoppingItemTable.filter(shoppingItemListID == listID && shoppingItemID == itemID && shoppingItemPurchased == true)
+            let selectQuery = shoppingItemTable.filter(
+                shoppingItemListID == listID &&
+                    shoppingItemID == itemID &&
+                    shoppingItemPurchased == true)
+            
             for _ in try db!.prepare(selectQuery) {
                 return true
             }
@@ -870,10 +1106,24 @@ class SQLiteDB {
     func getItemInformation(listID: Int64, itemID: Int64) -> ShoppingItem {
         var item = ShoppingItem(id: itemID)
         do {
-            let selectQuery = shoppingItemTable.filter(shoppingItemListID == listID && shoppingItemID == itemID)
+            let selectQuery = shoppingItemTable.filter(
+                shoppingItemListID == listID &&
+                    shoppingItemID == itemID)
+            
             for sItem in try db!.prepare(selectQuery) {
-                item = ShoppingItem(listID: listID, itemID: itemID, itemName: sItem[shoppingItemName], itemCost: sItem[shoppingItemCost], unit: sItem[shoppingItemUnit], quantity: sItem[shoppingItemQuantity], group: sItem[shoppingItemCategory], purchased: sItem[shoppingItemPurchased], expirationDate: sItem[shoppingItemExpirationDate]!, repurchase: sItem[shoppingItemRepurchase])
+                item = ShoppingItem(
+                    listID: listID,
+                    itemID: itemID,
+                    itemName: sItem[shoppingItemName],
+                    itemCost: sItem[shoppingItemCost],
+                    unit: sItem[shoppingItemUnit],
+                    quantity: sItem[shoppingItemQuantity],
+                    group: sItem[shoppingItemCategory],
+                    purchased: sItem[shoppingItemPurchased],
+                    expirationDate: sItem[shoppingItemExpirationDate]!,
+                    repurchase: sItem[shoppingItemRepurchase])
             }
+            
             return item
         } catch {
             print("Get shopping item information")
@@ -884,13 +1134,18 @@ class SQLiteDB {
     // Verify if an item has been marked for repurchase
     func isRepurchase(listID: Int64, itemID: Int64) -> Bool {
         do {
-            let selectQuery = shoppingItemTable.filter(shoppingItemListID == listID && shoppingItemID == itemID && shoppingItemRepurchase == true)
+            let selectQuery = shoppingItemTable.filter(
+                shoppingItemListID == listID &&
+                    shoppingItemID == itemID &&
+                    shoppingItemRepurchase == true)
+            
             for _ in try db!.prepare(selectQuery) {
                 return true
             }
+            
             return false
         } catch {
-            print("Verifying if an item is marked for repurchasefailed")
+            print("Verifying if an item is marked for repurchase failed")
             return false
         }
     }
@@ -900,10 +1155,14 @@ class SQLiteDB {
         var markedIDs = Set<Int64>()
         
         do {
-            let selectQuery = shoppingItemTable.filter(shoppingItemRepurchase == true && shoppingListsID == listID)
+            let selectQuery = shoppingItemTable.filter(
+                shoppingItemRepurchase == true &&
+                    shoppingListsID == listID)
+            
             for item in try db!.prepare(selectQuery) {
                 markedIDs.insert(item[shoppingItemID])
             }
+            
             return Array(markedIDs)
         } catch {
             print("Cannot get items related to listID")
@@ -916,10 +1175,13 @@ class SQLiteDB {
         var itemIDs = Set<Int64>()
         
         do {
-            let selectQuery = shoppingItemTable.filter(shoppingItemListID == listID)
+            let selectQuery = shoppingItemTable.filter(
+                shoppingItemListID == listID)
+            
             for item in try db!.prepare(selectQuery) {
                 itemIDs.insert(item[shoppingItemID])
             }
+            
             return Array(itemIDs)
         } catch {
             print("Cannot get items related to listID")
@@ -932,10 +1194,24 @@ class SQLiteDB {
         var shoppingItem = ShoppingItem(id: -1)
         
         do {
-            let selectQuery = shoppingItemTable.filter(shoppingItemListID == listID && shoppingItemName == name)
+            let selectQuery = shoppingItemTable.filter(
+                shoppingItemListID == listID &&
+                shoppingItemName == name)
+            
             for sItem in try db!.prepare(selectQuery) {
-                shoppingItem = ShoppingItem(listID: listID, itemID: sItem[shoppingItemID], itemName: name, itemCost: sItem[shoppingItemCost], unit: sItem[shoppingItemUnit], quantity: sItem[shoppingItemQuantity], group: sItem[shoppingItemCategory], purchased: sItem[shoppingItemPurchased], expirationDate: sItem[shoppingItemExpirationDate]!, repurchase: sItem[shoppingItemRepurchase])
+                shoppingItem = ShoppingItem(
+                    listID: listID,
+                    itemID: sItem[shoppingItemID],
+                    itemName: name,
+                    itemCost: sItem[shoppingItemCost],
+                    unit: sItem[shoppingItemUnit],
+                    quantity: sItem[shoppingItemQuantity],
+                    group: sItem[shoppingItemCategory],
+                    purchased: sItem[shoppingItemPurchased],
+                    expirationDate: sItem[shoppingItemExpirationDate]!,
+                    repurchase: sItem[shoppingItemRepurchase])
             }
+            
             return shoppingItem
         } catch {
             print("Cannot get items related to listID & name")

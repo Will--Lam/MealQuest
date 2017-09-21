@@ -93,19 +93,19 @@ func convertToServing(_ amount: Double, _ from: String, _ group: String) -> Doub
     
     // Convert to Dairy
     var conversion = convert(amount, from, "cup")
-    if (group == Constants.groups[0]) {
+    if (group == Constants.pantryGroups[0]) {
        // conversion = conversion
         
     // Convert to Proteins
-    } else if (group == Constants.groups[1]) {
+    } else if (group == Constants.pantryGroups[1]) {
         conversion = 0.5 * conversion
         
     // Convert to Fruits and Veggies
-    } else if (group == Constants.groups[2]) {
+    } else if (group == Constants.pantryGroups[2]) {
       //  conversion = conversion
         
     // Convert to Wheat and Bakery
-    } else if (group == Constants.groups[3]) {
+    } else if (group == Constants.pantryGroups[3]) {
         conversion = 0.5 * conversion
         
     } else {
