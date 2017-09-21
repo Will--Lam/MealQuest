@@ -30,6 +30,8 @@
 		BE1DB0AF1F0D936F004701F9 /* HistoryItemTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE1DB0AE1F0D936F004701F9 /* HistoryItemTableViewController.swift */; };
 		BE1DB0B11F0D9384004701F9 /* HistoryItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE1DB0B01F0D9384004701F9 /* HistoryItemCell.swift */; };
 		BE1DB0B31F0D977C004701F9 /* HistoryListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE1DB0B21F0D977C004701F9 /* HistoryListTableViewCell.swift */; };
+		BE30514A1F7458FA0094BC15 /* PantryCategoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3051481F7458FA0094BC15 /* PantryCategoryTableViewCell.swift */; };
+		BE30514B1F7458FA0094BC15 /* PantryCategoryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3051491F7458FA0094BC15 /* PantryCategoryTableViewController.swift */; };
 		BE46B15B1F718D6F0023CEC3 /* FavoriteRecipesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE46B15A1F718D6F0023CEC3 /* FavoriteRecipesViewController.swift */; };
 		BE47B1221EEDBF170012A905 /* IngredientsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE47B1211EEDBF170012A905 /* IngredientsView.swift */; };
 		BE62B4031EF5A0EE00A4CA19 /* Pantry.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BE62B4021EF5A0EE00A4CA19 /* Pantry.storyboard */; };
@@ -177,6 +179,8 @@
 		BE1DB0AE1F0D936F004701F9 /* HistoryItemTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryItemTableViewController.swift; sourceTree = "<group>"; };
 		BE1DB0B01F0D9384004701F9 /* HistoryItemCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryItemCell.swift; sourceTree = "<group>"; };
 		BE1DB0B21F0D977C004701F9 /* HistoryListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryListTableViewCell.swift; sourceTree = "<group>"; };
+		BE3051481F7458FA0094BC15 /* PantryCategoryTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PantryCategoryTableViewCell.swift; sourceTree = "<group>"; };
+		BE3051491F7458FA0094BC15 /* PantryCategoryTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PantryCategoryTableViewController.swift; sourceTree = "<group>"; };
 		BE46B15A1F718D6F0023CEC3 /* FavoriteRecipesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavoriteRecipesViewController.swift; sourceTree = "<group>"; };
 		BE47B1211EEDBF170012A905 /* IngredientsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IngredientsView.swift; sourceTree = "<group>"; };
 		BE62B4001EF5A0DB00A4CA19 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Recipe.storyboard; sourceTree = "<group>"; };
@@ -314,6 +318,8 @@
 		BE0D9CBB1EE77A4A00407471 /* Pantry */ = {
 			isa = PBXGroup;
 			children = (
+				BE3051491F7458FA0094BC15 /* PantryCategoryTableViewController.swift */,
+				BE3051481F7458FA0094BC15 /* PantryCategoryTableViewCell.swift */,
 				BED4B3B11F13E716001E41A6 /* PantryGroupTableViewController.swift */,
 				BED5C7251EF7454700D98D0B /* PantryHistoryViewController.swift */,
 				BED5C7271EF745E000D98D0B /* PantryAddItemViewController.swift */,
@@ -728,8 +734,10 @@
 				BED5C7261EF7454700D98D0B /* PantryHistoryViewController.swift in Sources */,
 				BEB7811C1EF9A254007BB921 /* ShoppingHistoryListViewController.swift in Sources */,
 				BED4B3B21F13E716001E41A6 /* PantryGroupTableViewController.swift in Sources */,
+				BE30514B1F7458FA0094BC15 /* PantryCategoryTableViewController.swift in Sources */,
 				BEC636FD1F194A10009B57C5 /* RecipeOverviewExtension.swift in Sources */,
 				BE0D9CB71EE7793600407471 /* ResultsTableViewCell.swift in Sources */,
+				BE30514A1F7458FA0094BC15 /* PantryCategoryTableViewCell.swift in Sources */,
 				3CB41CC31F0F21640062CFD1 /* PantryArchiveCell.swift in Sources */,
 				BE47B1221EEDBF170012A905 /* IngredientsView.swift in Sources */,
 				BEC637001F194AA9009B57C5 /* RecipeIngredientsExtension.swift in Sources */,

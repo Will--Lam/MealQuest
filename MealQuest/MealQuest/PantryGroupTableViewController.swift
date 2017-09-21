@@ -88,6 +88,8 @@ class PantryGroupTableViewController: UITableViewController {
         let last2 = dateText.substring(from:dateText.index(dateText.endIndex, offsetBy: -2))
         if (last2 == "d.") {
             cell.itemExpire.textColor = UIColor.red
+        } else {
+            cell.itemExpire.textColor = UIColor.gray
         }
         cell.itemExpire.text = dateText
         
@@ -148,7 +150,7 @@ class PantryGroupTableViewController: UITableViewController {
             // your new view controller should have property that will store passed value
             viewVC.viewItem = viewItem
             viewVC.viewMode = true
-        }
+        } else
         
         if (segue.identifier == "addItem") {
             let addVC = segue.destination as! PantryAddItemViewController

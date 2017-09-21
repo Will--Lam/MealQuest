@@ -66,8 +66,8 @@ class PantryAddItemViewController: UIViewController, UIPickerViewDelegate, UIPic
             // set values from viewItem
             itemName.text = viewItem.name
             itemQuantity.text = String(viewItem.quantity)
-            itemQuantity.isUserInteractionEnabled = false
-            itemQuantity.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
+            // itemQuantity.isUserInteractionEnabled = false
+            // itemQuantity.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
             itemGroup.text = viewItem.group
             itemUnit.text = viewItem.unit
             

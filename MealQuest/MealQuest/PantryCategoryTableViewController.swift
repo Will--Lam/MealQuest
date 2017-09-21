@@ -11,7 +11,8 @@ import UIKit
 class PantryCategoryTableViewController: UITableViewController {
 
     @IBOutlet weak var historyButton: UIButton!
-    @IBOutlet weak var addItemButton: UIBarButtonItem!
+    @IBOutlet weak var settingsButton: UIButton!
+    
     @IBOutlet var pantryCategoryTable: UITableView!
     
     var categorySelected = ""
@@ -69,6 +70,10 @@ class PantryCategoryTableViewController: UITableViewController {
             let categoryVC = segue.destination as! PantryGroupTableViewController
             
             categoryVC.group = categorySelected
+        } else if (segue.identifier == "addItem") {
+            // initialize new view controller and cast it as your view controller
+            let addVC = segue.destination as! PantryAddItemViewController
+            addVC.itemGroupSuggestion = Constants.PantryAll
         }
     }
 

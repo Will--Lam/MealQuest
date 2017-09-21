@@ -72,7 +72,7 @@ class PantryHistoryViewController: UIViewController, UITableViewDataSource, UITa
         dateFormatter.timeStyle = DateFormatter.Style.none
         cell.itemExpire.text = "Archived on " + dateFormatter.string(from: date)
         
-        cell.groupImage.image = UIImage(named: archiveArray[indexPath.item].group)
+        cell.groupImage.image = UIImage(named: Constants.pantryIconMap[archiveArray[indexPath.item].group]!)
         
         cell.observer = self
         cell.pantryItem = archiveArray[indexPath.item]

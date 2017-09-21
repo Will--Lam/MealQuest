@@ -114,6 +114,6 @@ func getRelativeDate(date: Date) -> String {
     if (expired) {
         return relativeDate + " expired."
     } else {
-        return relativeDate + " till expiration."
+        return relativeDate + " until expiration."
     }
 }
