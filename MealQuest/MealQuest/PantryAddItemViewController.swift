@@ -54,9 +54,8 @@ class PantryAddItemViewController: UIViewController, UIPickerViewDelegate, UIPic
                 itemGroup.text = "Other Grocery"
                 itemGroupSuggestion = "Other Grocery"
             }
-            // itemGroup.text = Constants.groups[0]
-            let row = Constants.pantryGroups.index{$0 == itemGroupSuggestion}
-            groupPickerView.selectRow(row!, inComponent: 0, animated: true)
+            
+            // pre-fill in the category based on where the add button was pressed from
             
             let dateFormatter = DateFormatter()
             dateFormatter.dateStyle = DateFormatter.Style.medium
@@ -100,7 +99,7 @@ class PantryAddItemViewController: UIViewController, UIPickerViewDelegate, UIPic
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         if (pickerView.tag == 1) {
-            return Constants.pantryGroups[row]
+            return Constants.pantryGroups[row][0]
         } else if (pickerView.tag == 2) {
             return Constants.units[row]
         } else {
@@ -110,7 +109,7 @@ class PantryAddItemViewController: UIViewController, UIPickerViewDelegate, UIPic
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if (pickerView.tag == 1) {
-            itemGroup.text = Constants.pantryGroups[row]
+            itemGroup.text = Constants.pantryGroups[row][0]
         } else if (pickerView.tag == 2) {
             itemUnit.text = Constants.units[row]
         }
