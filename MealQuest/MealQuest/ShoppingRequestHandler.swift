@@ -26,11 +26,13 @@ func getActiveList() -> [ShoppingItem] {
     return activeList.sorted(by: <)
 }
 
+/*
 func getShoppingItemDetail(ItemID: Int64) -> ShoppingItem {
     let activeListID = SQLiteDB.instance.getActiveListID()
     
     return SQLiteDB.instance.getItemInformation(listID: activeListID!, itemID: ItemID)
 }
+ */
 
 func changePurchasedState(ItemID: Int64, purchasedState: Bool) {
     let activeListID = SQLiteDB.instance.getActiveListID()

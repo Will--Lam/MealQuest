@@ -25,6 +25,7 @@ enum recipeData {
     case cookingMinutes
 }
 
+// TODO: remove unnecessary recipe fields
 func addNewRecipeToDB(_ recipeDict: [String:Any]) {
     let id = Date().toMillis() * (-1)
     _ = SQLiteDB.instance.storeRecipeToDB(recipeID: id , field: "title", data: recipeDict["title"] as! String)
@@ -40,6 +41,7 @@ func addNewRecipeToDB(_ recipeDict: [String:Any]) {
     _ = SQLiteDB.instance.addRecipeToFavouriteDB(recipeID: id)
 }
 
+// TODO: same as above
 func updateRecipeInDB(_ recipeDict: [String:Any]) {
     let id = recipeDict["id"] as! Int64
     _ = SQLiteDB.instance.updateRecipeInDB(recipeID: id , field: "title", data: recipeDict["title"] as! String)
@@ -107,7 +109,7 @@ func getFavoriteRecipes( ) -> [[String: Any]] {
 
 // param
 func searchRecipes(_ ingredients: String,_ searchCallBack: @escaping ([[String: Any]]) -> Void) {
-    
+    // TODO
 }
 
 func sendMissingIngredientsToShoppingCart(_ recipeID: Int64) {
