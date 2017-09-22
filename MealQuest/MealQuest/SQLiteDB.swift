@@ -742,7 +742,7 @@ class SQLiteDB {
     // Insert new list into the historic list
     func insertNewName(expirationGroup: String, expirationDays: Int) -> Int64? {
         do {
-            let insert = shoppingListsTable.insert(
+            let insert = pantryExpirationTable.insert(
                 pantryExpirationGroup <- expirationGroup,
                 pantryExpirationDays <- expirationDays)
             
@@ -774,7 +774,7 @@ class SQLiteDB {
     // Delete an existing historic list
     func deleteGroup(expirationGroup: String) -> Int64? {
         do {
-            let deleteQuery = shoppingListsTable.filter(
+            let deleteQuery = pantryExpirationTable.filter(
                 pantryExpirationGroup == expirationGroup)
             
             let id = try db!.run(deleteQuery.delete())
