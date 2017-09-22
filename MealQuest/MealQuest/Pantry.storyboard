@@ -456,13 +456,6 @@
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="# day" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="6Fw-sV-efq">
-                                        <rect key="frame" x="132" y="199" width="50" height="30"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <nil key="textColor"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
-                                    </textField>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Fruits &amp; Veggies" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZdK-DS-o3E">
                                         <rect key="frame" x="193" y="204" width="116" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -603,6 +596,13 @@
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                     </textField>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="# day" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="6Fw-sV-efq">
+                                        <rect key="frame" x="132" y="199" width="50" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <nil key="textColor"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                                    </textField>
                                 </subviews>
                                 <inset key="scrollIndicatorInsets" minX="1" minY="0.0" maxX="1" maxY="0.0"/>
                                 <userDefinedRuntimeAttributes>
@@ -651,7 +651,7 @@
                         <outlet property="categoryStale14" destination="Fyy-l3-nRr" id="WVR-J2-fY5"/>
                         <outlet property="categoryStale15" destination="l83-0A-TUM" id="cqv-nf-kch"/>
                         <outlet property="categoryStale2" destination="lnk-VI-7QW" id="co4-hr-pvd"/>
-                        <outlet property="categoryStale3" destination="uL5-p5-vqa" id="8mV-19-NvK"/>
+                        <outlet property="categoryStale3" destination="5rB-Hq-cTu" id="eFB-kd-tWo"/>
                         <outlet property="categoryStale4" destination="uL5-p5-vqa" id="xAm-26-xiI"/>
                         <outlet property="categoryStale5" destination="6Fw-sV-efq" id="77L-py-kRh"/>
                         <outlet property="categoryStale6" destination="qaN-Kj-ovP" id="Dm6-1i-fKf"/>
