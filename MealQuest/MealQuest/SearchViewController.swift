@@ -8,14 +8,16 @@
 
 import UIKit
 
-class SearchViewController: UIViewController {
+class SearchViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
 
-    @IBOutlet weak var searchTextField: UITextField!
+    @IBOutlet weak var categoryTextField: UITextField!
     @IBOutlet weak var favoriteRecipesButton: UIBarButtonItem!
     @IBOutlet weak var searchWPantryButton: UIButton!
     @IBOutlet weak var searchRecipesButton: UIButton!
     @IBOutlet weak var randomRecipeButton: UIButton!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    
+    let categoryPickerview = UIPickerView()
     
     var testDict = [[String:Any]]()
     var detailsPassed = [String:Any]()
@@ -28,10 +30,38 @@ class SearchViewController: UIViewController {
         self.navigationItem.titleView = imageView
 
         self.hideKeyboardWhenTappedAround()
+        
+        categoryPickerview.delegate = self
+        categoryTextField.inputView = categoryPickerview
+        categoryTextField.text = Constants.RecipeAll
+    }
+    
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return Constants.recipeGroups.count + 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        if (row == 0) {
+            return Constants.RecipeAll
+        } else {
+            return Constants.recipeGroups[row - 1]
+        }
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        if (row == 0) {
+            categoryTextField.text = Constants.RecipeAll
+        } else {
+            categoryTextField.text = Constants.recipeGroups[row - 1]
+        }
     }
     
     @IBAction func searchRecipesAction(_ sender: Any) {
-        let query = self.searchTextField.text
+        let query = self.categoryTextField.text
         print("make call to search with search text: " + query!)
         
         //1. Create the alert controller.

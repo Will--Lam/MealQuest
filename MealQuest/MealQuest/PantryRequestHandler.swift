@@ -8,6 +8,10 @@
 
 import Foundation
 
+func getGroupPantryItem(pantryGroup: String) -> [PantryItem] {
+    return SQLiteDB.instance.getGroupPantryItem(pantryGroup: pantryGroup)
+}
+
 func getGroupPantryItemFresh(pantryGroup: String) -> [PantryItem] {
     var items = [PantryItem]()
     if (pantryGroup == Constants.PantryAll) {

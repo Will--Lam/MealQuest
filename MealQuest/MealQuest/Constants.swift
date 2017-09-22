@@ -50,7 +50,11 @@ struct Constants {
         Constants.PantrySnacks,
         Constants.PantryOil,
         Constants.PantryDrinks,
-        Constants.PantrySpreads,]
+        Constants.PantrySpreads]
+    
+    private static let ignoredPantryGroups = [Constants.PantryAll, Constants.PantryHousehold]
+    
+    public static let pantrySearchGroups = pantryGroups.filter { !ignoredPantryGroups.contains($0)}
     
     public static let pantryIconMap : [String: String] = [
         Constants.PantryAll: "allCategory",
@@ -79,12 +83,12 @@ struct Constants {
     public static let RecipeSnacks = "Snacks"
     public static let RecipeSoups = "Soups"
     public static let RecipeSalads = "Salads"
-    public static let RecipeBeef = "Beef Entree"
-    public static let RecipeChicken = "Poultry Entree"
-    public static let RecipePork = "Pork Entree"
-    public static let RecipeSeafood = "Seafood Entree"
-    public static let RecipeVegetarian = "Vegetarian Entree"
-    public static let RecipeVeggie = "Vegetable Entree"
+    public static let RecipeBeef = "Beef"
+    public static let RecipeChicken = "Chicken"
+    public static let RecipePork = "Pork"
+    public static let RecipeSeafood = "Seafood"
+    public static let RecipeVegetarian = "Vegetarian"
+    public static let RecipeVeggie = "Vegetable"
     public static let RecipeOther = "Other"
     public static let RecipeDesserts = "Desserts"
     public static let RecipeCan = "Canning/Freezing"
@@ -92,8 +96,36 @@ struct Constants {
     public static let RecipeHolidays = "Holidays"
     public static let RecipeEntertaining = "Entertaining"
     
-    public static let recipeGroups = [Constants.RecipeBreakfast, Constants.RecipeLunch, Constants.RecipeBeverage, Constants.RecipeAppetizer, Constants.RecipeSnacks, Constants.RecipeSoups, Constants.RecipeSalads, Constants.RecipeBeef, Constants.RecipeChicken, Constants.RecipePork, Constants.RecipeSeafood, Constants.RecipeVegetarian, Constants.RecipeVeggie, Constants.RecipeOther, Constants.RecipeDesserts, Constants.RecipeCan, Constants.RecipeBreads, Constants.RecipeHolidays, Constants.RecipeEntertaining]
+    public static let recipeSections = ["By Meal Type", "By Dish Type", "By Ingredient", "Other"]
+    public static let recipeGroupMeal = [Constants.RecipeBreakfast, Constants.RecipeLunch, Constants.RecipeBeverage, Constants.RecipeAppetizer, Constants.RecipeSnacks, Constants.RecipeDesserts]
+    public static let recipeGroupDish = [Constants.RecipeSoups, Constants.RecipeSalads, Constants.RecipeBreads]
+    public static let recipeGroupIngredient = [Constants.RecipeBeef, Constants.RecipeChicken, Constants.RecipePork, Constants.RecipeSeafood, Constants.RecipeVeggie]
+    public static let recipeGroupOther = [Constants.RecipeVegetarian, Constants.RecipeHolidays, Constants.RecipeEntertaining, Constants.RecipeCan, Constants.RecipeOther]
     
+    public static let recipeGroups = [Constants.RecipeBreakfast, Constants.RecipeLunch, Constants.RecipeBeverage, Constants.RecipeAppetizer, Constants.RecipeSnacks, Constants.RecipeDesserts, Constants.RecipeSoups, Constants.RecipeSalads, Constants.RecipeBreads, Constants.RecipeBeef, Constants.RecipeChicken, Constants.RecipePork, Constants.RecipeSeafood, Constants.RecipeVeggie, Constants.RecipeVegetarian, Constants.RecipeHolidays, Constants.RecipeEntertaining, Constants.RecipeCan, Constants.RecipeOther]
+    
+    /* public static let recipeIconMap : [String: String] = [
+        Constants.RecipeAll: "allCategory",
+        Constants.RecipeBreakfast:
+        Constants.RecipeLunch: "dairyCategory",
+        Constants.RecipeBeverage: "proteinCategory",
+        Constants.RecipeAppetizer: "veggieCategory",
+        Constants.RecipeSnacks: "bakeryCategory",
+        Constants.RecipeSoups: "otherCategory",
+        Constants.RecipeSalads: "bakingCategory",
+        Constants.RecipeBeef: "freezerCategory",
+        Constants.RecipeChicken: "nonPerishCategory",
+        Constants.RecipeSeafood: "householdCategory",
+        Constants.RecipeVegetarian: "pastaCategory",
+        Constants.RecipeVeggie: "condimentCategory",
+        Constants.RecipeOther: "snackCategory",
+        Constants.RecipeDesserts: "oilCategory",
+        Constants.RecipeCan: "drinkCategory",
+        Constants.RecipeBreads: "spreadCategory",
+        Constants.RecipeHolidays: "",
+        Constants.RecipeEntertaining: "" ]
+    */
+        
     // constant for rounding
     public static let roundingPlaces = 5
     
