@@ -27,20 +27,27 @@ class RecipeCategoryTableViewController: UITableViewController {
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 1
+        return Constants.recipeSections.count
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return Constants.recipeGroups.count
+        return Constants.recipeSectionMap[Constants.recipeSections[section]]!.count
+    }
+    
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if section < Constants.recipeSections.count {
+            return Constants.recipeSections[section]
+        }
+        return nil
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "RecipeCategoryTableViewCell", for: indexPath) as! RecipeCategoryTableViewCell
 
-        let category = Constants.recipeGroups[indexPath.item]
+        let category = Constants.recipeSectionMap[Constants.recipeSections[indexPath.section]]?[indexPath.item]
         cell.recipeCategoryName.text = category
-        cell.recipeCategoryIcon.image = UIImage(named: Constants.recipeIconMap[category]!)
+        cell.recipeCategoryIcon.image = UIImage(named: Constants.recipeIconMap[category!]!)
         
         return cell
     }

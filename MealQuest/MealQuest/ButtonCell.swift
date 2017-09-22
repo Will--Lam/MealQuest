@@ -90,7 +90,7 @@ class ButtonCell: UITableViewCell, UIPickerViewDelegate, UIPickerViewDataSource 
         
         ingredients.remove(at: ingredients.index(before: ingredients.endIndex))
         
-        observer.recipeDetails["ingredients"] = ingredients
+        // observer.recipeDetails["ingredients"] = ingredients
         observer.redrawView()
     }
     

@@ -22,7 +22,7 @@ class IngredientsView: UIView {
     func redrawTable( ) {
         updateIngredients()
         servingSize = newServingSize
-        observer.recipeDetails["servings"] = "\(servingSize)"
+        // observer.recipeDetails["servings"] = "\(servingSize)"
         observer.redrawView()
     }
     
@@ -42,7 +42,7 @@ class IngredientsView: UIView {
         
         ingredients.remove(at: ingredients.index(before: ingredients.endIndex))
         
-        observer.recipeDetails["ingredients"] = ingredients
+        // observer.recipeDetails["ingredients"] = ingredients
     }
     
     @IBAction func changedServing(sender: UIButton) {

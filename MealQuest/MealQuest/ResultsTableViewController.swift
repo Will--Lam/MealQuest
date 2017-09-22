@@ -13,7 +13,7 @@ class ResultsTableViewController: UITableViewController {
     var resultsPassed = [RecipeItem]()
     var detailsPassed = RecipeItem(id: -1)
     var cellID = Int64()
-    var group = ""
+    var group = "Search Results"
     
     @IBOutlet var resultsTable: UITableView!
     @IBOutlet weak var addRecipeButton: UIButton!
@@ -24,10 +24,14 @@ class ResultsTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        let logo = UIImage(named: "logoWhite.png")
-        let imageView = UIImageView(image:logo)
-        self.navigationItem.titleView = imageView
+        
+        let titleAttributes = [
+            NSFontAttributeName: UIFont.systemFont(ofSize: 20, weight: UIFontWeightBold),
+            NSForegroundColorAttributeName: Constants.mqWhiteColour
+        ]
+        
+        self.navigationItem.title = group
+        self.navigationController!.navigationBar.titleTextAttributes = titleAttributes
     }
     
     override func viewDidAppear(_ animated: Bool) {

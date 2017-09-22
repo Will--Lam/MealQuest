@@ -14,7 +14,7 @@ extension RecipeViewController {
             NSFontAttributeName: UIFont.systemFont(ofSize: 20, weight: UIFontWeightBold),
             NSForegroundColorAttributeName: Constants.mqWhiteColour
         ]
-        
+        /*
         self.navigationItem.title = recipeDetails["title"] as? String
         self.navigationController!.navigationBar.titleTextAttributes = titleAttributes
         
@@ -26,26 +26,12 @@ extension RecipeViewController {
         let totalTime = recipeDetails["readyInMinutes"] as! String
         let cookTime = recipeDetails["cookingMinutes"] as! String
         let prepTime = recipeDetails["preparationMinutes"] as! String
-        let healthScore = recipeDetails["healthScore"] as! String
+        let healthScore = recipeDetails["healthScore"] as! String*/
         
         var imageRendered = false
         overviewView.recipeImage.contentMode = .scaleAspectFit
-        if let checkedUrl = URL(string: imageURL) {
-            getDataFromUrl(url: checkedUrl) { (data, response, error)  in
-                guard let data = data, error == nil else { return }
-                // print(response?.suggestedFilename ?? checkedUrl.lastPathComponent)
-                DispatchQueue.main.async() { () -> Void in
-                    self.overviewView.recipeImage.image = UIImage(data: data)
-                    imageRendered = true
-                }
-            }
-        }
-        if (!imageRendered) {
-            print("Attempting to set default photo now in search results")
-            overviewView.recipeImage.image = UIImage(named: "defaultPhoto")
-        }
             
-        overviewView.titleLabel.text = titleText
+        /* overviewView.titleLabel.text = titleText
         overviewView.titleLabel.adjustsFontSizeToFitWidth = true
         overviewView.calorieLabel.text = "Calories/Serving " + calorieText
         overviewView.totalTimeLabel.text = "Total Time: " + totalTime
@@ -53,16 +39,8 @@ extension RecipeViewController {
         overviewView.cookTimeLabel.text = "Cook Time: " + cookTime
         overviewView.healthScoreLabel.text = healthScore
         
-        if (favorite) {
-            overviewView.newImageButton.isHidden = false
-            overviewView.newImageButton.isEnabled = true
-        } else {
-            overviewView.newImageButton.isHidden = true
-            overviewView.newImageButton.isEnabled = false
-        }
-        
         overviewView.servingSizeLabel.text = "Serving Size: " + "\(servingSize)"
-        
+        */
         overviewView.observer = self
         
     }

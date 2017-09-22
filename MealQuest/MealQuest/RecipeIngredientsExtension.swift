@@ -21,7 +21,7 @@ extension RecipeViewController {
         // TODO: populate ingredient arrary
         ingredientsArray = [[String:String]]()
         var ingredients = String()
-        ingredients = recipeDetails["ingredients"] as! String
+        // ingredients = recipeDetails["ingredients"] as! String
         
         print(ingredients)
         // Parse the string to fill in the cell information

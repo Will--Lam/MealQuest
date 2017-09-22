@@ -10,7 +10,7 @@ import UIKit
 
 extension RecipeViewController {
     func setInstructionsView( ) {
-        let boldFontAttribute = [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 20.0)]
+        /*let boldFontAttribute = [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 20.0)]
             
         let tempArray = recipeDetails["analyzedInstructions"] as? String
         let itemArray = tempArray?.components(separatedBy: "|")
@@ -33,6 +33,6 @@ extension RecipeViewController {
             
         instructionsView.instructionLabel.attributedText = attributedString
             
-        instructionsView.instructionLabel.isEditable = false
+        instructionsView.instructionLabel.isEditable = false*/
     }
 }

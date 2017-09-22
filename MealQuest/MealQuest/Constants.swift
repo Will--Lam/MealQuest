@@ -96,11 +96,23 @@ struct Constants {
     public static let RecipeHolidays = "Holidays"
     public static let RecipeEntertaining = "Entertaining"
     
-    public static let recipeSections = ["By Meal Type", "By Dish Type", "By Ingredient", "Other"]
+    public static let RecipeMealTypeSection = "By Meal Type"
+    public static let RecipeDishTypeSection = "By Dish Type"
+    public static let RecipeIngredientSection = "By Ingredient"
+    public static let RecipeOtherSection = "Other"
+    
+    public static let recipeSections = [Constants.RecipeMealTypeSection, Constants.RecipeDishTypeSection, Constants.RecipeIngredientSection, Constants.RecipeOtherSection]
+    
     public static let recipeGroupMeal = [Constants.RecipeBreakfast, Constants.RecipeLunch, Constants.RecipeBeverage, Constants.RecipeAppetizer, Constants.RecipeSnacks, Constants.RecipeDesserts]
     public static let recipeGroupDish = [Constants.RecipeSoups, Constants.RecipeSalads, Constants.RecipeBreads]
     public static let recipeGroupIngredient = [Constants.RecipeBeef, Constants.RecipeChicken, Constants.RecipePork, Constants.RecipeSeafood, Constants.RecipeVeggie]
     public static let recipeGroupOther = [Constants.RecipeVegetarian, Constants.RecipeHolidays, Constants.RecipeEntertaining, Constants.RecipeCan, Constants.RecipeOther]
+    
+    public static let recipeSectionMap : [String: [String]] = [
+        Constants.RecipeMealTypeSection: Constants.recipeGroupMeal,
+        Constants.RecipeDishTypeSection: Constants.recipeGroupDish,
+        Constants.RecipeIngredientSection: Constants.recipeGroupIngredient,
+        Constants.RecipeOtherSection: Constants.recipeGroupOther]
     
     public static let recipeGroups = [Constants.RecipeAll, Constants.RecipeBreakfast, Constants.RecipeLunch, Constants.RecipeBeverage, Constants.RecipeAppetizer, Constants.RecipeSnacks, Constants.RecipeDesserts, Constants.RecipeSoups, Constants.RecipeSalads, Constants.RecipeBreads, Constants.RecipeBeef, Constants.RecipeChicken, Constants.RecipePork, Constants.RecipeSeafood, Constants.RecipeVeggie, Constants.RecipeVegetarian, Constants.RecipeHolidays, Constants.RecipeEntertaining, Constants.RecipeCan, Constants.RecipeOther]
     

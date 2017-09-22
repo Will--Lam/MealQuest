@@ -16,7 +16,7 @@ extension RecipeViewController {
             let editVC = segue.destination as! AddRecipeViewController
             // your new view controller should have property that will store passed value
             editVC.edit = true
-            editVC.recipeDetails = recipeDetails
+            // editVC.recipeDetails = recipeDetails
             editVC.id = id
             editVC.recipeObserver = self
         }
@@ -24,7 +24,7 @@ extension RecipeViewController {
     }
     
     @IBAction func favoriteAction(_ sender: Any) {
-        if (!favorite) {
+        /* if (!favorite) {
             print("favorite!")
             let temp = 0 // SQLiteDB.instance.addRecipeToFavouriteDB(recipeID: id)
             if (temp != 0) {
@@ -64,7 +64,7 @@ extension RecipeViewController {
                 // 4. Present the alert.
                 self.present(alert, animated: true, completion: nil)
             }
-        }
+        } */
     }
     
     @IBAction func planAction(_ sender: Any) {
