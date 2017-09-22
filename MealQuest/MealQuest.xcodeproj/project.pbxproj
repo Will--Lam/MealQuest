@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		1B1FABED1F74667D00900442 /* PantryRequestHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B1FABEC1F74667D00900442 /* PantryRequestHandler.swift */; };
 		1B1FABF61F7478DD00900442 /* PantryUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B1FABF51F7478DD00900442 /* PantryUtility.swift */; };
+		1B1FABF91F74CAA400900442 /* PantryExpiration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B1FABF81F74CAA400900442 /* PantryExpiration.swift */; };
 		1B8A1DDB1F0DCE310079C265 /* ShoppingItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8A1DD91F0DCE310079C265 /* ShoppingItem.swift */; };
 		1B8A1DDC1F0DCE310079C265 /* ShoppingLists.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8A1DDA1F0DCE310079C265 /* ShoppingLists.swift */; };
 		1B8A1DE51F0DCE470079C265 /* ShoppingRequestHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8A1DE41F0DCE470079C265 /* ShoppingRequestHandler.swift */; };
@@ -161,6 +162,7 @@
 /* Begin PBXFileReference section */
 		1B1FABEC1F74667D00900442 /* PantryRequestHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PantryRequestHandler.swift; sourceTree = "<group>"; };
 		1B1FABF51F7478DD00900442 /* PantryUtility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PantryUtility.swift; sourceTree = "<group>"; };
+		1B1FABF81F74CAA400900442 /* PantryExpiration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PantryExpiration.swift; sourceTree = "<group>"; };
 		1B8A1DD91F0DCE310079C265 /* ShoppingItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShoppingItem.swift; sourceTree = "<group>"; };
 		1B8A1DDA1F0DCE310079C265 /* ShoppingLists.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShoppingLists.swift; sourceTree = "<group>"; };
 		1B8A1DE41F0DCE470079C265 /* ShoppingRequestHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShoppingRequestHandler.swift; sourceTree = "<group>"; };
@@ -513,6 +515,7 @@
 			isa = PBXGroup;
 			children = (
 				3C5840661F06BB5300DF67C0 /* PantryItem.swift */,
+				1B1FABF81F74CAA400900442 /* PantryExpiration.swift */,
 			);
 			name = "Pantry Classes";
 			sourceTree = "<group>";
@@ -724,6 +727,7 @@
 			files = (
 				1B8A1DDC1F0DCE310079C265 /* ShoppingLists.swift in Sources */,
 				BE1DB0AF1F0D936F004701F9 /* HistoryItemTableViewController.swift in Sources */,
+				1B1FABF91F74CAA400900442 /* PantryExpiration.swift in Sources */,
 				BEA5E26F1F4297AB007921D9 /* CustomFunctions.swift in Sources */,
 				BED7E29A1F1C0D9800400647 /* ShoppingCompareViewController.swift in Sources */,
 				BEB7811E1EF9A26C007BB921 /* ShoppingHistoryDetailsViewController.swift in Sources */,

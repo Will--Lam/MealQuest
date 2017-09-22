@@ -19,6 +19,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UINavigationBar.appearance().tintColor = Constants.mqWhiteColour
         UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName:Constants.mqWhiteColour]
         
+        if (SQLiteDB.instance.expirationDaysCount() < 1) {
+            _ = SQLiteDB.instance.initializeExpiration()
+        }
+        
         return true
     }
 

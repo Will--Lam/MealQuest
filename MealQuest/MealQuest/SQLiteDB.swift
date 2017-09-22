@@ -45,6 +45,12 @@ class SQLiteDB {
     private let pantryItemPurchase = Expression<Date>("purchase")
     private let pantryItemArchive = Expression<Date?>("archive")
     
+    // Pantry Expiration Table
+    private let pantryExpirationTable = Table("pantryExpiration")
+    private let pantryExpirationID = Expression<Int64>("expirationID")
+    private let pantryExpirationGroup  = Expression<String>("expirationGroup")
+    private let pantryExpirationDays = Expression<Int>("expirationDays")
+    
     // Shopping Lists Table
     private let shoppingListsTable = Table("shoppingLists")
     private let shoppingListsID = Expression<Int64>("listID")
@@ -65,6 +71,8 @@ class SQLiteDB {
     private let shoppingItemExpirationDate = Expression<Date?>("expirationDate")
     private let shoppingItemRepurchase = Expression<Bool>("repurchase")
     
+    
+    
     let dateFormatter = DateFormatter()
     
     private init() {
@@ -80,6 +88,7 @@ class SQLiteDB {
             createPantryTable()
             createShoppingListsTable()
             createShoppingItemTable()
+            createPantryExpirationTable()
         } catch {
             db = nil
             print ("Unable to open database")
@@ -696,6 +705,105 @@ class SQLiteDB {
         } catch {
             print("Get all pantry items failed")
             return items
+        }
+    }
+    
+    // PANTRY EXPIRATION TABLE DIVIDER
+    
+    func createPantryExpirationTable() {
+        do {
+            try db!.run(pantryExpirationTable.create(ifNotExists: true) { table in
+                table.column(pantryExpirationID, primaryKey: true)
+                table.column(pantryExpirationGroup)
+                table.column(pantryExpirationDays)
+            })
+        } catch {
+            print("Unable to create Recipe table")
+        }
+    }
+    
+    func expirationDaysCount() -> Int {
+        var count = -1
+        do {
+            count = try db!.scalar(pantryExpirationTable.count)
+        } catch {
+            print("Unable to select pantry expiration data")
+        }
+        
+        return count
+    }
+    
+    func initializeExpiration() {
+        for groupName in Constants.pantryStaleMap {
+            _ = SQLiteDB.instance.insertNewName(expirationGroup: groupName.key, expirationDays: groupName.value)
+        }
+    }
+    
+    // Insert new list into the historic list
+    func insertNewName(expirationGroup: String, expirationDays: Int) -> Int64? {
+        do {
+            let insert = shoppingListsTable.insert(
+                pantryExpirationGroup <- expirationGroup,
+                pantryExpirationDays <- expirationDays)
+            
+            let id = try db!.run(insert)
+            
+            print("insert new expiration name successful")
+            return id
+        } catch {
+            print("Insert expiration name failed")
+            return nil
+        }
+    }
+    
+    // Update an existing historic list
+    func updateBasedOnGroup(expirationGroup: String, expirationDays: Int) -> Int64? {
+        do {
+            let updateQuery = pantryExpirationTable.filter(
+                pantryExpirationGroup == expirationGroup)
+            let id = try db!.run(
+                updateQuery.update(
+                    pantryExpirationDays <- expirationDays))
+            return Int64(id)
+        } catch {
+            print("Update expiration days failed")
+            return nil
+        }
+    }
+    
+    // Delete an existing historic list
+    func deleteGroup(expirationGroup: String) -> Int64? {
+        do {
+            let deleteQuery = shoppingListsTable.filter(
+                pantryExpirationGroup == expirationGroup)
+            
+            let id = try db!.run(deleteQuery.delete())
+            
+            return Int64(id)
+        } catch {
+            print("Delete expiration name failed")
+            return nil
+        }
+    }
+    
+    // Get the detailed information for a particular shopping item
+    func getExpirationDays(expirationGroup: String) -> PantryExpiration {
+        var item = PantryExpiration(id: 0)
+        do {
+            let selectQuery = pantryExpirationTable.filter(
+                pantryExpirationGroup == expirationGroup)
+            
+            for res in try db!.prepare(selectQuery) {
+                item = PantryExpiration(
+                    id: res[pantryExpirationID],
+                    expirationGroup: res[pantryExpirationGroup],
+                    expirationDays: res[pantryExpirationDays])
+            }
+            
+            return item
+        } catch {
+            print("Get shopping item information")
+            return item
         }
     }
     

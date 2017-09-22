@@ -44,3 +44,17 @@ func getGroupPantryItemStale(pantryGroup: String) -> [PantryItem] {
     
     return items
 }
+
+func updateGroupExpiration(updateGroups: [String: Int]) {
+    for item in updateGroups {
+        _ = SQLiteDB.instance.updateBasedOnGroup(expirationGroup: item.key, expirationDays: item.value)
+    }
+}
+
+func getAllGroupExpiration() -> [PantryExpiration] {
+    var items = [PantryExpiration]()
+    for groupName in Constants.pantryGroups {
+        items.append(SQLiteDB.instance.getExpirationDays(expirationGroup: groupName))
+    }
+    return items
+}
