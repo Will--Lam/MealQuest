@@ -62,8 +62,11 @@ class SearchViewController: UIViewController, UIPickerViewDelegate, UIPickerView
     }
     
     @IBAction func searchRecipesAction(_ sender: Any) {
-        let query = self.categoryTextField.text
+        let query = self.searchTextField.text
         print("make call to search with search text: " + query!)
+        
+        let category = self.categoryTextField.text
+        print("make call to search with category: " + category!)
         
         //1. Create the alert controller.
         let alert = UIAlertController(title: "Sorry. Search functionality is not yet ready.", message: "", preferredStyle: .alert)
@@ -72,12 +75,18 @@ class SearchViewController: UIViewController, UIPickerViewDelegate, UIPickerView
         // 4. Present the alert.
         self.present(alert, animated: true, completion: nil)
         
+//**    make search on recipes with query and category -> searchRecipes(query: [String], category: String) -> [RecipeItem]
+        
     }
     
     @IBAction func randomRecipeAction(_ sender: Any) {
         print("select a random recipe from the DB favorites")
         
-        detailsPassed = getRandomRecipe()
+        let category = self.categoryTextField.text
+        print("make call to search with category: " + category!)
+        
+//**    detailsPassed = getRandomRecipe(category: String) -> RecipeItem
+        
         if (detailsPassed.isEmpty) {
             //1. Create the alert controller.
             var alert = UIAlertController()

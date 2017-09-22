@@ -307,37 +307,6 @@
             </objects>
             <point key="canvasLocation" x="512.79999999999995" y="617.54122938530736"/>
         </scene>
-        <!--Favorite Recipes View Controller-->
-        <scene sceneID="Owi-nV-2w1">
-            <objects>
-                <viewController id="imb-Yc-b0L" customClass="FavoriteRecipesViewController" customModule="MealQuest" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="JAr-xw-JSq"/>
-                        <viewControllerLayoutGuide type="bottom" id="Asy-1U-opD"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="EyC-rg-VXc">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Y7w-K5-1xM">
-                                <rect key="frame" x="164" y="318" width="46" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Button"/>
-                                <connections>
-                                    <action selector="buttonAction:" destination="imb-Yc-b0L" eventType="touchUpInside" id="oCy-hl-WUu"/>
-                                </connections>
-                            </button>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                    <connections>
-                        <outlet property="button" destination="Y7w-K5-1xM" id="MNK-hj-gdP"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="vYi-Be-Hwn" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1545" y="-635"/>
-        </scene>
         <!--Recipe View Controller-->
         <scene sceneID="hsE-u4-GHZ">
             <objects>
@@ -566,7 +535,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" image="favoriteRecipesIcon"/>
                                 <connections>
-                                    <segue destination="imb-Yc-b0L" kind="show" identifier="viewFavorites" id="oXt-hE-CN2"/>
+                                    <segue destination="oUa-XS-bTc" kind="show" id="jtA-ot-MgB"/>
                                 </connections>
                             </button>
                         </barButtonItem>
@@ -586,6 +555,34 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="y7W-Gz-Y3O" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="512.79999999999995" y="-280.20989505247377"/>
+        </scene>
+        <!--Recipe Category Table View Controller-->
+        <scene sceneID="qqA-eM-DX9">
+            <objects>
+                <tableViewController id="oUa-XS-bTc" customClass="RecipeCategoryTableViewController" customModule="MealQuest" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="tmG-t1-p6U">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="hdQ-FR-Q4J" customClass="RecipeCategoryTableViewCell" customModule="MealQuest" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hdQ-FR-Q4J" id="XmY-ap-Nyp">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="oUa-XS-bTc" id="a3J-We-7O7"/>
+                            <outlet property="delegate" destination="oUa-XS-bTc" id="kc4-3Z-tO4"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="7l7-Ig-1dr" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1545" y="-529"/>
         </scene>
         <!--SearchW Pantry Table View Controller-->
         <scene sceneID="MaS-Qz-PeD">

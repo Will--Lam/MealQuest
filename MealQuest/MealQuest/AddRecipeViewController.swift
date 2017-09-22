@@ -133,6 +133,8 @@ class AddRecipeViewController: UIViewController {
             
             // Call function to add the recipe the database
             if (edit) {
+                
+                // TODO: Create a RecipeItem instead of recipeDict
                 recipeDict = [
                     "id": self.id,
                     "imageURL": recipeDetails["imageURL"]!,
@@ -146,6 +148,13 @@ class AddRecipeViewController: UIViewController {
                     "ingredients": allIngredients,
                     "analyzedInstructions": allInstructions
                 ]
+                
+//**            update recipe in recipe table - updateRecipe(recipeItem: RecipeItem) -> RecipeID: Int64
+                
+                // TODO: Create a RecipeIngredient from allIngredients
+                
+//**            update ingredients by deleting existing and adding new - 
+//**                updateRecipeIngredients(recipeID: Int64, ingredients: [RecipeIngredient] -> RecipeID: Int64
                 
                 updateRecipeInDB(recipeDict)
                 
@@ -165,6 +174,10 @@ class AddRecipeViewController: UIViewController {
                     "analyzedInstructions": allInstructions
                 ]
                 
+//**            add new recipe to recipe table - createRecipe(recipeItem: RecipeItem) -> RecipeID: Int64
+                
+//**            update ingredients by deleting existing and adding new 
+//**                updateRecipeIngredients(recipeID: Int64, ingredients: [RecipeIngredient] -> RecipeID: Int64
                 addNewRecipeToDB(recipeDict)
                 
                 //resultsObserver.resultsPassed = getFavoriteRecipes( )
