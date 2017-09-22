@@ -70,63 +70,6 @@ struct Constants {
         Constants.PantryDrinks: "drinkCategory",
         Constants.PantrySpreads: "spreadCategory"]
     
-    // Constants for stale factors
-    // TODO #1: Adjust stale factors as appropriate
-    // TODO #2: Change these to variables and create functions to modify stale factors
-    //              -> add these new functions to the utility classes
-    public static let allStaleFactor        = 1
-    public static let dairyStaleFactor      = 5
-    public static let proteinStaleFactor    = 2
-    public static let veggieStaleFactor     = 2
-    public static let bakeryStaleFactor     = 5
-    public static let otherStaleFactor      = 1
-    public static let bakingstaleFactor     = 1
-    public static let freezerStaleFactor    = 1
-    public static let nonPerishStaleFactor  = 1
-    public static let householdStaleFactor  = 1
-    public static let pastaStaleFactor      = 1
-    public static let condimentStaleFactor  = 1
-    public static let snackStaleFactor      = 1
-    public static let oilStaleFactor        = 1
-    public static let drinkStaleFactor      = 1
-    public static let spreadStaleFactor     = 1
-    
-    public static let pantryStaleFactors = [
-        Constants.allStaleFactor,
-        Constants.dairyStaleFactor,
-        Constants.proteinStaleFactor,
-        Constants.veggieStaleFactor,
-        Constants.bakeryStaleFactor,
-        Constants.otherStaleFactor,
-        Constants.bakingstaleFactor,
-        Constants.freezerStaleFactor,
-        Constants.nonPerishStaleFactor,
-        Constants.householdStaleFactor,
-        Constants.pastaStaleFactor,
-        Constants.condimentStaleFactor,
-        Constants.snackStaleFactor,
-        Constants.oilStaleFactor,
-        Constants.drinkStaleFactor,
-        Constants.spreadStaleFactor]
-    
-    public static let pantryStaleMap : [String: Int] = [
-        Constants.PantryAll:            Constants.allStaleFactor,
-        Constants.PantryDairy:          Constants.dairyStaleFactor,
-        Constants.PantryProteins:       Constants.proteinStaleFactor,
-        Constants.PantryVeggies:        Constants.veggieStaleFactor,
-        Constants.PantryBakery:         Constants.bakeryStaleFactor,
-        Constants.PantryOther:          Constants.otherStaleFactor,
-        Constants.PantryBakingGood:     Constants.bakingstaleFactor,
-        Constants.PantryFrozen:         Constants.freezerStaleFactor,
-        Constants.PantryNonPerish:      Constants.nonPerishStaleFactor,
-        Constants.PantryHousehold:      Constants.householdStaleFactor,
-        Constants.PantryPasta:          Constants.pastaStaleFactor,
-        Constants.PantryCondiment:      Constants.condimentStaleFactor,
-        Constants.PantrySnacks:         Constants.snackStaleFactor,
-        Constants.PantryOil:            Constants.oilStaleFactor,
-        Constants.PantryDrinks:         Constants.drinkStaleFactor,
-        Constants.PantrySpreads:        Constants.spreadStaleFactor]
-    
     // constants for Recipe
     public static let RecipeAll = "All"
     public static let RecipeBreakfast = "Breakfast"

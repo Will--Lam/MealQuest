@@ -375,7 +375,10 @@ class SQLiteDB {
         do {
             
             var staleDate: Date {
-                return NSCalendar.current.date(byAdding: .day, value: Constants.pantryStaleMap[pantryGroup]!, to: Date())!
+                return NSCalendar.current.date(
+                    byAdding: .day,
+                    value: getExpiration(expirationGroup: pantryGroup).expirationDays,
+                    to: Date())!
             }
             
             let selectQuery = pantryTable.filter(
@@ -734,8 +737,8 @@ class SQLiteDB {
     }
     
     func initializeExpiration() {
-        for groupName in Constants.pantryStaleMap {
-            _ = SQLiteDB.instance.insertNewName(expirationGroup: groupName.key, expirationDays: groupName.value)
+        for groupName in Constants.pantryGroups {
+            _ = SQLiteDB.instance.insertNewName(expirationGroup: groupName, expirationDays: getExpiration(expirationGroup: groupName).expirationDays)
         }
     }
     
