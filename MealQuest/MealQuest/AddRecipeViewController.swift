@@ -28,11 +28,13 @@ class AddRecipeViewController: UIViewController {
     @IBOutlet weak var instructionsTextView: UITextView!
     
     @IBOutlet weak var saveFavorite: UIButton!
+    
     var edit = false
     var recipeDetails = [String:Any]()
     var id = Int64(-1)
     var recipeObserver = RecipeViewController()
     var resultsObserver = ResultsTableViewController()
+    var itemGroupSuggestion = ""
     
     //1. Create the alert controller.
     var alert = UIAlertController()
@@ -159,7 +161,6 @@ class AddRecipeViewController: UIViewController {
                 updateRecipeInDB(recipeDict)
                 
                 // Need to redraw the view
-                recipeObserver.recipeDetails = recipeDict
                 recipeObserver.redrawView()
             } else {
                 recipeDict = [

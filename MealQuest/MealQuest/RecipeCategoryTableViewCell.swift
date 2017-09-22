@@ -10,6 +10,9 @@ import UIKit
 
 class RecipeCategoryTableViewCell: UITableViewCell {
 
+    @IBOutlet weak var recipeCategoryName: UILabel!
+    @IBOutlet weak var recipeCategoryIcon: UIImageView!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
