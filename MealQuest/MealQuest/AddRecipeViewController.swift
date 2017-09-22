@@ -167,7 +167,7 @@ class AddRecipeViewController: UIViewController {
                 
                 addNewRecipeToDB(recipeDict)
                 
-                resultsObserver.resultsPassed = getFavoriteRecipes( )
+                //resultsObserver.resultsPassed = getFavoriteRecipes( )
                 resultsObserver.redrawTable()
             }
             self.navigationController?.popViewController(animated: true)

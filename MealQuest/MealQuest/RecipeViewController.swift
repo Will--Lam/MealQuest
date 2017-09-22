@@ -74,7 +74,7 @@ class RecipeViewController: UIViewController, UITableViewDataSource, UITableView
         
         // Setup the state of favorite
         print("checking if id is favorite: " + "\(id)")
-        favorite = isFavorite(id)
+        // favorite = isFavorite(id)
         if (favorite) {
             favoriteButton.setImage(UIImage(named: "favoriteIcon.png"), for: .normal)
             favoriteButton.setTitle("  Unfavorite",for: .normal)

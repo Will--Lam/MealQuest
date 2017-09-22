@@ -26,7 +26,7 @@ extension RecipeViewController {
     @IBAction func favoriteAction(_ sender: Any) {
         if (!favorite) {
             print("favorite!")
-            let temp = SQLiteDB.instance.addRecipeToFavouriteDB(recipeID: id)
+            let temp = 0 // SQLiteDB.instance.addRecipeToFavouriteDB(recipeID: id)
             if (temp != 0) {
                 favoriteButton.setImage(UIImage(named: "favoriteIcon.png"), for: .normal)
                 favoriteButton.setTitle("  Unfavorite",for: .normal)
@@ -46,7 +46,7 @@ extension RecipeViewController {
             }
         } else {
             print("unfavorite!")
-            let temp = SQLiteDB.instance.unmarkFavouriteRecipeDB(recipeID: id)
+            let temp = 0 // SQLiteDB.instance.unmarkFavouriteRecipeDB(recipeID: id)
             if (temp != 0) {
                 favoriteButton.setImage(UIImage(named: "unfavoriteIcon.png"), for: .normal)
                 favoriteButton.setTitle("  Favorite",for: .normal)

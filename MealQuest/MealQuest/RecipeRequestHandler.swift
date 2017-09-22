@@ -59,6 +59,12 @@ func searchRecipes(_ ingredients: String,_ searchCallBack: @escaping ([[String: 
     
 }
 
+func getFavoriteRecipes( ) -> [[String: Any]] {
+    var searchResults = [[String: Any]]()
+
+    return searchResults
+}
+
 func sendMissingIngredientsToShoppingCart(_ recipeID: Int64) {
     /*
     let recipeDict = SQLiteDB.instance.getRecipeFieldFromDB(recipeID: recipeID) as [String:Any]
