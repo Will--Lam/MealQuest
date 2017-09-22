@@ -32,7 +32,11 @@ func getRelativeDate(date: Date) -> String {
     var relativeMonth = itemMonth - curMonth
     var relativeDay = itemDay - curDay
     
-    if ((relativeYear < 0) || (relativeMonth < 0) || (relativeDay < 0)) {
+    let expiredYear = (relativeYear < 0)
+    let expiredMonth = ((relativeYear == 0) && (relativeMonth < 0))
+    let expiredDay = ((relativeYear == 0) && (relativeMonth == 0) && (relativeDay < 0))
+    
+    if (expiredYear || expiredMonth || expiredDay) {
         expired = true
         
         if (relativeYear < 0) {
@@ -66,11 +70,22 @@ func getRelativeDate(date: Date) -> String {
                 relativeMonth = abs(relativeMonth + 1)
             } else {
                 relativeMonth = abs(relativeMonth)
-                relativeMonth = abs(relativeDay)
+                relativeDay = abs(relativeDay)
             }
         } else {
             relativeDay = abs(relativeDay)
         }
+    } else if ((relativeYear > 0) && (relativeDay < 0)) {
+        relativeYear = relativeYear - 1
+        relativeMonth = relativeMonth + 11
+        if (curMonth == 0) {
+            relativeDay = daysInMonth[11] - relativeDay
+        } else {
+            relativeDay = daysInMonth[curMonth - 1] + relativeDay
+        }
+    } else if ((relativeMonth > 0) && (relativeDay < 0)) {
+        relativeMonth = relativeMonth - 1
+        relativeDay = daysInMonth[curMonth] + relativeDay
     }
     
     if (relativeYear == 1) {
