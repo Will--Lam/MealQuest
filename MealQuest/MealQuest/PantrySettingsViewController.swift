@@ -51,7 +51,9 @@ class PantrySettingsViewController: UIViewController {
         let logo = UIImage(named: "logoWhite.png")
         let imageView = UIImageView(image:logo)
         self.navigationItem.titleView = imageView
-        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
         let categoryLabels = [category1, category2, category3, category4, category5, category6, category7, category8, category9, category10, category11, category12, category13, category14, category15]
         
         // Set up all the labels
@@ -61,9 +63,8 @@ class PantrySettingsViewController: UIViewController {
         
         let categoryStale = [categoryStale1, categoryStale2, categoryStale3, categoryStale4, categoryStale5, categoryStale6, categoryStale7, categoryStale8, categoryStale9, categoryStale10, categoryStale11, categoryStale12, categoryStale13, categoryStale14, categoryStale15]
         // Set up the current stale values into the stale val
-        let allExpirations = getAllGroupExpiration()
         for i in 1 ... (Constants.pantryGroups.count - 1) {
-            categoryStale[i - 1]?.text = String(allExpirations[i - 1].expirationDays)
+            categoryStale[i - 1]?.text = String(getGroupExpiration(groupName: (categoryLabels[i - 1]?.text!)!))
         }
     }
 
@@ -110,6 +111,8 @@ class PantrySettingsViewController: UIViewController {
                 category15.text!: Int(categoryStale15.text!)!]
             
                 updateGroupExpiration(updateGroups: categoryStaleDictionary)
+            
+            _ = navigationController?.popViewController(animated: true)
         }
     }
     

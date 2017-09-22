@@ -56,6 +56,7 @@ class PantryCategoryTableViewController: UITableViewController {
             cell.categoryStaleFactor.text = ""
             cell.categoryName.contentVerticalAlignment = .center
         } else {
+            cell.categoryName.contentVerticalAlignment = .top
             cell.categoryStaleFactor.text = "Days until expiring: " + String(getGroupExpiration(groupName: category))
         }
         return cell
