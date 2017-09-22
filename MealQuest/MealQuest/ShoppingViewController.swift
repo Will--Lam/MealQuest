@@ -106,7 +106,7 @@ class ShoppingViewController: UIViewController, UITableViewDataSource, UITableVi
         cell.observer = self
         cell.shopping = true
         
-        cell.shoppingGroupImage.image = UIImage(named: cell.group)
+        cell.shoppingGroupImage.image = UIImage(named: Constants.pantryIconMap[cell.group]!)
         
         cell.itemNameLabel.text = cell.name + " (" + cell.quantity + " " + cell.unit + ")"
         cell.itemCostLabel.text = cell.cost.dollarString

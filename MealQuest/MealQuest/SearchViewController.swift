@@ -10,6 +10,7 @@ import UIKit
 
 class SearchViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
 
+    @IBOutlet weak var searchTextField: UITextField!
     @IBOutlet weak var categoryTextField: UITextField!
     @IBOutlet weak var favoriteRecipesButton: UIBarButtonItem!
     @IBOutlet weak var searchWPantryButton: UIButton!
