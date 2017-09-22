@@ -576,18 +576,18 @@ class SQLiteDB {
             
             for pItem in try db!.prepare(selectQuery) {
                 let item = PantryItem(
-                    id: pItem[pantryItemId],
-                    name: pItem[pantryItemName],
-                    group: pItem[pantryItemGroup],
-                    quantity: pItem[pantryItemQuantity],
-                    unit: pItem[pantryItemUnit],
-                    calories: pItem[pantryItemCalories]!,
-                    isArchive: pItem[pantryItemArchived],
-                    expiration: pItem[pantryItemExpiration]!,
-                    purchase: pItem[pantryItemPurchase],
-                    archive: pItem[pantryItemArchive]!,
-                    toggle: pItem[pantryItemToggle],
-                    search: pItem[pantryItemSearch])
+                    id:             pItem[pantryItemId],
+                    name:           pItem[pantryItemName],
+                    group:          pItem[pantryItemGroup],
+                    quantity:       pItem[pantryItemQuantity],
+                    unit:           pItem[pantryItemUnit],
+                    calories:       pItem[pantryItemCalories]!,
+                    isArchive:      pItem[pantryItemArchived],
+                    expiration:     pItem[pantryItemExpiration]!,
+                    purchase:       pItem[pantryItemPurchase],
+                    archive:        pItem[pantryItemArchive]!,
+                    toggle:         pItem[pantryItemToggle],
+                    search:         pItem[pantryItemSearch])
                 
                 items.append(item)
                 
@@ -614,15 +614,15 @@ class SQLiteDB {
             
             let id = try db!.run(
                 updateQuery.update(
-                    pantryItemName <- name,
-                    pantryItemGroup <- group,
-                    pantryItemQuantity <- quantity,
-                    pantryItemUnit <- unit,
-                    pantryItemCalories <- calories,
-                    pantryItemArchived <- 0,
-                    pantryItemExpiration <- Date.fromDatatypeValue(expiration),
-                    pantryItemPurchase <- Date.fromDatatypeValue(purchase),
-                    pantryItemArchive <- archiveDate))
+                    pantryItemName          <- name,
+                    pantryItemGroup         <- group,
+                    pantryItemQuantity      <- quantity,
+                    pantryItemUnit          <- unit,
+                    pantryItemCalories      <- calories,
+                    pantryItemArchived      <- 0,
+                    pantryItemExpiration    <- Date.fromDatatypeValue(expiration),
+                    pantryItemPurchase      <- Date.fromDatatypeValue(purchase),
+                    pantryItemArchive       <- archiveDate))
             
             return Int64(id)
         } catch {
@@ -654,8 +654,8 @@ class SQLiteDB {
             
             let id = try db!.run(
                 updateQuery.update(
-                    pantryItemArchived <- 1,
-                    pantryItemArchive <- Date()))
+                    pantryItemArchived  <- 1,
+                    pantryItemArchive   <- Date()))
             
             return Int64(id)
         } catch {
@@ -900,8 +900,8 @@ class SQLiteDB {
     func insertNewName(expirationGroup: String, expirationDays: Int) -> Int64? {
         do {
             let insert = pantryExpirationTable.insert(
-                pantryExpirationGroup <- expirationGroup,
-                pantryExpirationDays <- expirationDays)
+                pantryExpirationGroup   <- expirationGroup,
+                pantryExpirationDays    <- expirationDays)
             
             let id = try db!.run(insert)
             
@@ -952,9 +952,9 @@ class SQLiteDB {
             
             for res in try db!.prepare(selectQuery) {
                 item = PantryExpiration(
-                    id: res[pantryExpirationID],
-                    expirationGroup: res[pantryExpirationGroup],
-                    expirationDays: res[pantryExpirationDays])
+                    id:                 res[pantryExpirationID],
+                    expirationGroup:    res[pantryExpirationGroup],
+                    expirationDays:     res[pantryExpirationDays])
             }
             
             return item
@@ -987,9 +987,9 @@ class SQLiteDB {
     func insertNewList(listCost: Double, listDate: Date, isActive: Bool) -> Int64? {
         do {
             let insert = shoppingListsTable.insert(
-                shoppingListsCost <- listCost,
-                shoppingListsDate <- listDate,
-                shoppingListsIsActive <- isActive)
+                shoppingListsCost       <- listCost,
+                shoppingListsDate       <- listDate,
+                shoppingListsIsActive   <- isActive)
             
             let id = try db!.run(insert)
             
@@ -1008,9 +1008,9 @@ class SQLiteDB {
                 shoppingListsID == listID)
             let id = try db!.run(
                 updateQuery.update(
-                    shoppingListsCost <- listCost,
-                    shoppingListsDate <- listDate,
-                    shoppingListsIsActive <- isActive))
+                    shoppingListsCost       <- listCost,
+                    shoppingListsDate       <- listDate,
+                    shoppingListsIsActive   <- isActive))
             return Int64(id)
         } catch {
             print("Update shopping list failed")
@@ -1061,10 +1061,10 @@ class SQLiteDB {
             
             for sList in try db!.prepare(selectQuery) {
                 list = ShoppingLists(
-                    listID: listID,
-                    listCost: sList[shoppingListsCost],
-                    listDate: sList[shoppingListsDate],
-                    isActive: sList[shoppingListsIsActive])
+                    listID:     listID,
+                    listCost:   sList[shoppingListsCost],
+                    listDate:   sList[shoppingListsDate],
+                    isActive:   sList[shoppingListsIsActive])
             }
             return list
         } catch {
@@ -1140,15 +1140,15 @@ class SQLiteDB {
     func insertNewItem(listID: Int64, itemName: String, itemCost: Double, unit: String, quantity: Double, group: String, purchased: Bool, expirationDate: Date, repurchase: Bool) -> Int64? {
         do {
             let insert = shoppingItemTable.insert(
-                shoppingItemListID <- listID,
-                shoppingItemName <- itemName,
-                shoppingItemCost <- itemCost,
-                shoppingItemUnit <- unit,
-                shoppingItemQuantity <- quantity,
-                shoppingItemCategory <- group,
-                shoppingItemPurchased <- purchased,
-                shoppingItemExpirationDate <- expirationDate,
-                shoppingItemRepurchase <- repurchase)
+                shoppingItemListID          <- listID,
+                shoppingItemName            <- itemName,
+                shoppingItemCost            <- itemCost,
+                shoppingItemUnit            <- unit,
+                shoppingItemQuantity        <- quantity,
+                shoppingItemCategory        <- group,
+                shoppingItemPurchased       <- purchased,
+                shoppingItemExpirationDate  <- expirationDate,
+                shoppingItemRepurchase      <- repurchase)
             
             let id = try db!.run(insert)
             
@@ -1167,15 +1167,15 @@ class SQLiteDB {
     
             let id = try db!.run(
                 updateQuery.update(
-                    shoppingItemListID <- listID,
-                    shoppingItemName <- itemName,
-                    shoppingItemCost <- itemCost,
-                    shoppingItemUnit <- unit,
-                    shoppingItemQuantity <- quantity,
-                    shoppingItemCategory <- group,
-                    shoppingItemPurchased <- purchased,
-                    shoppingItemExpirationDate <- expirationDate,
-                    shoppingItemRepurchase <- repurchase))
+                    shoppingItemListID              <- listID,
+                    shoppingItemName                <- itemName,
+                    shoppingItemCost                <- itemCost,
+                    shoppingItemUnit                <- unit,
+                    shoppingItemQuantity            <- quantity,
+                    shoppingItemCategory            <- group,
+                    shoppingItemPurchased           <- purchased,
+                    shoppingItemExpirationDate      <- expirationDate,
+                    shoppingItemRepurchase          <- repurchase))
             
             print("update item succesful")
             return Int64(id)
@@ -1230,16 +1230,16 @@ class SQLiteDB {
             
             for sItem in try db!.prepare(selectQuery) {
                 item = ShoppingItem(
-                    listID: listID,
-                    itemID: itemID,
-                    itemName: sItem[shoppingItemName],
-                    itemCost: sItem[shoppingItemCost],
-                    unit: sItem[shoppingItemUnit],
-                    quantity: sItem[shoppingItemQuantity],
-                    group: sItem[shoppingItemCategory],
-                    purchased: sItem[shoppingItemPurchased],
-                    expirationDate: sItem[shoppingItemExpirationDate]!,
-                    repurchase: sItem[shoppingItemRepurchase])
+                    listID:             listID,
+                    itemID:             itemID,
+                    itemName:           sItem[shoppingItemName],
+                    itemCost:           sItem[shoppingItemCost],
+                    unit:               sItem[shoppingItemUnit],
+                    quantity:           sItem[shoppingItemQuantity],
+                    group:              sItem[shoppingItemCategory],
+                    purchased:          sItem[shoppingItemPurchased],
+                    expirationDate:     sItem[shoppingItemExpirationDate]!,
+                    repurchase:         sItem[shoppingItemRepurchase])
             }
             
             return item
@@ -1318,16 +1318,16 @@ class SQLiteDB {
             
             for sItem in try db!.prepare(selectQuery) {
                 shoppingItem = ShoppingItem(
-                    listID: listID,
-                    itemID: sItem[shoppingItemID],
-                    itemName: name,
-                    itemCost: sItem[shoppingItemCost],
-                    unit: sItem[shoppingItemUnit],
-                    quantity: sItem[shoppingItemQuantity],
-                    group: sItem[shoppingItemCategory],
-                    purchased: sItem[shoppingItemPurchased],
-                    expirationDate: sItem[shoppingItemExpirationDate]!,
-                    repurchase: sItem[shoppingItemRepurchase])
+                    listID:             listID,
+                    itemID:             sItem[shoppingItemID],
+                    itemName:           name,
+                    itemCost:           sItem[shoppingItemCost],
+                    unit:               sItem[shoppingItemUnit],
+                    quantity:           sItem[shoppingItemQuantity],
+                    group:              sItem[shoppingItemCategory],
+                    purchased:          sItem[shoppingItemPurchased],
+                    expirationDate:     sItem[shoppingItemExpirationDate]!,
+                    repurchase:         sItem[shoppingItemRepurchase])
             }
             
             return shoppingItem
