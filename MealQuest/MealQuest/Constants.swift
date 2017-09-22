@@ -102,29 +102,29 @@ struct Constants {
     public static let recipeGroupIngredient = [Constants.RecipeBeef, Constants.RecipeChicken, Constants.RecipePork, Constants.RecipeSeafood, Constants.RecipeVeggie]
     public static let recipeGroupOther = [Constants.RecipeVegetarian, Constants.RecipeHolidays, Constants.RecipeEntertaining, Constants.RecipeCan, Constants.RecipeOther]
     
-    public static let recipeGroups = [Constants.RecipeBreakfast, Constants.RecipeLunch, Constants.RecipeBeverage, Constants.RecipeAppetizer, Constants.RecipeSnacks, Constants.RecipeDesserts, Constants.RecipeSoups, Constants.RecipeSalads, Constants.RecipeBreads, Constants.RecipeBeef, Constants.RecipeChicken, Constants.RecipePork, Constants.RecipeSeafood, Constants.RecipeVeggie, Constants.RecipeVegetarian, Constants.RecipeHolidays, Constants.RecipeEntertaining, Constants.RecipeCan, Constants.RecipeOther]
+    public static let recipeGroups = [Constants.RecipeAll, Constants.RecipeBreakfast, Constants.RecipeLunch, Constants.RecipeBeverage, Constants.RecipeAppetizer, Constants.RecipeSnacks, Constants.RecipeDesserts, Constants.RecipeSoups, Constants.RecipeSalads, Constants.RecipeBreads, Constants.RecipeBeef, Constants.RecipeChicken, Constants.RecipePork, Constants.RecipeSeafood, Constants.RecipeVeggie, Constants.RecipeVegetarian, Constants.RecipeHolidays, Constants.RecipeEntertaining, Constants.RecipeCan, Constants.RecipeOther]
     
-    /* public static let recipeIconMap : [String: String] = [
-        Constants.RecipeAll: "allCategory",
-        Constants.RecipeBreakfast:
-        Constants.RecipeLunch: "dairyCategory",
-        Constants.RecipeBeverage: "proteinCategory",
-        Constants.RecipeAppetizer: "veggieCategory",
-        Constants.RecipeSnacks: "bakeryCategory",
-        Constants.RecipeSoups: "otherCategory",
-        Constants.RecipeSalads: "bakingCategory",
-        Constants.RecipeBeef: "freezerCategory",
-        Constants.RecipeChicken: "nonPerishCategory",
-        Constants.RecipeSeafood: "householdCategory",
-        Constants.RecipeVegetarian: "pastaCategory",
-        Constants.RecipeVeggie: "condimentCategory",
-        Constants.RecipeOther: "snackCategory",
-        Constants.RecipeDesserts: "oilCategory",
-        Constants.RecipeCan: "drinkCategory",
-        Constants.RecipeBreads: "spreadCategory",
-        Constants.RecipeHolidays: "",
-        Constants.RecipeEntertaining: "" ]
-    */
+    public static let recipeIconMap : [String: String] = [
+        Constants.RecipeAll: "defaultPhoto",
+        Constants.RecipeBreakfast: "defaultPhoto",
+        Constants.RecipeLunch: "defaultPhoto",
+        Constants.RecipeBeverage: "defaultPhoto",
+        Constants.RecipeAppetizer: "defaultPhoto",
+        Constants.RecipeSnacks: "defaultPhoto",
+        Constants.RecipeSoups: "defaultPhoto",
+        Constants.RecipeSalads: "defaultPhoto",
+        Constants.RecipeBeef: "defaultPhoto",
+        Constants.RecipeChicken: "defaultPhoto",
+        Constants.RecipePork: "defaultPhoto",
+        Constants.RecipeSeafood: "defaultPhoto",
+        Constants.RecipeVegetarian: "defaultPhoto",
+        Constants.RecipeVeggie: "defaultPhoto",
+        Constants.RecipeOther: "defaultPhoto",
+        Constants.RecipeDesserts: "defaultPhoto",
+        Constants.RecipeCan: "defaultPhoto",
+        Constants.RecipeBreads: "defaultPhoto",
+        Constants.RecipeHolidays: "defaultPhoto",
+        Constants.RecipeEntertaining: "defaultPhoto" ]
         
     // constant for rounding
     public static let roundingPlaces = 5

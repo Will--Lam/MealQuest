@@ -224,7 +224,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3hy-9w-Tjn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1545" y="1143"/>
+            <point key="canvasLocation" x="513" y="1624"/>
         </scene>
         <!--Results Table View Controller-->
         <scene sceneID="UNx-qG-kof">
@@ -272,7 +272,7 @@
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <connections>
                                     <outlet property="calorieLabel" destination="XaH-RB-Pr2" id="m29-wu-DEb"/>
-                                    <outlet property="recipeImage" destination="3HM-XG-SB1" id="jC1-OU-8QT"/>
+                                    <outlet property="categoryIcon" destination="3HM-XG-SB1" id="yeQ-sg-Ewx"/>
                                     <outlet property="titleLabel" destination="jwg-VX-uo6" id="x4G-ub-qGb"/>
                                 </connections>
                             </tableViewCell>
@@ -305,7 +305,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TWt-Kv-7QR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="512.79999999999995" y="617.54122938530736"/>
+            <point key="canvasLocation" x="513" y="621"/>
         </scene>
         <!--Recipe View Controller-->
         <scene sceneID="hsE-u4-GHZ">
@@ -319,10 +319,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mnG-0a-lRX">
-                                <rect key="frame" x="0.0" y="104" width="375" height="474"/>
-                                <color key="backgroundColor" red="0.65490196079999996" green="0.65490196079999996" blue="0.65490196079999996" alpha="1" colorSpace="calibratedRGB"/>
-                            </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="V8R-a2-8pW" userLabel="Eat">
                                 <rect key="frame" x="0.0" y="578" width="125" height="40"/>
                                 <color key="backgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
@@ -392,6 +388,10 @@
                                     <constraint firstItem="yFz-Al-ljT" firstAttribute="leading" secondItem="DHE-hI-oOO" secondAttribute="leading" id="ajt-S5-T8U"/>
                                 </constraints>
                             </view>
+                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mnG-0a-lRX">
+                                <rect key="frame" x="0.0" y="96" width="375" height="474"/>
+                                <color key="backgroundColor" red="0.65490196079999996" green="0.65490196079999996" blue="0.65490196079999996" alpha="1" colorSpace="calibratedRGB"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -438,7 +438,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="N5X-hE-Ggy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1545" y="185"/>
+            <point key="canvasLocation" x="1438" y="703"/>
         </scene>
         <!--Search View Controller-->
         <scene sceneID="PeL-1s-DjQ">
@@ -535,7 +535,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" image="favoriteRecipesIcon"/>
                                 <connections>
-                                    <segue destination="oUa-XS-bTc" kind="show" id="jtA-ot-MgB"/>
+                                    <segue destination="oUa-XS-bTc" kind="show" id="JXF-xc-kpr"/>
                                 </connections>
                             </button>
                         </barButtonItem>
@@ -560,18 +560,35 @@
         <scene sceneID="qqA-eM-DX9">
             <objects>
                 <tableViewController id="oUa-XS-bTc" customClass="RecipeCategoryTableViewController" customModule="MealQuest" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="tmG-t1-p6U">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="50" sectionHeaderHeight="28" sectionFooterHeight="28" id="tmG-t1-p6U">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="hdQ-FR-Q4J" customClass="RecipeCategoryTableViewCell" customModule="MealQuest" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="RecipeCategoryTableViewCell" rowHeight="50" id="hdQ-FR-Q4J" customClass="RecipeCategoryTableViewCell" customModule="MealQuest" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="375" height="50"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hdQ-FR-Q4J" id="XmY-ap-Nyp">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="49.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ChU-FQ-aFi">
+                                            <rect key="frame" x="16" y="4" width="40" height="40"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Aey-SZ-eKq">
+                                            <rect key="frame" x="64" y="14" width="303" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="recipeCategoryIcon" destination="ChU-FQ-aFi" id="IM8-vC-wmW"/>
+                                    <outlet property="recipeCategoryName" destination="Aey-SZ-eKq" id="Ixv-CY-dg6"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -579,10 +596,23 @@
                             <outlet property="delegate" destination="oUa-XS-bTc" id="kc4-3Z-tO4"/>
                         </connections>
                     </tableView>
+                    <navigationItem key="navigationItem" id="GxI-ck-oF1">
+                        <barButtonItem key="rightBarButtonItem" style="plain" systemItem="add" id="uCK-5m-JbM">
+                            <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            <connections>
+                                <segue destination="Jyo-b8-4JN" kind="show" identifier="addItem" id="Z0o-GA-Qir"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="addButton" destination="uCK-5m-JbM" id="Q1n-2H-Nv7"/>
+                        <outlet property="recipeCategoryTable" destination="tmG-t1-p6U" id="tOz-Dt-amP"/>
+                        <segue destination="CUd-2S-0O3" kind="show" identifier="viewCategory" id="38G-r1-nLr"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7l7-Ig-1dr" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1545" y="-529"/>
+            <point key="canvasLocation" x="-444" y="622"/>
         </scene>
         <!--SearchW Pantry Table View Controller-->
         <scene sceneID="MaS-Qz-PeD">
@@ -632,7 +662,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Cx0-Mk-QEA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-503.19999999999999" y="617.54122938530736"/>
+            <point key="canvasLocation" x="1439" y="-280"/>
         </scene>
         <!--Recipes-->
         <scene sceneID="4if-c2-7aR">
@@ -670,8 +700,8 @@
         <image name="unfavoriteIcon" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="06A-9R-ip6"/>
-        <segue reference="mAk-Wr-5lM"/>
+        <segue reference="6iZ-N3-C5N"/>
+        <segue reference="38G-r1-nLr"/>
         <segue reference="hiV-ha-Nrc"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -14,12 +14,11 @@ class ResultsTableViewCell: UITableViewCell {
     var imageURL = String()
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var calorieLabel: UILabel!
-    @IBOutlet weak var recipeImage: UIImageView!
+    @IBOutlet weak var categoryIcon: UIImageView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-        self.translatesAutoresizingMaskIntoConstraints = false
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -28,7 +27,4 @@ class ResultsTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
 
-    @IBAction func buttonPressed(_ sender: Any) {
-        
-    }
 }

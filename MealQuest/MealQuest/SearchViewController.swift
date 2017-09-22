@@ -106,10 +106,7 @@ class SearchViewController: UIViewController, UIPickerViewDelegate, UIPickerView
             // initialize new view controller and cast it as your view controller
             let recipeVC = segue.destination as! RecipeViewController
             // your new view controller should have property that will store passed value
-            print(detailsPassed["title"] as! String)
-            recipeVC.recipeDetails = detailsPassed
-            print(recipeVC.recipeDetails["title"] as! String)
-            recipeVC.id = recipeVC.recipeDetails["id"] as! Int64
+            
             recipeVC.random = true
         } else if (segue.identifier == "viewFavorites") {
             
