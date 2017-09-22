@@ -17,7 +17,7 @@ struct Constants {
     public static let UnitLB = "LB"
     
     // constants for Pantry
-    public static let PantryAll = "All"
+    public static let PantryAll = "All Items"
     public static let PantryDairy = "Dairy"
     public static let PantryProteins = "Proteins"
     public static let PantryVeggies = "Fruits & Veggies"

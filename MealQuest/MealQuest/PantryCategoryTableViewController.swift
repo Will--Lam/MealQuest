@@ -16,6 +16,15 @@ class PantryCategoryTableViewController: UITableViewController {
     @IBOutlet var pantryCategoryTable: UITableView!
     
     var categorySelected = ""
+    var allExpirations: [PantryExpiration] = []
+    
+    func redrawTable( ) {
+        pantryCategoryTable.reloadData()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        redrawTable()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,14 +52,17 @@ class PantryCategoryTableViewController: UITableViewController {
         let category = Constants.pantryGroups[indexPath.item]
         cell.categoryName.text = category
         cell.categoryIcon.image = UIImage(named: Constants.pantryIconMap[category]!)
+        if (category == Constants.PantryAll) {
+            cell.categoryStaleFactor.text = ""
+            cell.categoryName.contentVerticalAlignment = .center
+        } else {
+            cell.categoryStaleFactor.text = "Days until expiring: " + String(getGroupExpiration(groupName: category))
+        }
         return cell
     }
 
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-
+//** Look at allowing users to rearrange order of items
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print("You selected cell #\(indexPath.row)!")
         

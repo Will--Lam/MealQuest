@@ -59,11 +59,58 @@ class PantrySettingsViewController: UIViewController {
             categoryLabels[i - 1]?.text = Constants.pantryGroups[i]
         }
         
+        let categoryStale = [categoryStale1, categoryStale2, categoryStale3, categoryStale4, categoryStale5, categoryStale6, categoryStale7, categoryStale8, categoryStale9, categoryStale10, categoryStale11, categoryStale12, categoryStale13, categoryStale14, categoryStale15]
         // Set up the current stale values into the stale val
+        let allExpirations = getAllGroupExpiration()
+        for i in 1 ... (Constants.pantryGroups.count - 1) {
+            categoryStale[i - 1]?.text = String(allExpirations[i - 1].expirationDays)
+        }
     }
 
     @IBAction func saveAction(_ sender: Any) {
-        // let categoryStaleVals = [categoryStale1, categoryStale2, categoryStale3, categoryStale4, categoryStale5, categoryStale6, categoryStale7, categoryStale8, categoryStale9, categoryStale10, categoryStale11, categoryStale12, categoryStale13, categoryStale14, categoryStale15]
+        if ((categoryStale1.text == "") ||
+            (categoryStale2.text == "") ||
+            (categoryStale3.text == "") ||
+            (categoryStale4.text == "") ||
+            (categoryStale5.text == "") ||
+            (categoryStale6.text == "") ||
+            (categoryStale7.text == "") ||
+            (categoryStale8.text == "") ||
+            (categoryStale9.text == "") ||
+            (categoryStale10.text == "") ||
+            (categoryStale11.text == "") ||
+            (categoryStale12.text == "") ||
+            (categoryStale13.text == "") ||
+            (categoryStale14.text == "") ||
+            (categoryStale15.text == "")) {
+            
+            //1. Create the alert controller.
+            let alert = UIAlertController(title: "Confirm to add selected items to your pantry?", message: "", preferredStyle: .alert)
+            // 3. Grab the value from the text field, and print it when the user clicks OK.
+            alert.addAction(UIAlertAction(title: "OK", style: .default))
+            // 4. Present the alert.
+            self.present(alert, animated: true, completion: nil)
+            
+        } else {
+            let categoryStaleDictionary : [String: Int] = [
+                category1.text!: Int(categoryStale1.text!)!,
+                category2.text!: Int(categoryStale2.text!)!,
+                category3.text!: Int(categoryStale3.text!)!,
+                category4.text!: Int(categoryStale4.text!)!,
+                category5.text!: Int(categoryStale5.text!)!,
+                category6.text!: Int(categoryStale6.text!)!,
+                category7.text!: Int(categoryStale7.text!)!,
+                category8.text!: Int(categoryStale8.text!)!,
+                category9.text!: Int(categoryStale9.text!)!,
+                category10.text!: Int(categoryStale10.text!)!,
+                category11.text!: Int(categoryStale11.text!)!,
+                category12.text!: Int(categoryStale12.text!)!,
+                category13.text!: Int(categoryStale13.text!)!,
+                category14.text!: Int(categoryStale14.text!)!,
+                category15.text!: Int(categoryStale15.text!)!]
+            
+                updateGroupExpiration(updateGroups: categoryStaleDictionary)
+        }
     }
     
 }
