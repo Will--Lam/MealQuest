@@ -107,7 +107,7 @@ class ResultsTableViewController: UITableViewController {
         
         if (cellID != -1) {
             print("id is: " + "\(cellID)")
-            //detailsPassed = SQLiteDB.instance.getRecipeFieldFromDB(recipeID: cellID)
+//**        get ingredients information based on recipeID - getIngredientsByRecipe(recipeID: Int64) -> [RecipeIngredient]
         } else {
             detailsPassed = [
                 "title": currentCell.titleLabel.text!,

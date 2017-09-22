@@ -108,6 +108,8 @@ class SearchWPantryTableViewController: UIViewController, UITableViewDataSource,
         // revert search status toggled items
         _ = SQLiteDB.instance.revertSearchPantryItems()
         
+//**    make search on recipes with query and category -> searchWPantryRecipes(query: [String], category: String) -> [RecipeItem]
+
         // send this list of item names as input to search
         let query = items.map{$0.name}.joined(separator: ",")
         print(query)
