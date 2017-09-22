@@ -32,14 +32,9 @@ class SQLiteDB {
     private let recipePrepTime      = Expression<Double>("prepTime")
     private let recipeCookTime      = Expression<Double>("cookTime")
     private let recipeInstructions  = Expression<String>("instructions")
-    
-    // Category Table
-    private let categoryTable       = Table("categories")
-    private let categoryID          = Expression<Int64>("id")
-    private let categoryRecipeID    = Expression<Int64>("recipeID")
-    private let categoryPrimary     = Expression<String>("primary")
-    private let categorySecondary   = Expression<String>("secondary")
-    private let categoryTertiary    = Expression<String>("tertiary")
+    private let recipePrimary       = Expression<String>("primary")
+    private let recipeSecondary     = Expression<String>("secondary")
+    private let recipeTertiary      = Expression<String>("tertiary")
     
     // Ingredient table
     private let ingredientTable     = Table("ingredients")
@@ -105,7 +100,6 @@ class SQLiteDB {
         do {
             db = try Connection("\(path)/db.sqlite3")
             createRecipeTable()
-            createCategoryTable()
             createIngredientTable()
             createPantryTable()
             createShoppingListsTable()
@@ -130,13 +124,16 @@ class SQLiteDB {
                 table.column(recipePrepTime)
                 table.column(recipeCookTime)
                 table.column(recipeInstructions)
+                table.column(recipePrimary)
+                table.column(recipeSecondary)
+                table.column(recipeTertiary)
             })
         } catch {
             print("Unable to create recipe table")
         }
     }
     
-    func insertRecipe(title: String, calories: Int, servings: Double, readyTime: Double, prepTime: Double, cookTime: Double, instructions: String) -> Int64? {
+    func insertRecipe(title: String, calories: Int, servings: Double, readyTime: Double, prepTime: Double, cookTime: Double, instructions: String, primary: String, secondary: String, tertiary: String) -> Int64? {
         do {
             let insert = recipeTable.insert(
                 recipeTitle         <- title,
@@ -145,7 +142,10 @@ class SQLiteDB {
                 recipeReadyTime     <- readyTime,
                 recipePrepTime      <- prepTime,
                 recipeCookTime      <- cookTime,
-                recipeInstructions  <- instructions)
+                recipeInstructions  <- instructions,
+                recipePrimary       <- primary,
+                recipeSecondary     <- secondary,
+                recipeTertiary      <- tertiary)
             
             let id = try db!.run(insert)
             
@@ -156,7 +156,7 @@ class SQLiteDB {
         }
     }
     
-    func updateRecipe(id: Int64, title: String, calories: Int, servings: Double, readyTime: Double, prepTime: Double, cookTime: Double, instructions: String) -> Int64? {
+    func updateRecipe(id: Int64, title: String, calories: Int, servings: Double, readyTime: Double, prepTime: Double, cookTime: Double, instructions: String, primary: String, secondary: String, tertiary: String) -> Int64? {
         do {
             let updateQuery = recipeTable.filter(
                 recipeID == id)
@@ -168,7 +168,10 @@ class SQLiteDB {
                 recipeReadyTime     <- readyTime,
                 recipePrepTime      <- prepTime,
                 recipeCookTime      <- cookTime,
-                recipeInstructions  <- instructions))
+                recipeInstructions  <- instructions,
+                recipePrimary       <- primary,
+                recipeSecondary     <- secondary,
+                recipeTertiary      <- tertiary))
             
             return Int64(id)
         } catch {
@@ -193,13 +196,36 @@ class SQLiteDB {
                     readyTime:      rItem[recipeReadyTime],
                     prepTime:       rItem[recipePrepTime],
                     cookTime:       rItem[recipeCookTime],
-                    instructions:   rItem[recipeInstructions])
+                    instructions:   rItem[recipeInstructions],
+                    primary:        rItem[recipePrimary],
+                    secondary:      rItem[recipeSecondary],
+                    tertiary:       rItem[recipeTertiary])
             }
             
             return item
         } catch {
             print("Get recipe failed")
             return item
+        }
+    }
+    
+    func getRecipeIDsByCategory(category: String) -> [Int64] {
+        var recipeIDs = Set<Int64>()
+        
+        do {
+            let selectQuery = recipeTable.filter(
+                recipePrimary == category ||
+                recipeSecondary == category ||
+                recipeTertiary  == category)
+            
+            for item in try db!.prepare(selectQuery) {
+                recipeIDs.insert(item[recipeID])
+            }
+            
+            return Array(recipeIDs)
+        } catch {
+            print("Get recipeIDs failed")
+            return Array(recipeIDs)
         }
     }
     
@@ -213,95 +239,6 @@ class SQLiteDB {
             return Int64(id)
         } catch {
             print("Delete recipe failed")
-            return 0
-        }
-    }
-    
-    // RECIPE CATEGORY DIVIDER
-    
-    func createCategoryTable() {
-        do {
-            if (deleteCategoryTable) {
-                try db?.run(categoryTable.drop(ifExists: true))
-            }
-            
-            try db!.run(categoryTable.create(ifNotExists: true) { table in
-                table.column(categoryID, primaryKey: true)
-                table.column(categoryRecipeID)
-                table.column(categoryPrimary)
-                table.column(categorySecondary)
-                table.column(categoryTertiary)
-            })
-        } catch {
-            print("Unable to create recipe category table")
-        }
-    }
-    
-    func insertCategory(recipeID: Int64, primary: String, secondary: String, tertiary: String) -> Int64? {
-        do {
-            let insert = categoryTable.insert(
-                categoryRecipeID    <- recipeID,
-                categoryPrimary     <- primary,
-                categorySecondary   <- secondary,
-                categoryTertiary    <- tertiary)
-            
-            let id = try db!.run(insert)
-            
-            return id
-        } catch {
-            print("Insert category failed")
-            return nil
-        }
-    }
-    
-    func updateCategory(recipeID: Int64, primary: String, secondary: String, tertiary: String) -> Int64? {
-        do {
-            let updateQuery = categoryTable.filter(
-                categoryRecipeID == recipeID)
-            
-            let id = try db!.run(updateQuery.update(
-                categoryPrimary     <- primary,
-                categorySecondary   <- secondary,
-                categoryTertiary    <- tertiary))
-            
-            return Int64(id)
-        } catch {
-            print("Update recipe failed")
-            return nil
-        }
-    }
-    
-    func getRecipeIDsByCategory(category: String) -> [Int64] {
-        var recipes = Set<Int64>()
-        
-        do {
-            let selectQuery = categoryTable.filter(
-                categoryPrimary == category ||
-                categorySecondary == category ||
-                categoryTertiary == category)
-            
-            for rItem in try db!.prepare(selectQuery) {
-                recipes.insert(rItem[categoryRecipeID])
-            }
-            
-            return Array(recipes)
-            
-        } catch {
-            print("Get recipe failed")
-            return Array(recipes)
-        }
-    }
-    
-    func deleteRecipeInCategory(recipeID: Int64) -> Int64 {
-        do {
-            let deleteQuery = categoryTable.filter(
-                categoryRecipeID == recipeID)
-            
-            let id = try db!.run(deleteQuery.delete())
-            
-            return Int64(id)
-        } catch {
-            print("Delete recipe in category failed")
             return 0
         }
     }
@@ -380,6 +317,25 @@ class SQLiteDB {
             print("Get ingredients failed")
             return ingredients
         }
+    }
+    
+    func getRecipeIDByIngredient(ingredient: String) -> [Int64] {
+        var recipeIDs = Set<Int64>()
+        
+        do {
+            let selectQuery = ingredientTable.filter(
+                ingredientName.lowercaseString == ingredient.lowercased())
+            
+            for iItem in try db!.prepare(selectQuery) {
+                recipeIDs.insert(iItem[recipeID])
+            }
+            
+            return Array(recipeIDs)
+        } catch {
+            print("Get recipeIDs failed")
+            return Array(recipeIDs)
+        }
+        
     }
     
     func deleteIngredient(ingredientID: Int64) -> Int64 {

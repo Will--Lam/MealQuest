@@ -15,54 +15,103 @@ extension Date {
     }
 }
 
-// resultSize is the number of results that are returned to the user
-let resultSize: Int = 10
-
-enum recipeData {
-    case servings
-    case readyInMinutes
-    case preparationMinutes
-    case cookingMinutes
+func createRecipe(recipeItem: RecipeItem) -> Int64 {
+    return SQLiteDB.instance.insertRecipe(
+        title:          recipeItem.title,
+        calories:       recipeItem.calories,
+        servings:       recipeItem.servings,
+        readyTime:      recipeItem.readyTime,
+        prepTime:       recipeItem.prepTime,
+        cookTime:       recipeItem.cookTime,
+        instructions:   recipeItem.instructions,
+        primary:        recipeItem.primary,
+        secondary:      recipeItem.secondary,
+        tertiary:       recipeItem.tertiary)!
 }
 
-func addNewRecipeToDB(_ recipeDict: [String:Any]) {
-    let id = Date().toMillis() * (-1)
+func updateRecipe(recipeItem: RecipeItem) -> Int64 {
+    return SQLiteDB.instance.updateRecipe(
+        id: recipeItem.recipeID,
+        title:          recipeItem.title,
+        calories:       recipeItem.calories,
+        servings:       recipeItem.servings,
+        readyTime:      recipeItem.readyTime,
+        prepTime:       recipeItem.prepTime,
+        cookTime:       recipeItem.cookTime,
+        instructions:   recipeItem.instructions,
+        primary:        recipeItem.primary,
+        secondary:      recipeItem.secondary,
+        tertiary:       recipeItem.tertiary)!
 }
 
-func updateRecipeInDB(_ recipeDict: [String:Any]) {
-    let id = recipeDict["id"] as! Int64
-}
-
-func getRandomRecipe() -> [String: Any] {
-    
-    /*
-    let randomIndex = Int(arc4random_uniform(UInt32(recipeIDList.count)))
-    
-    if(recipeIDList.count == 0) {
-        let returnDict = [String: Any]()
-        return returnDict
-    } else {
-        var returnDict = [String: Any]()
-        returnDict = SQLiteDB.instance.getRecipeFieldFromDB(recipeID: recipeIDList[randomIndex])
-        print(randomIndex)
-        returnDict["id"] = recipeIDList[randomIndex]
-        return returnDict
+func updateRecipeIngredients(recipeID: Int64, ingredients: [RecipeIngredient]) -> Int64 {
+    for ingredient in SQLiteDB.instance.getIngredientsByRecipeID(recipeID: recipeID) {
+        _ = SQLiteDB.instance.deleteIngredient(
+            ingredientID: ingredient.ingredientID)
     }
-    */
-    // remove dummy code below
-    let returnDict = [String: Any]()
-    return returnDict
+    for iItem in ingredients {
+        _ = SQLiteDB.instance.insertIngredient(
+            recipeID:       recipeID,
+            name:           iItem.name,
+            unit:           iItem.unit,
+            quantity:       iItem.quantity)
+    }
+    return recipeID
 }
 
-// param
-func searchRecipes(_ ingredients: String,_ searchCallBack: @escaping ([[String: Any]]) -> Void) {
+func getRecipes(category: String) -> [RecipeItem] {
+    var recipes = [RecipeItem]()
+    for recipeID in SQLiteDB.instance.getRecipeIDsByCategory(category: category) {
+        recipes.append(SQLiteDB.instance.getRecipeByID(id: recipeID))
+    }
     
+    return Array(recipes)
 }
 
-func getFavoriteRecipes( ) -> [[String: Any]] {
-    var searchResults = [[String: Any]]()
+func getIngredientsByRecipe(recipeID: Int64) -> [RecipeIngredient] {
+    return SQLiteDB.instance.getIngredientsByRecipeID(recipeID: recipeID)
+}
 
-    return searchResults
+func getRandomRecipe(category: String) -> RecipeItem {
+    var recipe = RecipeItem(id: -1)
+    var recipeID = SQLiteDB.instance.getRecipeIDsByCategory(category: category)
+    let randomIndex = Int(arc4random_uniform(UInt32(recipeID.count)))
+    
+    recipe = SQLiteDB.instance.getRecipeByID(id: recipeID[randomIndex])
+    
+    return recipe
+}
+
+func searchRecipes(query: [String], category: String) -> [RecipeItem] {
+    var recipes = [RecipeItem]()
+    let recipeIDs = SQLiteDB.instance.getRecipeIDsByCategory(category: category)
+    
+    var results = [Int64:Int]()
+    
+    for id in recipeIDs {
+        results[id] = 0
+    }
+    
+    // case insensitive comparison
+    for searchString in query {
+        for id in SQLiteDB.instance.getRecipeIDByIngredient(ingredient: searchString) {
+            results[id]! += 1
+        }
+    }
+    
+    for recipe in results {
+        if (recipe.value >=  Int(ceil(Double(results.count / 2)))) {
+            recipes.append(SQLiteDB.instance.getRecipeByID(id: recipe.key))
+        }
+    }
+    
+    return recipes
+}
+
+func searchWPantryRecipes(query: [String], category: String) -> [RecipeItem] {
+    let recipes = [RecipeItem]()
+    
+    return recipes
 }
 
 func sendMissingIngredientsToShoppingCart(_ recipeID: Int64) {
