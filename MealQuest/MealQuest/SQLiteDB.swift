@@ -14,62 +14,82 @@ class SQLiteDB {
     static let instance = SQLiteDB()
     private let db: Connection?
     
-    // Testing constant to reset database (pantry, shopping list and shopping item)
-    private let testingConstant = false
-    private let deleteFoodTable = false
-    private let deletePantryTable = false
-    private let deleteShoppingLists = false
-    private let deleteShoppingItem = false
+    // Testing constants to reset databases
+    private let testingConstant         = false
+    private let deleteCategoryTable     = false
+    private let deleteIngredientTable   = false
+    private let deletePantryTable       = false
+    private let deleteShoppingLists     = false
+    private let deleteShoppingItem      = false
     
     // Recipe table
-    private let recipeTable = Table("recipes")
-    private let recipeId = Expression<Int64>("id")
-    private let recipeAPIId = Expression<Int64>("APIid")
-    private let recipeField = Expression<String?>("field")
-    private let recipeFieldData = Expression<String?>("fieldData")
-    private let isFavourite = Expression<Int64>("isFavourite")
+    private let recipeTable         = Table("recipes")
+    private let recipeID            = Expression<Int64>("id")
+    private let recipeTitle         = Expression<String>("title")
+    private let recipeCalories      = Expression<Int>("calories")
+    private let recipeServings      = Expression<Double>("servings")
+    private let recipeReadyTime     = Expression<Double>("readyTime")
+    private let recipePrepTime      = Expression<Double>("prepTime")
+    private let recipeCookTime      = Expression<Double>("cookTime")
+    private let recipeInstructions  = Expression<String>("instructions")
+    
+    // Category Table
+    private let categoryTable       = Table("categories")
+    private let categoryID          = Expression<Int64>("id")
+    private let categoryRecipeID    = Expression<Int64>("recipeID")
+    private let categoryPrimary     = Expression<String>("primary")
+    private let categorySecondary   = Expression<String>("secondary")
+    private let categoryTertiary    = Expression<String>("tertiary")
+    
+    // Ingredient table
+    private let ingredientTable     = Table("ingredients")
+    private let ingredientID        = Expression<Int64>("id")
+    private let ingredientRecipeID  = Expression<Int64>("recipeID")
+    private let ingredientName      = Expression<String>("name")
+    private let ingredientUnit      = Expression<String>("unit")
+    private let ingredientQuantity  = Expression<Double>("quantity")
     
     // Pantry items table
-    private let pantryTable = Table("pantry")
-    private let pantryItemId = Expression<Int64>("id")
-    private let pantryItemName = Expression<String>("name")
-    private let pantryItemGroup = Expression<String>("group")
-    private let pantryItemQuantity = Expression<Double>("quantity")
-    private let pantryItemUnit = Expression<String>("unit")
-    private let pantryItemCalories = Expression<Int?>("calories")
-    private let pantryItemArchived = Expression<Int>("isArchived")
-    private let pantryItemToggle = Expression<Int>("toggle")
-    private let pantryItemSearch = Expression<Int>("search")
+    private let pantryTable         = Table("pantry")
+    private let pantryItemId        = Expression<Int64>("id")
+    private let pantryItemName      = Expression<String>("name")
+    private let pantryItemGroup     = Expression<String>("group")
+    private let pantryItemQuantity  = Expression<Double>("quantity")
+    private let pantryItemUnit      = Expression<String>("unit")
+    private let pantryItemCalories  = Expression<Int?>("calories")
+    private let pantryItemArchived  = Expression<Int>("isArchived")
+    private let pantryItemToggle    = Expression<Int>("toggle")
+    private let pantryItemSearch    = Expression<Int>("search")
     // dates
-    private let pantryItemExpiration = Expression<Date?>("expiration")
-    private let pantryItemPurchase = Expression<Date>("purchase")
-    private let pantryItemArchive = Expression<Date?>("archive")
+    private let pantryItemExpiration    = Expression<Date?>("expiration")
+    private let pantryItemPurchase      = Expression<Date>("purchase")
+    private let pantryItemArchive       = Expression<Date?>("archive")
     
     // Pantry Expiration Table
-    private let pantryExpirationTable = Table("pantryExpiration")
-    private let pantryExpirationID = Expression<Int64>("expirationID")
-    private let pantryExpirationGroup  = Expression<String>("expirationGroup")
-    private let pantryExpirationDays = Expression<Int>("expirationDays")
+    private let pantryExpirationTable   = Table("pantryExpiration")
+    private let pantryExpirationID      = Expression<Int64>("expirationID")
+    private let pantryExpirationGroup   = Expression<String>("expirationGroup")
+    private let pantryExpirationDays    = Expression<Int>("expirationDays")
     
     // Shopping Lists Table
-    private let shoppingListsTable = Table("shoppingLists")
-    private let shoppingListsID = Expression<Int64>("listID")
-    private let shoppingListsCost = Expression<Double>("listCost")
-    private let shoppingListsDate = Expression<Date>("listDate")
-    private let shoppingListsIsActive = Expression<Bool>("isActive")
+    private let shoppingListsTable      = Table("shoppingLists")
+    private let shoppingListsID         = Expression<Int64>("listID")
+    private let shoppingListsCost       = Expression<Double>("listCost")
+    private let shoppingListsDate       = Expression<Date>("listDate")
+    private let shoppingListsIsActive   = Expression<Bool>("isActive")
     
     // Shopping Item Table
-    private let shoppingItemTable = Table("shoppingItem")
-    private let shoppingItemListID = Expression<Int64>("listID")
-    private let shoppingItemID = Expression<Int64>("itemID")
-    private let shoppingItemName = Expression<String>("itemName")
-    private let shoppingItemCost = Expression<Double>("itemCost")
-    private let shoppingItemUnit = Expression<String>("unit")
-    private let shoppingItemQuantity = Expression<Double>("quantity")
-    private let shoppingItemCategory = Expression<String>("group") // category
-    private let shoppingItemPurchased = Expression<Bool>("purchased")
-    private let shoppingItemExpirationDate = Expression<Date?>("expirationDate")
-    private let shoppingItemRepurchase = Expression<Bool>("repurchase")
+    private let shoppingItemTable           = Table("shoppingItem")
+    private let shoppingItemListID          = Expression<Int64>("listID")
+    private let shoppingItemID              = Expression<Int64>("itemID")
+    private let shoppingItemName            = Expression<String>("itemName")
+    private let shoppingItemCost            = Expression<Double>("itemCost")
+    private let shoppingItemUnit            = Expression<String>("unit")
+    private let shoppingItemQuantity        = Expression<Double>("quantity")
+    private let shoppingItemCategory        = Expression<String>("group") // category
+    private let shoppingItemPurchased       = Expression<Bool>("purchased")
+    private let shoppingItemExpirationDate  = Expression<Date?>("expirationDate")
+    private let shoppingItemRepurchase      = Expression<Bool>("repurchase")
     
     
     
@@ -85,6 +105,8 @@ class SQLiteDB {
         do {
             db = try Connection("\(path)/db.sqlite3")
             createRecipeTable()
+            createCategoryTable()
+            createIngredientTable()
             createPantryTable()
             createShoppingListsTable()
             createShoppingItemTable()
@@ -100,91 +122,91 @@ class SQLiteDB {
     func createRecipeTable() {
         do {
             try db!.run(recipeTable.create(ifNotExists: true) { table in
-                table.column(recipeId, primaryKey: true)
-                table.column(recipeAPIId)
-                table.column(recipeField)
-                table.column(recipeFieldData)
-                table.column(isFavourite)
+                table.column(recipeID, primaryKey: true)
+                table.column(recipeTitle)
+                table.column(recipeCalories)
+                table.column(recipeServings)
+                table.column(recipeReadyTime)
+                table.column(recipePrepTime)
+                table.column(recipeCookTime)
+                table.column(recipeInstructions)
             })
         } catch {
-            print("Unable to create Recipe table")
+            print("Unable to create recipe table")
         }
     }
     
-    func storeRecipeToDB(recipeID: Int64, field: String, data: String) -> Int64? {
+    func insertRecipe(title: String, calories: Int, servings: Double, readyTime: Double, prepTime: Double, cookTime: Double, instructions: String) -> Int64? {
         do {
             let insert = recipeTable.insert(
-                recipeAPIId <- recipeID,
-                recipeField <- field,
-                recipeFieldData <- data,
-                isFavourite <- 0)
+                recipeTitle         <- title,
+                recipeCalories      <- calories,
+                recipeServings      <- servings,
+                recipeReadyTime     <- readyTime,
+                recipePrepTime      <- prepTime,
+                recipeCookTime      <- cookTime,
+                recipeInstructions  <- instructions)
             
             let id = try db!.run(insert)
             
             return id
         } catch {
-            print("Insert recipe field failed")
+            print("Insert recipe failed")
             return nil
         }
     }
     
-    func updateRecipeInDB(recipeID: Int64, field: String, data: String) -> Int64? {
+    func updateRecipe(id: Int64, title: String, calories: Int, servings: Double, readyTime: Double, prepTime: Double, cookTime: Double, instructions: String) -> Int64? {
         do {
             let updateQuery = recipeTable.filter(
-                recipeAPIId == recipeID &&
-                recipeField == field)
+                recipeID == id)
             
-            let id = try db!.run(updateQuery.update(recipeFieldData <- data))
+            let id = try db!.run(updateQuery.update(
+                recipeTitle         <- title,
+                recipeCalories      <- calories,
+                recipeServings      <- servings,
+                recipeReadyTime     <- readyTime,
+                recipePrepTime      <- prepTime,
+                recipeCookTime      <- cookTime,
+                recipeInstructions  <- instructions))
             
             return Int64(id)
         } catch {
-            print("Update recipe field failed")
+            print("Update recipe failed")
             return nil
         }
     }
     
-    func getRecipeFieldFromDB(recipeID: Int64) -> [String: String] {
-        var recipeFields = [String: String]()
+    func getRecipeByID(id: Int64) -> RecipeItem {
+        var item = RecipeItem(id: id)
         
         do {
             let selectQuery = recipeTable.filter(
-                recipeAPIId == recipeID)
+                recipeID == id)
         
-            for recipe in try db!.prepare(selectQuery) {
-                recipeFields[recipe[recipeField]!] = recipe[recipeFieldData]
+            for rItem in try db!.prepare(selectQuery) {
+                item = RecipeItem(
+                    id:             id,
+                    title:          rItem[recipeTitle],
+                    calories:       rItem[recipeCalories],
+                    servings:       rItem[recipeServings],
+                    readyTime:      rItem[recipeReadyTime],
+                    prepTime:       rItem[recipePrepTime],
+                    cookTime:       rItem[recipeCookTime],
+                    instructions:   rItem[recipeInstructions])
             }
             
-            return recipeFields
+            return item
         } catch {
             print("Get recipe failed")
-            return recipeFields
+            return item
         }
     }
     
-    func getFavouriteRecipeFieldFromDB() -> [Int64] {
-        var favRecipeIds = Set<Int64>()
-        
-        do {
-            
-            let selectQuery = recipeTable.filter(
-                isFavourite == 1)
-            
-            for recipe in try db!.prepare(selectQuery) {
-                favRecipeIds.insert(
-                    recipe[recipeAPIId])
-            }
-            
-            return Array(favRecipeIds)
-        } catch {
-            print("Get favourite recipes failed")
-            return Array(favRecipeIds)
-        }
-    }
-    
-    func deleteRecipeFromDB(recipeID: Int64) -> Int64 {
+    func deleteRecipe(id: Int64) -> Int64 {
         do {
             let deleteQuery = recipeTable.filter(
-                recipeAPIId == recipeID)
+                recipeID == id)
             
             let id = try db!.run(deleteQuery.delete())
             
@@ -195,49 +217,181 @@ class SQLiteDB {
         }
     }
     
-    func addRecipeToFavouriteDB(recipeID: Int64) -> Int64 {
+    // RECIPE CATEGORY DIVIDER
+    
+    func createCategoryTable() {
         do {
-            let updateQuery = recipeTable.filter(
-                recipeAPIId == recipeID)
+            if (deleteCategoryTable) {
+                try db?.run(categoryTable.drop(ifExists: true))
+            }
             
-            let id = try db!.run(
-                updateQuery.update(
-                    isFavourite <- 1))
+            try db!.run(categoryTable.create(ifNotExists: true) { table in
+                table.column(categoryID, primaryKey: true)
+                table.column(categoryRecipeID)
+                table.column(categoryPrimary)
+                table.column(categorySecondary)
+                table.column(categoryTertiary)
+            })
+        } catch {
+            print("Unable to create recipe category table")
+        }
+    }
+    
+    func insertCategory(recipeID: Int64, primary: String, secondary: String, tertiary: String) -> Int64? {
+        do {
+            let insert = categoryTable.insert(
+                categoryRecipeID    <- recipeID,
+                categoryPrimary     <- primary,
+                categorySecondary   <- secondary,
+                categoryTertiary    <- tertiary)
+            
+            let id = try db!.run(insert)
+            
+            return id
+        } catch {
+            print("Insert category failed")
+            return nil
+        }
+    }
+    
+    func updateCategory(recipeID: Int64, primary: String, secondary: String, tertiary: String) -> Int64? {
+        do {
+            let updateQuery = categoryTable.filter(
+                categoryRecipeID == recipeID)
+            
+            let id = try db!.run(updateQuery.update(
+                categoryPrimary     <- primary,
+                categorySecondary   <- secondary,
+                categoryTertiary    <- tertiary))
             
             return Int64(id)
         } catch {
-            print("Mark recipe as favourite failed")
+            print("Update recipe failed")
+            return nil
+        }
+    }
+    
+    func getRecipeIDsByCategory(category: String) -> [Int64] {
+        var recipes = Set<Int64>()
+        
+        do {
+            let selectQuery = categoryTable.filter(
+                categoryPrimary == category ||
+                categorySecondary == category ||
+                categoryTertiary == category)
+            
+            for rItem in try db!.prepare(selectQuery) {
+                recipes.insert(rItem[categoryRecipeID])
+            }
+            
+            return Array(recipes)
+            
+        } catch {
+            print("Get recipe failed")
+            return Array(recipes)
+        }
+    }
+    
+    func deleteRecipeInCategory(recipeID: Int64) -> Int64 {
+        do {
+            let deleteQuery = categoryTable.filter(
+                categoryRecipeID == recipeID)
+            
+            let id = try db!.run(deleteQuery.delete())
+            
+            return Int64(id)
+        } catch {
+            print("Delete recipe in category failed")
             return 0
         }
     }
     
-    func unmarkFavouriteRecipeDB(recipeID: Int64) -> Int64 {
+    // INGREDIENT TABLE DIVIDER
+    
+    func createIngredientTable() {
         do {
-            let updateQuery = recipeTable.filter(
-                recipeAPIId == recipeID)
-            
-            let id = try db!.run(
-                updateQuery.update(
-                    isFavourite <- 0))
-            
-            return Int64(id)
+            try db!.run(ingredientTable.create(ifNotExists: true) { table in
+                table.column(ingredientID, primaryKey: true)
+                table.column(ingredientRecipeID)
+                table.column(ingredientName)
+                table.column(ingredientUnit)
+                table.column(ingredientQuantity)
+            })
         } catch {
-            print("Unmark favourite recipe failed")
-            return 0
+            print("Unable to create recipe table")
         }
     }
     
-    func deleteNonFavouriteRecipeDB() -> Int64 {
+    func insertIngredient(recipeID: Int64, name: String, unit: String, quantity: Double) -> Int64? {
         do {
-            let deleteQuery = recipeTable.filter(
-                isFavourite == 0)
+            let insert = ingredientTable.insert(
+                ingredientRecipeID      <- recipeID,
+                ingredientName          <- name,
+                ingredientUnit          <- unit,
+                ingredientQuantity      <- quantity)
             
-            let id = try db!.run(
-                deleteQuery.delete())
+            let id = try db!.run(insert)
+            
+            return id
+        } catch {
+            print("Insert ingredient failed")
+            return nil
+        }
+    }
+    
+    func updateIngredient(ingredientID: Int64, recipeID: Int64, name: String, unit: String, quantity: Double) -> Int64? {
+        do {
+            let updateQuery = ingredientTable.filter(
+                self.ingredientID == ingredientID)
+            
+            let id = try db!.run(updateQuery.update(
+                ingredientName          <- name,
+                ingredientUnit          <- unit,
+                ingredientQuantity      <- quantity))
             
             return Int64(id)
         } catch {
-            print("Delete all non-favourite recipe failed")
+            print("Update ingredient failed")
+            return nil
+        }
+    }
+    
+    func getIngredientsByRecipeID(recipeID: Int64) -> [RecipeIngredient] {
+        var ingredients = [RecipeIngredient]()
+        
+        do {
+            let selectQuery = ingredientTable.filter(
+                ingredientRecipeID == recipeID)
+            
+            for iItem in try db!.prepare(selectQuery) {
+                let ingredient = RecipeIngredient(
+                    id:           iItem[ingredientID],
+                    recipeID:     recipeID,
+                    name:         iItem[ingredientName],
+                    unit:         iItem[ingredientUnit],
+                    quantity:     iItem[ingredientQuantity])
+                
+                ingredients.append(ingredient)
+            }
+            
+            return ingredients
+            
+        } catch {
+            print("Get ingredients failed")
+            return ingredients
+        }
+    }
+    
+    func deleteIngredient(ingredientID: Int64) -> Int64 {
+        do {
+            let deleteQuery = ingredientTable.filter(
+                self.ingredientID == ingredientID)
+            
+            let id = try db!.run(deleteQuery.delete())
+            
+            return Int64(id)
+        } catch {
+            print("Delete ingredient failed")
             return 0
         }
     }

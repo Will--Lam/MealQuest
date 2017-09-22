@@ -27,37 +27,15 @@ enum recipeData {
 
 func addNewRecipeToDB(_ recipeDict: [String:Any]) {
     let id = Date().toMillis() * (-1)
-    _ = SQLiteDB.instance.storeRecipeToDB(recipeID: id , field: "title", data: recipeDict["title"] as! String)
-    _ = SQLiteDB.instance.storeRecipeToDB(recipeID: id , field: "calorie", data: recipeDict["calorie"] as! String)
-    _ = SQLiteDB.instance.storeRecipeToDB(recipeID: id , field: "servings", data: recipeDict["servings"] as! String)
-    _ = SQLiteDB.instance.storeRecipeToDB(recipeID: id , field: "imageURL", data: "")
-    _ = SQLiteDB.instance.storeRecipeToDB(recipeID: id , field: "readyInMinutes", data: recipeDict["readyInMinutes"] as! String)
-    _ = SQLiteDB.instance.storeRecipeToDB(recipeID: id , field: "preparationMinutes", data: recipeDict["preparationMinutes"] as! String)
-    _ = SQLiteDB.instance.storeRecipeToDB(recipeID: id , field: "cookingMinutes", data: recipeDict["cookingMinutes"] as! String)
-    _ = SQLiteDB.instance.storeRecipeToDB(recipeID: id , field: "healthScore", data: recipeDict["healthScore"] as! String)
-    _ = SQLiteDB.instance.storeRecipeToDB(recipeID: id , field: "ingredients", data: recipeDict["ingredients"] as! String )
-    _ = SQLiteDB.instance.storeRecipeToDB(recipeID: id , field: "analyzedInstructions", data: recipeDict["analyzedInstructions"] as! String )
-    _ = SQLiteDB.instance.addRecipeToFavouriteDB(recipeID: id)
 }
 
 func updateRecipeInDB(_ recipeDict: [String:Any]) {
     let id = recipeDict["id"] as! Int64
-    _ = SQLiteDB.instance.updateRecipeInDB(recipeID: id , field: "title", data: recipeDict["title"] as! String)
-    _ = SQLiteDB.instance.updateRecipeInDB(recipeID: id , field: "calorie", data: recipeDict["calorie"] as! String)
-    _ = SQLiteDB.instance.updateRecipeInDB(recipeID: id , field: "servings", data: recipeDict["servings"] as! String)
-    _ = SQLiteDB.instance.updateRecipeInDB(recipeID: id , field: "imageURL", data: recipeDict["imageURL"] as! String)
-    _ = SQLiteDB.instance.updateRecipeInDB(recipeID: id , field: "readyInMinutes", data: recipeDict["readyInMinutes"] as! String)
-    _ = SQLiteDB.instance.updateRecipeInDB(recipeID: id , field: "preparationMinutes", data: recipeDict["preparationMinutes"] as! String)
-    _ = SQLiteDB.instance.updateRecipeInDB(recipeID: id , field: "cookingMinutes", data: recipeDict["cookingMinutes"] as! String)
-    _ = SQLiteDB.instance.updateRecipeInDB(recipeID: id , field: "healthScore", data: recipeDict["healthScore"] as! String)
-    _ = SQLiteDB.instance.updateRecipeInDB(recipeID: id , field: "ingredients", data: recipeDict["ingredients"] as! String )
-    _ = SQLiteDB.instance.updateRecipeInDB(recipeID: id , field: "analyzedInstructions", data: recipeDict["analyzedInstructions"] as! String )
 }
 
 func getRandomRecipe() -> [String: Any] {
     
-    let recipeIDList = SQLiteDB.instance.getFavouriteRecipeFieldFromDB()
-    
+    /*
     let randomIndex = Int(arc4random_uniform(UInt32(recipeIDList.count)))
     
     if(recipeIDList.count == 0) {
@@ -70,39 +48,10 @@ func getRandomRecipe() -> [String: Any] {
         returnDict["id"] = recipeIDList[randomIndex]
         return returnDict
     }
-}
-
-
-func isFavorite(_ recipeID: Int64) -> Bool {
-    let recipeIDList = SQLiteDB.instance.getFavouriteRecipeFieldFromDB()
-    
-    if recipeIDList.contains(recipeID) {
-        return true
-    } else {
-        return false
-    }
-    
-}
-
-func getFavoriteRecipes( ) -> [[String: Any]] {
-    
-    var searchResults = [[String: Any]]()
-    
-    let recipeIDList = SQLiteDB.instance.getFavouriteRecipeFieldFromDB() 
-    
-    for id in recipeIDList {
-        let recipeDict = SQLiteDB.instance.getRecipeFieldFromDB(recipeID: id) as [String:Any]
-        
-        var recipeOverview  = [String: Any]()
-        recipeOverview["id"]  = id
-        recipeOverview["title"]     = recipeDict["title"]       as! String
-        recipeOverview["calorie"]   = recipeDict["calorie"]    as! String
-        recipeOverview["imageURL"]  = recipeDict["imageURL"]       as! String
-        
-        searchResults.append(recipeOverview)
-    }
-
-    return searchResults.sorted{(($0)["title"] as! String).lowercased() < (($1)["title"] as! String).lowercased()}
+    */
+    // remove dummy code below
+    let returnDict = [String: Any]()
+    return returnDict
 }
 
 // param
@@ -111,7 +60,7 @@ func searchRecipes(_ ingredients: String,_ searchCallBack: @escaping ([[String: 
 }
 
 func sendMissingIngredientsToShoppingCart(_ recipeID: Int64) {
-    
+    /*
     let recipeDict = SQLiteDB.instance.getRecipeFieldFromDB(recipeID: recipeID) as [String:Any]
     let ingredients = recipeDict["ingredients"] as! String
     var ingredientsArray = [[String:String]]()
@@ -165,9 +114,11 @@ func sendMissingIngredientsToShoppingCart(_ recipeID: Int64) {
             }
         }
     }
+    */
 }
 
 func consumePantryItemsFromRecipe(_ recipeID: Int64, _ multiplier :Double) {
+    /*
     let recipeDict = SQLiteDB.instance.getRecipeFieldFromDB(recipeID: recipeID) as [String:Any]
     let ingredients = recipeDict["ingredients"] as! String
     var ingredientsArray = [[String:String]]()
@@ -225,6 +176,8 @@ func consumePantryItemsFromRecipe(_ recipeID: Int64, _ multiplier :Double) {
     // multiplier for individual groups
     // let specifiedServing = Double(recipeDict["servings"] as! String)! * multiplier
     // addRecipeFoodItem(name: recipeDict["title"] as! String, calories: Double(recipeDict["calorie"] as! String)! * specifiedServing, proteins: groups["Proteins"]! * multiplier, vegetables: groups["Fruits and Veggies"]! * multiplier, dairy: groups["Dairy"]! * multiplier, grains: groups["Wheat and Bakery"]! * multiplier, servings: specifiedServing)
+    */
+ */
 }
 
 
