@@ -787,7 +787,7 @@ class SQLiteDB {
     }
     
     // Get the detailed information for a particular shopping item
-    func getExpirationDays(expirationGroup: String) -> PantryExpiration {
+    func getExpiration(expirationGroup: String) -> PantryExpiration {
         var item = PantryExpiration(id: 0)
         do {
             let selectQuery = pantryExpirationTable.filter(
