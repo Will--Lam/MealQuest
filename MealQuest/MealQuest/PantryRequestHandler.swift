@@ -40,7 +40,7 @@ func getGroupPantryItemStale(pantryGroup: String) -> [PantryItem] {
         items = SQLiteDB.instance.getPantryItems(pantryGroup: pantryGroup, isFresh: false)
     }
     
-    items.sort(by: sortByName)
+    items.sort(by: sortByExpiration(this:that:))
     
     return items
 }
