@@ -14,35 +14,25 @@ class IngredientsView: UIView {
     @IBOutlet weak var changeServingButton: UIButton!
     @IBOutlet weak var changeServingLabel: UILabel!
     
-    var servingSize = Int()
-    var newServingSize = Int()
+    var servingSize = Double()
+    var newServingSize = Double()
     var observer: RecipeViewController!
-    var ingredientsArray = [[String:String]]()
+    var ingredientsArray = [RecipeIngredient]()
     
     func redrawTable( ) {
         updateIngredients()
         servingSize = newServingSize
-        // observer.recipeDetails["servings"] = "\(servingSize)"
+        observer.recipeDetails.servings = servingSize
         observer.redrawView()
     }
     
     func updateIngredients( ) {
         let servingMultiplier = Double(Double(newServingSize)/Double(servingSize))
         for (index, _) in ingredientsArray.enumerated() {
-            ingredientsArray[index]["amount"] = (Double(ingredientsArray[index]["amount"]!)! * servingMultiplier).formatString(places: 2)
+            ingredientsArray[index].quantity = ingredientsArray[index].quantity * servingMultiplier
         }
         
-        var ingredients = String()
-        for item in ingredientsArray {
-            let amount = item["amount"]!
-            let unit = item["unit"]!
-            let ingredient = item["ingredient"]!
-            ingredients += amount + "|" + unit + "|" + ingredient + "@"
-        }
-        
-        ingredients.remove(at: ingredients.index(before: ingredients.endIndex))
-        
-        // observer.recipeDetails["ingredients"] = ingredients
+        observer.ingredientsArray = ingredientsArray
     }
     
     @IBAction func changedServing(sender: UIButton) {
@@ -61,7 +51,7 @@ class IngredientsView: UIView {
         alert.addAction(UIAlertAction(title: "Confirm", style: .default, handler: { [weak alert] (_) in
             let textField = alert?.textFields![0] // Force unwrapping because we know it exists.
             if (!textField!.text!.isEmpty) {
-                self.newServingSize = Int(textField!.text!)!
+                self.newServingSize = Double(textField!.text!)!
                 self.redrawTable()
             }
         }))

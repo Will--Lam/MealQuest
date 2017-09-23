@@ -16,9 +16,10 @@ class OverviewView: UIView {
     @IBOutlet weak var prepTimeLabel: UILabel!
     @IBOutlet weak var cookTimeLabel: UILabel!
     @IBOutlet weak var servingSizeLabel: UILabel!
-    @IBOutlet weak var healthScoreLabel: UILabel!
     @IBOutlet weak var recipeImage: UIImageView!
-    @IBOutlet weak var newImageButton: UIButton!
+    @IBOutlet weak var primaryCategoryLabel: UILabel!
+    @IBOutlet weak var secondaryCategoryLabel: UILabel!
+    @IBOutlet weak var tertiaryCategoryLabel: UILabel!
     
     var imagePicked = UIImageView()
     let imagePicker = UIImagePickerController()

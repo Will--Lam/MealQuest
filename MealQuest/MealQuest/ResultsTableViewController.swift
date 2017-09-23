@@ -56,10 +56,11 @@ class ResultsTableViewController: UITableViewController {
         let idVal = resultsPassed[indexPath.item].recipeID 
         let titleText = resultsPassed[indexPath.item].title
         let calorieVal = resultsPassed[indexPath.item].calories
+        let recipeCategory = resultsPassed[indexPath.item].primary
         
         // Configure the cell...
-        print("idVal is: " + "\(idVal)")
         cell.id = idVal
+        cell.category = recipeCategory
         cell.titleLabel.text = titleText
         cell.calorieLabel.text = "\(calorieVal)"
         

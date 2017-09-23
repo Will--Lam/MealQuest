@@ -10,13 +10,13 @@ import UIKit
 
 extension RecipeViewController {
     func setInstructionsView( ) {
-        /*let boldFontAttribute = [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 20.0)]
+        let boldFontAttribute = [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 20.0)]
             
-        let tempArray = recipeDetails["analyzedInstructions"] as? String
-        let itemArray = tempArray?.components(separatedBy: "|")
+        let tempArray = recipeDetails.instructions
+        let itemArray = tempArray.components(separatedBy: "|")
         var string = String()
         var stepCount = 0
-        for (index,step) in (itemArray?.enumerated())! {
+        for (index,step) in (itemArray.enumerated()) {
             if ((index % 2) == 1) {
                 string += step + "\n\n"
             } else {
@@ -33,6 +33,6 @@ extension RecipeViewController {
             
         instructionsView.instructionLabel.attributedText = attributedString
             
-        instructionsView.instructionLabel.isEditable = false*/
+        instructionsView.instructionLabel.isEditable = false
     }
 }

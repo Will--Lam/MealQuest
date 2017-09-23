@@ -11,7 +11,7 @@ import UIKit
 class ResultsTableViewCell: UITableViewCell {
 
     var id = Int64()
-    var imageURL = String()
+    var category = String()
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var calorieLabel: UILabel!
     @IBOutlet weak var categoryIcon: UIImageView!

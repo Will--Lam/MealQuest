@@ -71,7 +71,7 @@ class RecipeCategoryTableViewController: UITableViewController {
         } else if (segue.identifier == "addItem") {
             // initialize new view controller and cast it as your view controller
             let addVC = segue.destination as! AddRecipeViewController
-            addVC.itemGroupSuggestion = Constants.PantryAll
+            addVC.categoryObserver = self
         }
     }
     

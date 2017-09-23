@@ -15,7 +15,7 @@ enum addRecipeError: Error {
     case fieldFormat
 }
 
-class AddRecipeViewController: UIViewController {
+class AddRecipeViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
     
     @IBOutlet weak var recipeNameField: UITextField!
     @IBOutlet weak var caloriesField: UITextField!
@@ -23,18 +23,27 @@ class AddRecipeViewController: UIViewController {
     @IBOutlet weak var readyTimeField: UITextField!
     @IBOutlet weak var prepTimeField: UITextField!
     @IBOutlet weak var totalTimeField: UITextField!
-    @IBOutlet weak var healthScoreField: UITextField!
+    @IBOutlet weak var primaryCategoryField: UITextField!
+    var primary = String()
+    @IBOutlet weak var secondaryCategoryField: UITextField!
+    var secondary = String()
+    @IBOutlet weak var tertiaryCategoryField: UITextField!
+    var tertiary = String()
     @IBOutlet weak var ingredientsTextView: UITextView!
     @IBOutlet weak var instructionsTextView: UITextView!
     
     @IBOutlet weak var saveFavorite: UIButton!
     
+    let primaryPickerView = UIPickerView()
+    let secondaryPickerView = UIPickerView()
+    let tertiaryPickerView = UIPickerView()
+    
     var edit = false
-    var recipeDetails = [String:Any]()
+    var recipeDetails = RecipeItem(id: -1)
     var id = Int64(-1)
+    var categoryObserver = RecipeCategoryTableViewController()
     var recipeObserver = RecipeViewController()
     var resultsObserver = ResultsTableViewController()
-    var itemGroupSuggestion = ""
     
     //1. Create the alert controller.
     var alert = UIAlertController()
@@ -49,18 +58,32 @@ class AddRecipeViewController: UIViewController {
         let imageView = UIImageView(image:logo)
         self.navigationItem.titleView = imageView
         
+        primaryPickerView.delegate = self
+        primaryPickerView.tag = 1
+        primaryCategoryField.inputView = primaryPickerView
+        
+        secondaryPickerView.delegate = self
+        secondaryPickerView.tag = 2
+        secondaryCategoryField.inputView = secondaryPickerView
+        
+        tertiaryPickerView.delegate = self
+        tertiaryPickerView.tag = 3
+        tertiaryCategoryField.inputView = tertiaryPickerView
+        
         if (edit) {
             // Pre-populate all the information into the text fields.
-            recipeNameField.text = (recipeDetails["title"] as! String)
-            caloriesField.text = (recipeDetails["calorie"] as! String)
-            servingSizeField.text = (recipeDetails["servings"] as! String)
-            readyTimeField.text = (recipeDetails["readyInMinutes"] as! String)
-            totalTimeField.text = (recipeDetails["cookingMinutes"] as! String)
-            prepTimeField.text = (recipeDetails["preparationMinutes"] as! String)
-            healthScoreField.text = (recipeDetails["healthScore"] as! String)
+            recipeNameField.text = recipeDetails.title
+            caloriesField.text = String(recipeDetails.calories)
+            servingSizeField.text = String(recipeDetails.servings)
+            readyTimeField.text = String(recipeDetails.readyTime)
+            totalTimeField.text = String(recipeDetails.cookTime)
+            prepTimeField.text = String(recipeDetails.prepTime)
+            primaryCategoryField.text = recipeDetails.primary
+            secondaryCategoryField.text = recipeDetails.secondary
+            tertiaryCategoryField.text = recipeDetails.tertiary
             
-            // Get the ingredients information into a single displayable string
-            var allIngredients = String()
+//**        Get the ingredients information into a single displayable string
+            /*var allIngredients = String()
             let ingredients = recipeDetails["ingredients"] as! String
             let tempIngredients = ingredients.components(separatedBy: "@")
             for ingredient in tempIngredients {
@@ -68,11 +91,11 @@ class AddRecipeViewController: UIViewController {
                 allIngredients += item[0]  + " " + item[1] + " " + item[2] + "\n"
             }
             allIngredients.remove(at: allIngredients.index(before: allIngredients.endIndex))
-            ingredientsTextView.text = allIngredients
+            ingredientsTextView.text = allIngredients*/
             
             // Get the instruction information into a single displayable string
             var allInstructions = String()
-            let instructions = recipeDetails["analyzedInstructions"] as! String
+            let instructions = recipeDetails.instructions
             let tempInstructions = instructions.components(separatedBy: "|")
             for (index, instruction) in tempInstructions.enumerated() {
                 if((index % 2) == 1) {
@@ -85,6 +108,28 @@ class AddRecipeViewController: UIViewController {
         
         // Do any additional setup after loading the view.
         self.hideKeyboardWhenTappedAround()
+    }
+    
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return Constants.recipeGroups.count
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return Constants.recipeGroups[row]
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        if (pickerView.tag == 1) {
+            primaryCategoryField.text = Constants.recipeGroups[row]
+        } else if (pickerView.tag == 2) {
+            secondaryCategoryField.text = Constants.recipeGroups[row]
+        } else if (pickerView.tag == 3) {
+            tertiaryCategoryField.text = Constants.recipeGroups[row]
+        }
     }
     
     @IBAction func saveFavoriteAction(_ sender: Any) {
@@ -139,14 +184,15 @@ class AddRecipeViewController: UIViewController {
                 // TODO: Create a RecipeItem instead of recipeDict
                 recipeDict = [
                     "id": self.id,
-                    "imageURL": recipeDetails["imageURL"]!,
                     "title": recipeNameField.text!,
                     "calorie": caloriesField.text!,
                     "servings": servingSizeField.text!,
                     "readyInMinutes": readyTimeField.text!,
                     "preparationMinutes": prepTimeField.text!,
                     "cookingMinutes": totalTimeField.text!,
-                    "healthScore": healthScoreField.text!,
+                    "primary": primaryCategoryField.text!,
+                    "secondary": secondaryCategoryField.text!,
+                    "tertiary": tertiaryCategoryField.text!,
                     "ingredients": allIngredients,
                     "analyzedInstructions": allInstructions
                 ]
@@ -158,7 +204,7 @@ class AddRecipeViewController: UIViewController {
 //**            update ingredients by deleting existing and adding new - 
 //**                updateRecipeIngredients(recipeID: Int64, ingredients: [RecipeIngredient] -> RecipeID: Int64
                 
-                updateRecipeInDB(recipeDict)
+                // updateRecipeInDB(recipeDict)
                 
                 // Need to redraw the view
                 recipeObserver.redrawView()
@@ -170,7 +216,9 @@ class AddRecipeViewController: UIViewController {
                     "readyInMinutes": readyTimeField.text!,
                     "preparationMinutes": prepTimeField.text!,
                     "cookingMinutes": totalTimeField.text!,
-                    "healthScore": healthScoreField.text!,
+                    "primary": primaryCategoryField.text!,
+                    "secondary": secondaryCategoryField.text!,
+                    "tertiary": tertiaryCategoryField.text!,
                     "ingredients": allIngredients,
                     "analyzedInstructions": allInstructions
                 ]
@@ -179,7 +227,7 @@ class AddRecipeViewController: UIViewController {
                 
 //**            update ingredients by deleting existing and adding new 
 //**                updateRecipeIngredients(recipeID: Int64, ingredients: [RecipeIngredient] -> RecipeID: Int64
-                addNewRecipeToDB(recipeDict)
+                // addNewRecipeToDB(recipeDict)
                 
                 //resultsObserver.resultsPassed = getFavoriteRecipes( )
                 resultsObserver.redrawTable()

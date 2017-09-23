@@ -75,6 +75,7 @@ struct Constants {
         Constants.PantrySpreads: "spreadCategory"]
     
     // constants for Recipe
+    public static let RecipeBlank = "-"
     public static let RecipeAll = "All"
     public static let RecipeBreakfast = "Breakfast"
     public static let RecipeLunch = "Lunch"
@@ -114,9 +115,10 @@ struct Constants {
         Constants.RecipeIngredientSection: Constants.recipeGroupIngredient,
         Constants.RecipeOtherSection: Constants.recipeGroupOther]
     
-    public static let recipeGroups = [Constants.RecipeAll, Constants.RecipeBreakfast, Constants.RecipeLunch, Constants.RecipeBeverage, Constants.RecipeAppetizer, Constants.RecipeSnacks, Constants.RecipeDesserts, Constants.RecipeSoups, Constants.RecipeSalads, Constants.RecipeBreads, Constants.RecipeBeef, Constants.RecipeChicken, Constants.RecipePork, Constants.RecipeSeafood, Constants.RecipeVeggie, Constants.RecipeVegetarian, Constants.RecipeHolidays, Constants.RecipeEntertaining, Constants.RecipeCan, Constants.RecipeOther]
+    public static let recipeGroups = [Constants.RecipeBlank, Constants.RecipeAll, Constants.RecipeBreakfast, Constants.RecipeLunch, Constants.RecipeBeverage, Constants.RecipeAppetizer, Constants.RecipeSnacks, Constants.RecipeDesserts, Constants.RecipeSoups, Constants.RecipeSalads, Constants.RecipeBreads, Constants.RecipeBeef, Constants.RecipeChicken, Constants.RecipePork, Constants.RecipeSeafood, Constants.RecipeVeggie, Constants.RecipeVegetarian, Constants.RecipeHolidays, Constants.RecipeEntertaining, Constants.RecipeCan, Constants.RecipeOther]
     
     public static let recipeIconMap : [String: String] = [
+        Constants.RecipeBlank: "defaultPhoto",
         Constants.RecipeAll: "defaultPhoto",
         Constants.RecipeBreakfast: "defaultPhoto",
         Constants.RecipeLunch: "defaultPhoto",

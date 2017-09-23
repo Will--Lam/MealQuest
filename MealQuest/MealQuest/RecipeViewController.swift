@@ -17,12 +17,11 @@ class RecipeViewController: UIViewController, UITableViewDataSource, UITableView
     let buttonCell = Bundle.main.loadNibNamed("ButtonCell", owner: self, options: nil)!.first! as! ButtonCell
     
     @IBOutlet weak var planButton: UIButton!
-    @IBOutlet weak var favoriteButton: UIButton!
     @IBOutlet weak var eatButton: UIButton!
     @IBOutlet weak var editButton: UIButton!
     
-    var ingredientsArray = [[String:String]]()
-    var servingSize = 1
+    var ingredientsArray = [RecipeIngredient]()
+    var servingSize = Double(1)
 
     var recipeDetails = RecipeItem(id: -1)
     var detailsPassed = RecipeItem(id: -1)

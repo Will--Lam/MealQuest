@@ -14,33 +14,32 @@ extension RecipeViewController {
             NSFontAttributeName: UIFont.systemFont(ofSize: 20, weight: UIFontWeightBold),
             NSForegroundColorAttributeName: Constants.mqWhiteColour
         ]
-        /*
-        self.navigationItem.title = recipeDetails["title"] as? String
+        
+        self.navigationItem.title = recipeDetails.title
         self.navigationController!.navigationBar.titleTextAttributes = titleAttributes
         
-        let titleText = recipeDetails["title"] as! String
-        let calorieText = recipeDetails["calorie"] as! String
-        let imageURL = recipeDetails["imageURL"] as! String
-        let servingSizeText = recipeDetails["servings"] as! String
-        servingSize = Int(servingSizeText)!
-        let totalTime = recipeDetails["readyInMinutes"] as! String
-        let cookTime = recipeDetails["cookingMinutes"] as! String
-        let prepTime = recipeDetails["preparationMinutes"] as! String
-        let healthScore = recipeDetails["healthScore"] as! String*/
+        let titleText = recipeDetails.title
+        let calorieVal = recipeDetails.calories
+        servingSize = recipeDetails.servings
+        let totalTime = recipeDetails.readyTime
+        let cookTime = recipeDetails.cookTime
+        let prepTime = recipeDetails.prepTime
+        let primary = recipeDetails.primary
+        let secondary = recipeDetails.secondary
+        let tertiary = recipeDetails.tertiary
         
-        var imageRendered = false
-        overviewView.recipeImage.contentMode = .scaleAspectFit
-            
-        /* overviewView.titleLabel.text = titleText
+        overviewView.recipeImage.image = UIImage(named: Constants.recipeIconMap[primary]!)
+        overviewView.titleLabel.text = titleText
         overviewView.titleLabel.adjustsFontSizeToFitWidth = true
-        overviewView.calorieLabel.text = "Calories/Serving " + calorieText
-        overviewView.totalTimeLabel.text = "Total Time: " + totalTime
-        overviewView.prepTimeLabel.text = "Prep Time: " + prepTime
-        overviewView.cookTimeLabel.text = "Cook Time: " + cookTime
-        overviewView.healthScoreLabel.text = healthScore
-        
+        overviewView.calorieLabel.text = "Calories/Serving: " + "\(calorieVal)"
+        overviewView.totalTimeLabel.text = "Total Time: " + "\(totalTime)"
+        overviewView.prepTimeLabel.text = "Prep Time: " + "\(prepTime)"
+        overviewView.cookTimeLabel.text = "Cook Time: " + "\(cookTime)"
         overviewView.servingSizeLabel.text = "Serving Size: " + "\(servingSize)"
-        */
+        overviewView.primaryCategoryLabel.text = "Primary Category: " + primary
+        overviewView.secondaryCategoryLabel.text = "Secondary Category: " + secondary
+        overviewView.tertiaryCategoryLabel.text = "Tertiary Category: " + tertiary
+        
         overviewView.observer = self
         
     }

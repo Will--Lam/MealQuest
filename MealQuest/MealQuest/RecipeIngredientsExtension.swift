@@ -10,7 +10,6 @@ import UIKit
 
 extension RecipeViewController {
     func setIngredientsView( ) {
-        
         ingredientsView.ingredientsTable.dataSource = self
         ingredientsView.ingredientsTable.delegate = self
         
@@ -18,27 +17,8 @@ extension RecipeViewController {
         let cellNib = UINib(nibName: "ButtonCell", bundle: nil)
         ingredientsView.ingredientsTable.register(cellNib, forCellReuseIdentifier: "ButtonCell")
         
-        // TODO: populate ingredient arrary
-        ingredientsArray = [[String:String]]()
-        var ingredients = String()
-        // ingredients = recipeDetails["ingredients"] as! String
-        
-        print(ingredients)
-        // Parse the string to fill in the cell information
-        let tempArray = ingredients.components(separatedBy: "@")
-        for ingredient in tempArray {
-            var item = ingredient.components(separatedBy: "|")
-            var tempDict = [String:String]()
-            tempDict = [
-                "amount": item[0],
-                "unit": item[1],
-                "ingredient": item[2]
-            ]
-            self.ingredientsArray.append(tempDict)
-        }
-        
         // Serving size field at the top of the ingredients page
-        let string = ("Serving Size: " + (String(servingSize))) as NSString
+        let string = ("Serving Size: " + "\(servingSize)") as NSString
         let attributedString = NSMutableAttributedString(string: string as String, attributes: [NSFontAttributeName:UIFont.systemFont(ofSize: 20.0)])
         
         let boldFontAttribute = [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 20.0)]
@@ -66,12 +46,12 @@ extension RecipeViewController {
         cell.index = indexPath.item
         cell.ingredientsArray = ingredientsArray
         
-        cell.unit = self.ingredientsArray[indexPath.item]["unit"]!
-        cell.amount = Double(self.ingredientsArray[indexPath.item]["amount"]!)!
-        cell.ingredient = self.ingredientsArray[indexPath.item]["ingredient"]!
+        cell.unit = self.ingredientsArray[indexPath.item].unit
+        cell.quantity = self.ingredientsArray[indexPath.item].quantity
+        cell.ingredient = self.ingredientsArray[indexPath.item].name
         cell.observer = self
         
-        cell.name.text = cell.amount.formatString(places: 2) + " " + cell.unit + " " + cell.ingredient
+        cell.name.text = cell.quantity.formatString(places: 2) + " " + cell.unit + " " + cell.ingredient
         
         return cell;
         

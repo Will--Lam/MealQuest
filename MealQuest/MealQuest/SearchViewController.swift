@@ -42,23 +42,15 @@ class SearchViewController: UIViewController, UIPickerViewDelegate, UIPickerView
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return Constants.recipeGroups.count + 1
+        return Constants.recipeGroups.count - 1
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        if (row == 0) {
-            return Constants.RecipeAll
-        } else {
-            return Constants.recipeGroups[row - 1]
-        }
+        return Constants.recipeGroups[row + 1]
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        if (row == 0) {
-            categoryTextField.text = Constants.RecipeAll
-        } else {
-            categoryTextField.text = Constants.recipeGroups[row - 1]
-        }
+        categoryTextField.text = Constants.recipeGroups[row + 1]
     }
     
     @IBAction func searchRecipesAction(_ sender: Any) {
