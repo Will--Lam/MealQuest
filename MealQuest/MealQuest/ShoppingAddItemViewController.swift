@@ -117,20 +117,36 @@ class ShoppingAddItemViewController: UIViewController, UIPickerViewDelegate, UIP
         let quantity = quantityTextField.text!
         let unit = unitTextField.text!
         let group = groupTextField.text!
-        if ((name != "") && (cost != "") && (quantity != "") && (group != "") && (unit != "")) {
+        if (name != "") {
 
             let newDetails = ShoppingItem(
                 listID: -1,
                 itemID: -1,
                 itemName: name,
-                itemCost: Double(cost)!,
-                unit: unit,
-                quantity: Double(quantity)!,
-                group: group,
+                itemCost: Double(0),
+                unit: Constants.UnitBlank,
+                quantity: Double(0),
+                group: Constants.PantryOther,
                 purchased: purchasedState,
                 expirationDate: expirationDate,
                 repurchase: false
             )
+            
+            if (group != "") {
+                newDetails.group = group
+            }
+            
+            if (unit != "") {
+                newDetails.unit = unit
+            }
+            
+            if (cost != "") {
+                newDetails.itemCost = Double(cost)!
+            }
+            
+            if (quantity != "") {
+                newDetails.quantity = Double(quantity)!
+            }
             
             saveNewShoppingItem(newDetails)
             print("Saving edits to database!")

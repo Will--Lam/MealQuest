@@ -11,11 +11,6 @@ import Foundation
 import SystemConfiguration
 
 struct Constants {
-    // constants for Unit
-    public static let UnitML = "ML"
-    public static let UnitKG = "KG"
-    public static let UnitLB = "LB"
-    
     // constants for Pantry
     public static let PantryAll = "All Items"
     public static let PantryDairy = "Dairy"
@@ -143,7 +138,24 @@ struct Constants {
     // constant for rounding
     public static let roundingPlaces = 5
     
-    public static let units = ["mg", "g", "kg", "tsp", "tbsp", "lb", "ton", "oz", "pt", "gal", "ml", "l", "kl", "cup"]
+    // constants for Unit
+    public static let UnitBlank = "-"
+    public static let UnitML = "ml"
+    public static let UnitL = "l"
+    public static let UnitKL = "kl"
+    public static let UnitMG = "mg"
+    public static let UnitG = "g"
+    public static let UnitKG = "kg"
+    public static let UnitTSP = "tsp"
+    public static let UnitTBSP = "tbsp"
+    public static let UnitLB = "lb"
+    public static let UnitTON = "ton"
+    public static let UnitOZ = "oz"
+    public static let UnitCUP = "cup"
+    public static let UnitPT = "pt"
+    public static let UnitGAL = "gal"
+    
+    public static let units = [Constants.UnitBlank, Constants.UnitML, Constants.UnitL, Constants.UnitKL, Constants.UnitMG, Constants.UnitG, Constants.UnitKG, Constants.UnitTSP, Constants.UnitTBSP, Constants.UnitLB, Constants.UnitTON, Constants.UnitOZ, Constants.UnitCUP, Constants.UnitPT, Constants.UnitGAL]
     
     public static let mqWhiteColour = UIColor(red: 239.0/255.0, green: 248.0/255.0, blue: 249.0/255.0, alpha: 1.0)
     public static let mqBlueColour = UIColor(red: 112.0/255.0, green: 208.0/255.0, blue: 236.0/255.0, alpha: 1.0)

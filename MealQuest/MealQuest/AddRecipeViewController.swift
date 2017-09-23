@@ -61,14 +61,17 @@ class AddRecipeViewController: UIViewController, UIPickerViewDelegate, UIPickerV
         primaryPickerView.delegate = self
         primaryPickerView.tag = 1
         primaryCategoryField.inputView = primaryPickerView
+        primaryCategoryField.text = Constants.RecipeBlank
         
         secondaryPickerView.delegate = self
         secondaryPickerView.tag = 2
         secondaryCategoryField.inputView = secondaryPickerView
+        secondaryCategoryField.text = Constants.RecipeBlank
         
         tertiaryPickerView.delegate = self
         tertiaryPickerView.tag = 3
         tertiaryCategoryField.inputView = tertiaryPickerView
+        tertiaryCategoryField.text = Constants.RecipeBlank
         
         if (edit) {
             // Pre-populate all the information into the text fields.
@@ -177,6 +180,25 @@ class AddRecipeViewController: UIViewController, UIPickerViewDelegate, UIPickerV
                 allInstructions += "\(index + 1)" + "|" + step + "|"
             }
             allInstructions.remove(at: allInstructions.index(before: allInstructions.endIndex))
+            
+            // Shift categories to upmost category
+            if (primaryCategoryField.text == Constants.RecipeBlank) {
+                if (secondaryCategoryField.text != Constants.RecipeBlank) {
+                    primaryCategoryField.text = secondaryCategoryField.text
+                    if (tertiaryCategoryField.text != Constants.RecipeBlank) {
+                        secondaryCategoryField.text = tertiaryCategoryField.text
+                        tertiaryCategoryField.text = Constants.RecipeBlank
+                    }
+                } else if (tertiaryCategoryField.text != Constants.RecipeBlank) {
+                    primaryCategoryField.text = tertiaryCategoryField.text
+                    tertiaryCategoryField.text = Constants.RecipeBlank
+                }
+            } else if (secondaryCategoryField.text == Constants.RecipeBlank) {
+                if (tertiaryCategoryField.text != Constants.RecipeBlank) {
+                    secondaryCategoryField.text = tertiaryCategoryField.text
+                    tertiaryCategoryField.text = Constants.RecipeBlank
+                }
+            }
             
             // Call function to add the recipe the database
             if (edit) {
