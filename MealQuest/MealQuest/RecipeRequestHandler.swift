@@ -76,9 +76,10 @@ func getRandomRecipe(category: String) -> RecipeItem {
     var recipe = RecipeItem(id: -1)
     var recipeID = SQLiteDB.instance.getRecipeIDsByCategory(category: category)
     let randomIndex = Int(arc4random_uniform(UInt32(recipeID.count)))
-//**    Need to ensure that a favorite recipe exists
-    recipe = SQLiteDB.instance.getRecipeByID(id: recipeID[randomIndex])
-    
+    if(recipeID.count != 0) {
+        recipe = SQLiteDB.instance.getRecipeByID(id: recipeID[randomIndex])
+    }
+
     return recipe
 }
 
