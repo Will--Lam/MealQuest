@@ -23,6 +23,7 @@ class RecipeViewController: UIViewController, UITableViewDataSource, UITableView
     var ingredientsArray = [RecipeIngredient]()
     var servingSize = Double(1)
 
+    var categoryResults = [RecipeItem]()
     var recipeDetails = RecipeItem(id: -1)
     var detailsPassed = RecipeItem(id: -1)
     var id = Int64()
@@ -38,7 +39,7 @@ class RecipeViewController: UIViewController, UITableViewDataSource, UITableView
         
         // Redraw the results table
         if (!random) {
-//**        Refetch information for observer
+//**        Need to update observer data
             observer.redrawTable()
         }
     }

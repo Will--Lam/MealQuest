@@ -14,6 +14,8 @@ class SearchWPantryTableViewController: UIViewController, UITableViewDataSource,
     @IBOutlet weak var searchWPantryButton: UIButton!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
+    var category = String()
+    
     var pantryItemDic: [String: [PantryItem]] = [:]
     
     override func viewDidLoad() {

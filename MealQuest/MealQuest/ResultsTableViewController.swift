@@ -11,7 +11,8 @@ import UIKit
 class ResultsTableViewController: UITableViewController {
 
     var resultsPassed = [RecipeItem]()
-    var detailsPassed = RecipeItem(id: -1)
+    var recipeDetails = RecipeItem(id: -1)
+    var recipeIngredients = [RecipeIngredient]()
     var cellID = Int64()
     var group = "Search Results"
     
@@ -76,12 +77,8 @@ class ResultsTableViewController: UITableViewController {
         
         cellID = currentCell.id as Int64
         
-        if (cellID != -1) {
-            print("id is: " + "\(cellID)")
-//**        get ingredients information based on recipeID - getIngredientsByRecipe(recipeID: Int64) -> [RecipeIngredient]
-        } else {
-            
-        }
+//**    Need to get recipe details by recipe ID -> getRecipeDetails(recipeID: Int64) -> RecipeItem
+        recipeIngredients = getIngredientsByRecipe(recipeID: cellID)
 
         performSegue(withIdentifier: "viewDetails", sender: self)
     }
@@ -92,7 +89,8 @@ class ResultsTableViewController: UITableViewController {
             // initialize new view controller and cast it as your view controller
             let recipeVC = segue.destination as! RecipeViewController
             // your new view controller should have property that will store passed value
-            recipeVC.recipeDetails = detailsPassed
+            recipeVC.recipeDetails = recipeDetails
+            recipeVC.ingredientsArray = recipeIngredients
             recipeVC.id = cellID
             recipeVC.observer = self
         }

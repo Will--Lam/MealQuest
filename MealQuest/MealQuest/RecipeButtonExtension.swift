@@ -16,6 +16,7 @@ extension RecipeViewController {
             // your new view controller should have property that will store passed value
             editVC.edit = true
             editVC.recipeDetails = recipeDetails
+            editVC.recipeIngredients = ingredientsArray
             editVC.id = id
             editVC.recipeObserver = self
         }
@@ -27,7 +28,7 @@ extension RecipeViewController {
         // 3. Grab the value from the text field, and print it when the user clicks OK.
         alert.addAction(UIAlertAction(title: "Cancel", style: .default))
         alert.addAction(UIAlertAction(title: "Confirm", style: .default, handler: { _ in
-            // Call update to shopping cart
+//**        Function is currently incomplete - Call update to shopping cart
             sendMissingIngredientsToShoppingCart(self.id)
         }))
         // 4. Present the alert.
@@ -53,19 +54,14 @@ extension RecipeViewController {
             }
             print("Text field: \(String(describing: textField!.text))")
             
-//**        Need to consume proper serving amount
-//            validateSkills(self.recipeDetails["analyzedInstructions"] as! String)
-            
             let servingMultiplier = Double(Double(textField!.text!)!/Double(self.servingSize))
             
-            // delete pantry item ingredients
+//**        Function is currently incomplete - delete pantry item ingredients
             consumePantryItemsFromRecipe(self.id, servingMultiplier)
         }))
         
         // 4. Present the alert.
         self.present(alert, animated: true, completion: nil)
         
-        // Send instructions of made dish to challenges
-        // progressSkill(instructionsView.instructionLabel.text)
     }
 }

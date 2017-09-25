@@ -513,7 +513,7 @@
                                 <color key="tintColor" red="0.36470588235294116" green="0.36470588235294116" blue="0.36470588235294116" alpha="0.5" colorSpace="calibratedRGB"/>
                                 <state key="normal" title="Search w/ Pantry"/>
                                 <connections>
-                                    <segue destination="t5U-Wg-brt" kind="show" id="0zz-BU-Ic4"/>
+                                    <segue destination="t5U-Wg-brt" kind="show" identifier="searchWPantry" id="Wb5-g0-z8X"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PQq-xi-Nu2">
@@ -727,8 +727,8 @@
         <image name="searchIcon" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="6iZ-N3-C5N"/>
-        <segue reference="38G-r1-nLr"/>
+        <segue reference="06A-9R-ip6"/>
+        <segue reference="mAk-Wr-5lM"/>
         <segue reference="KjF-t7-zo3"/>
     </inferredMetricsTieBreakers>
 </document>
