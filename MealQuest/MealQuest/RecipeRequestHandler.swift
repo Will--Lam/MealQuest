@@ -44,17 +44,17 @@ func updateRecipe(recipeItem: RecipeItem) -> Int64 {
         tertiary:       recipeItem.tertiary)!
 }
 
-func updateRecipeIngredients(recipeID: Int64, ingredients: [RecipeIngredient]) -> Int64 {
+func updateRecipeIngredients(recipeID: Int64, ingredients: [Int: RecipeIngredient]) -> Int64 {
     for ingredient in SQLiteDB.instance.getIngredientsByRecipeID(recipeID: recipeID) {
         _ = SQLiteDB.instance.deleteIngredient(
             ingredientID: ingredient.ingredientID)
     }
-    for iItem in ingredients {
+    for i in 0...(ingredients.count - 1) {
         _ = SQLiteDB.instance.insertIngredient(
             recipeID:       recipeID,
-            name:           iItem.name,
-            unit:           iItem.unit,
-            quantity:       iItem.quantity)
+            name:           (ingredients[i]?.name)!,
+            unit:           (ingredients[i]?.unit)!,
+            quantity:       (ingredients[i]?.quantity)!)
     }
     return recipeID
 }

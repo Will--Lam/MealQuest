@@ -146,7 +146,7 @@ class AddRecipeViewController: UIViewController, UIPickerViewDelegate, UIPickerV
             
             // Parse the ingredients
             let ingredientsParse = ingredientsTextView.text!.components(separatedBy: CharacterSet.newlines)
-            var allIngredients = [RecipeIngredient]()
+            var allIngredients = [Int: RecipeIngredient]()
             for (index,step) in ingredientsParse.enumerated() {
                 print(step)
                 let newIngredient = RecipeIngredient(id: -1)
