@@ -713,7 +713,7 @@ class SQLiteDB {
             
             return items
         } catch {
-            print("Get search   pantry item ailed")
+            print("Get search pantry item ailed")
             return items
         }
     }

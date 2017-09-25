@@ -114,6 +114,8 @@ func searchWPantryRecipes(query: [String], category: String) -> [RecipeItem] {
     return recipes
 }
 
+
+// TODO
 func sendMissingIngredientsToShoppingCart(_ recipeID: Int64) {
     /*
     let recipeDict = SQLiteDB.instance.getRecipeFieldFromDB(recipeID: recipeID) as [String:Any]
@@ -172,6 +174,8 @@ func sendMissingIngredientsToShoppingCart(_ recipeID: Int64) {
     */
 }
 
+
+//TODO
 func consumePantryItemsFromRecipe(_ recipeID: Int64, _ multiplier :Double) {
     /*
     let recipeDict = SQLiteDB.instance.getRecipeFieldFromDB(recipeID: recipeID) as [String:Any]

@@ -104,7 +104,8 @@ class SearchWPantryTableViewController: UIViewController, UITableViewDataSource,
         
         // get all search pantry items
         let items = SQLiteDB.instance.getSearchPantryItems()
-        
+
+//** Greg comment: the revert is used to unmark the user's search selection; it resets the search flag to 0 after getting the list of items to search with just above
         // revert search status toggled items
         _ = SQLiteDB.instance.revertSearchPantryItems()
         
