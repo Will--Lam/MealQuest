@@ -145,10 +145,11 @@ class AddRecipeViewController: UIViewController, UIPickerViewDelegate, UIPickerV
             }
             
             // Parse the ingredients
-            let ingredientsArray = ingredientsTextView.text!.components(separatedBy: CharacterSet.newlines)
-            var allIngredients = String()
-            for step in ingredientsArray {
+            let ingredientsParse = ingredientsTextView.text!.components(separatedBy: CharacterSet.newlines)
+            var allIngredients = [RecipeIngredient]()
+            for (index,step) in ingredientsParse.enumerated() {
                 print(step)
+                let newIngredient = RecipeIngredient(id: -1)
                 let parse = step.components(separatedBy: CharacterSet.whitespaces)
                 guard (parse.count > 2) else {
                     throw addRecipeError.ingredientFormat
@@ -158,17 +159,15 @@ class AddRecipeViewController: UIViewController, UIPickerViewDelegate, UIPickerV
                         guard (Double(ingredient) != nil) else {
                             throw addRecipeError.ingredientAmount
                         }
-                        allIngredients += ingredient + "|"
+                        newIngredient.quantity = Double(ingredient)!
                     } else if (index == 1) {
-                        allIngredients += ingredient + "|"
+                        newIngredient.unit = ingredient
                     } else {
-                        allIngredients += ingredient + " "
+                        newIngredient.name = ingredient
                     }
                 }
-                allIngredients.remove(at: allIngredients.index(before: allIngredients.endIndex))
-                allIngredients += "@"
+                allIngredients[index] = newIngredient
             }
-            allIngredients.remove(at: allIngredients.index(before: allIngredients.endIndex))
             
             // Parse the instructions
             let itemArray = instructionsTextView.text!.components(separatedBy: CharacterSet.newlines)
@@ -197,61 +196,39 @@ class AddRecipeViewController: UIViewController, UIPickerViewDelegate, UIPickerV
                 }
             }
             
+            var newRecipeItem = RecipeItem(id: -1)
+            if (edit) {
+                newRecipeItem = RecipeItem(id: self.id)
+            }
+            newRecipeItem.title = recipeNameField.text!
+            newRecipeItem.calories = Int(caloriesField.text!)!
+            newRecipeItem.servings = Double(servingSizeField.text!)!
+            newRecipeItem.readyTime = Double(readyTimeField.text!)!
+            newRecipeItem.prepTime = Double(prepTimeField.text!)!
+            newRecipeItem.cookTime = Double(totalTimeField.text!)!
+            newRecipeItem.primary = primaryCategoryField.text!
+            newRecipeItem.secondary = secondaryCategoryField.text!
+            newRecipeItem.tertiary = tertiaryCategoryField.text!
+            newRecipeItem.instructions = allInstructions
+            
+            _ = updateRecipeIngredients(recipeID: newRecipeItem.recipeID, ingredients: allIngredients)
+            
             // Call function to add the recipe the database
             if (edit) {
                 
-                // TODO: Create a RecipeItem instead of recipeDict
-                recipeDict = [
-                    "id": self.id,
-                    "title": recipeNameField.text!,
-                    "calorie": caloriesField.text!,
-                    "servings": servingSizeField.text!,
-                    "readyInMinutes": readyTimeField.text!,
-                    "preparationMinutes": prepTimeField.text!,
-                    "cookingMinutes": totalTimeField.text!,
-                    "primary": primaryCategoryField.text!,
-                    "secondary": secondaryCategoryField.text!,
-                    "tertiary": tertiaryCategoryField.text!,
-                    "ingredients": allIngredients,
-                    "analyzedInstructions": allInstructions
-                ]
-                
-//**            update recipe in recipe table - updateRecipe(recipeItem: RecipeItem) -> RecipeID: Int64
-                
-                // TODO: Create a RecipeIngredient from allIngredients
-                
-//**            update ingredients by deleting existing and adding new - 
-//**                updateRecipeIngredients(recipeID: Int64, ingredients: [RecipeIngredient] -> RecipeID: Int64
-                
-                // updateRecipeInDB(recipeDict)
-                
+                _ = updateRecipe(recipeItem: newRecipeItem)
                 // Need to redraw the view
                 recipeObserver.redrawView()
+                
             } else {
-                recipeDict = [
-                    "title": recipeNameField.text!,
-                    "calorie": caloriesField.text!,
-                    "servings": servingSizeField.text!,
-                    "readyInMinutes": readyTimeField.text!,
-                    "preparationMinutes": prepTimeField.text!,
-                    "cookingMinutes": totalTimeField.text!,
-                    "primary": primaryCategoryField.text!,
-                    "secondary": secondaryCategoryField.text!,
-                    "tertiary": tertiaryCategoryField.text!,
-                    "ingredients": allIngredients,
-                    "analyzedInstructions": allInstructions
-                ]
                 
-//**            add new recipe to recipe table - createRecipe(recipeItem: RecipeItem) -> RecipeID: Int64
-                
-//**            update ingredients by deleting existing and adding new 
-//**                updateRecipeIngredients(recipeID: Int64, ingredients: [RecipeIngredient] -> RecipeID: Int64
-                // addNewRecipeToDB(recipeDict)
+                _ = createRecipe(recipeItem: newRecipeItem)
                 
                 //resultsObserver.resultsPassed = getFavoriteRecipes( )
                 resultsObserver.redrawTable()
             }
             self.navigationController?.popViewController(animated: true)
+            
         } catch addRecipeError.ingredientAmount {
             msg = "An ingredient amount is incorrect. Please check that all new lines start with a number."
         } catch addRecipeError.fieldFormat {
