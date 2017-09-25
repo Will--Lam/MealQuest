@@ -88,9 +88,21 @@ class SearchViewController: UIViewController, UIPickerViewDelegate, UIPickerView
         activityIndicator.startAnimating()
         recipeDetails = getRandomRecipe(category: category)
         let recipeID = recipeDetails.recipeID
-        recipeIngredients = getIngredientsByRecipe(recipeID: recipeID)
         
-        performSegue(withIdentifier: "viewDetails", sender: self)
+        if (recipeID == Int64(-1)){
+            activityIndicator.stopAnimating()
+            self.view.isUserInteractionEnabled = true
+            
+            //1. Create the alert controller.
+            let alert = UIAlertController(title: "Recipes are required to be added before being able to randomize.", message: "", preferredStyle: .alert)
+            // 3. Grab the value from the text field, and print it when the user clicks OK.
+            alert.addAction(UIAlertAction(title: "OK", style: .default))
+            // 4. Present the alert.
+            self.present(alert, animated: true, completion: nil)
+        } else {
+            recipeIngredients = getIngredientsByRecipe(recipeID: recipeID)
+            performSegue(withIdentifier: "viewDetails", sender: self)
+        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any!){
