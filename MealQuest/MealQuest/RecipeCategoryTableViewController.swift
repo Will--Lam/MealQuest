@@ -13,6 +13,7 @@ class RecipeCategoryTableViewController: UITableViewController {
     @IBOutlet weak var addButton: UIBarButtonItem!
     @IBOutlet var recipeCategoryTable: UITableView!
 
+    var categoryResults = [RecipeItem]()
     var categorySelected = ""
     
     override func viewDidLoad() {
@@ -57,6 +58,7 @@ class RecipeCategoryTableViewController: UITableViewController {
         let currentCell = tableView.cellForRow(at: indexPath)! as! RecipeCategoryTableViewCell
         
         categorySelected = currentCell.recipeCategoryName.text!
+        categoryResults = getRecipes(category: categorySelected)
     
         performSegue(withIdentifier: "viewCategory", sender: self)
     }
@@ -66,8 +68,9 @@ class RecipeCategoryTableViewController: UITableViewController {
         if (segue.identifier == "viewCategory") {
             // initialize new view controller and cast it as your view controller
             let categoryVC = segue.destination as! ResultsTableViewController
-//**    Get recipes based on a category - getRecipes(category: String) -> [RecipeItem]
+            categoryVC.resultsPassed = categoryResults
             categoryVC.group = categorySelected
+            
         } else if (segue.identifier == "addItem") {
             // initialize new view controller and cast it as your view controller
             let addVC = segue.destination as! AddRecipeViewController

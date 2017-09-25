@@ -19,9 +19,11 @@ class SearchViewController: UIViewController, UIPickerViewDelegate, UIPickerView
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     let categoryPickerview = UIPickerView()
+    var category = String()
     
-    var testDict = [[String:Any]]()
-    var detailsPassed = [String:Any]()
+    var searchResults = [RecipeItem]()
+    var recipeDetails = RecipeItem(id: -1)
+    var recipeIngredients = [RecipeIngredient]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,6 +37,7 @@ class SearchViewController: UIViewController, UIPickerViewDelegate, UIPickerView
         categoryPickerview.delegate = self
         categoryTextField.inputView = categoryPickerview
         categoryTextField.text = Constants.RecipeAll
+        category = categoryTextField.text!
     }
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
@@ -51,45 +54,43 @@ class SearchViewController: UIViewController, UIPickerViewDelegate, UIPickerView
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         categoryTextField.text = Constants.recipeGroups[row + 1]
+        category = categoryTextField.text!
     }
     
     @IBAction func searchRecipesAction(_ sender: Any) {
         let query = self.searchTextField.text
         print("make call to search with search text: " + query!)
+        // Need to parse the query
+        var queryArray = query!.components(separatedBy: CharacterSet.whitespaces)
+        var tempText = String()
+        if (queryArray.count > 1) {
+            for i in 0...(queryArray.count - 2) {
+                tempText = queryArray[i]
+                queryArray[i] = tempText.substring(to: tempText.index(before: tempText.endIndex))
+            }
+        }
         
         let category = self.categoryTextField.text
         print("make call to search with category: " + category!)
         
-        //1. Create the alert controller.
-        let alert = UIAlertController(title: "Sorry. Search functionality is not yet ready.", message: "", preferredStyle: .alert)
-        // 3. Grab the value from the text field, and print it when the user clicks OK.
-        alert.addAction(UIAlertAction(title: "OK", style: .default))
-        // 4. Present the alert.
-        self.present(alert, animated: true, completion: nil)
+        self.view.isUserInteractionEnabled = false
+        activityIndicator.startAnimating()
+        // make search on recipes with query and category ->
+        searchResults = searchRecipes(query: queryArray, category: category!)
         
-//**    make search on recipes with query and category -> searchRecipes(query: [String], category: String) -> [RecipeItem]
-        
+        performSegue(withIdentifier: "searchRecipes", sender: self)
     }
     
     @IBAction func randomRecipeAction(_ sender: Any) {
         print("select a random recipe from the DB favorites")
         
-        let category = self.categoryTextField.text
-        print("make call to search with category: " + category!)
+        self.view.isUserInteractionEnabled = false
+        activityIndicator.startAnimating()
+        recipeDetails = getRandomRecipe(category: category)
+        let recipeID = recipeDetails.recipeID
+        recipeIngredients = getIngredientsByRecipe(recipeID: recipeID)
         
-//**    detailsPassed = getRandomRecipe(category: String) -> RecipeItem
-        
-        if (detailsPassed.isEmpty) {
-            //1. Create the alert controller.
-            var alert = UIAlertController()
-            alert = UIAlertController(title: "Warning", message: "No recipes were found in favorites to be selected. Please add recipes to your favorites before trying again.", preferredStyle: .alert)
-            // 3. Grab the value from the text field, and print it when the user clicks OK.
-            alert.addAction(UIAlertAction(title: "OK", style: .default))
-            // 4. Present the alert.
-            self.present(alert, animated: true, completion: nil)
-        } else {
-            performSegue(withIdentifier: "viewDetails", sender: self)
-        }
+        performSegue(withIdentifier: "viewDetails", sender: self)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any!){
@@ -98,15 +99,28 @@ class SearchViewController: UIViewController, UIPickerViewDelegate, UIPickerView
             // initialize new view controller and cast it as your view controller
             let recipeVC = segue.destination as! RecipeViewController
             // your new view controller should have property that will store passed value
-            
+            recipeVC.recipeDetails = recipeDetails
+            recipeVC.ingredientsArray = recipeIngredients
             recipeVC.random = true
-        } else if (segue.identifier == "viewFavorites") {
+            activityIndicator.stopAnimating()
+            self.view.isUserInteractionEnabled = true
             
-            print("attempting to segue")
-            // initialize new view controller and cast it as your view controller
-            // let favoriteVC = segue.destination as! FavoriteRecipesViewController
+        } else if (segue.identifier == "searchWPantry") {
+            
+            print("attempting to segue to search w/ pantry")
+            let searchVC = segue.destination as! SearchWPantryTableViewController
+            searchVC.category = category
+            
+        } else if (segue.identifier == "searchRecipes") {
+            print("attempting to segue on search")
+            
+            let resultsVC = segue.destination as! ResultsTableViewController
+            // To use this properly, change the stringPassed variable in ResultsViewController to dictionary structure
+            resultsVC.resultsPassed = searchResults
+            activityIndicator.stopAnimating()
+            self.view.isUserInteractionEnabled = true
         }
-
+        
     }
 
 }

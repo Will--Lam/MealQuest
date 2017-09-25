@@ -40,6 +40,7 @@ class AddRecipeViewController: UIViewController, UIPickerViewDelegate, UIPickerV
     
     var edit = false
     var recipeDetails = RecipeItem(id: -1)
+    var recipeIngredients = [RecipeIngredient]()
     var id = Int64(-1)
     var categoryObserver = RecipeCategoryTableViewController()
     var recipeObserver = RecipeViewController()
@@ -84,19 +85,15 @@ class AddRecipeViewController: UIViewController, UIPickerViewDelegate, UIPickerV
             primaryCategoryField.text = recipeDetails.primary
             secondaryCategoryField.text = recipeDetails.secondary
             tertiaryCategoryField.text = recipeDetails.tertiary
-            
-//**        Get the ingredients information into a single displayable string
-            /*var allIngredients = String()
-            let ingredients = recipeDetails["ingredients"] as! String
-            let tempIngredients = ingredients.components(separatedBy: "@")
-            for ingredient in tempIngredients {
-                let item = ingredient.components(separatedBy: "|")
-                allIngredients += item[0]  + " " + item[1] + " " + item[2] + "\n"
+ 
+            // Get the ingredients into a single displayable string
+            var allIngredients = String()
+            for ingredient in recipeIngredients {
+                allIngredients += "\(ingredient.quantity)"  + " " + ingredient.unit + " " + ingredient.name + "\n"
             }
-            allIngredients.remove(at: allIngredients.index(before: allIngredients.endIndex))
-            ingredientsTextView.text = allIngredients*/
+            ingredientsTextView.text = allIngredients
             
-            // Get the instruction information into a single displayable string
+            // Get the instruction info into a single displayable string
             var allInstructions = String()
             let instructions = recipeDetails.instructions
             let tempInstructions = instructions.components(separatedBy: "|")
