@@ -108,29 +108,62 @@ class ShoppingEditItemViewController: UIViewController, UIPickerViewDelegate, UI
     }
 
     @IBAction func saveAction(_ sender: Any) {
-        let newDetails = ShoppingItem(
-            listID: -1,
-            itemID: id,
-            itemName: itemNameTextField.text!,
-            itemCost: Double(costTextField.text!)!,
-            unit: unitTextField.text!,
-            quantity: Double(quantityTextField.text!)!,
-            group: groupTextField.text!,
-            purchased: purchasedState,
-            expirationDate: expirationDate,
-            repurchase: false
-        )
+        let name = itemNameTextField.text!
+        let cost = costTextField.text!
+        let unit = unitTextField.text!
+        let quantity = quantityTextField.text!
+        let group = groupTextField.text!
         
-        updateShoppingItem(newDetails)
-        print("Saving edits to database!")
+        if (name != "") {
+            
+            let newDetails = ShoppingItem(
+                listID: -1,
+                itemID: id,
+                itemName: name,
+                itemCost: Double(0),
+                unit: Constants.UnitBlank,
+                quantity: Double(0),
+                group: Constants.PantryOther,
+                purchased: purchasedState,
+                expirationDate: expirationDate,
+                repurchase: false
+            )
+            
+            if (group != "") {
+                newDetails.group = group
+            }
+            
+            if (unit != "") {
+                newDetails.unit = unit
+            }
+            
+            if (cost != "") {
+                newDetails.itemCost = Double(cost)!
+            }
+            
+            if (quantity != "") {
+                newDetails.quantity = Double(quantity)!
+            }
         
-        // initialize new view controller and cast it as your view controller
-        let stack = self.navigationController?.viewControllers
-        if ((stack?.count)! > 1) {
-            observer.redrawTable()
+        
+            updateShoppingItem(newDetails)
+            print("Saving edits to database!")
+        
+            // initialize new view controller and cast it as your view controller
+            let stack = self.navigationController?.viewControllers
+            if ((stack?.count)! > 1) {
+                observer.redrawTable()
+            }
+        
+            self.navigationController?.popViewController(animated: true)
+        } else {
+            //1. Create the alert controller.
+            let alert = UIAlertController(title: "Required fields were missing. Please review and fill in all required fields.", message: "", preferredStyle: .alert)
+            // 3. Grab the value from the text field, and print it when the user clicks OK.
+            alert.addAction(UIAlertAction(title: "OK", style: .default))
+            // 4. Present the alert.
+            self.present(alert, animated: true, completion: nil)
         }
-        
-        self.navigationController?.popViewController(animated: true)
     }
     
 }

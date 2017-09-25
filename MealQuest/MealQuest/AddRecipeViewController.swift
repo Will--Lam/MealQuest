@@ -37,6 +37,7 @@ class AddRecipeViewController: UIViewController, UIPickerViewDelegate, UIPickerV
     let primaryPickerView = UIPickerView()
     let secondaryPickerView = UIPickerView()
     let tertiaryPickerView = UIPickerView()
+    let recipeOptions = Constants.recipeGroups.filter { $0 != Constants.RecipeAll}
     
     var edit = false
     var recipeDetails = RecipeItem(id: -1)
@@ -115,20 +116,20 @@ class AddRecipeViewController: UIViewController, UIPickerViewDelegate, UIPickerV
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return Constants.recipeGroups.count
+        return recipeOptions.count
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return Constants.recipeGroups[row]
+        return recipeOptions[row]
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if (pickerView.tag == 1) {
-            primaryCategoryField.text = Constants.recipeGroups[row]
+            primaryCategoryField.text = recipeOptions[row]
         } else if (pickerView.tag == 2) {
-            secondaryCategoryField.text = Constants.recipeGroups[row]
+            secondaryCategoryField.text = recipeOptions[row]
         } else if (pickerView.tag == 3) {
-            tertiaryCategoryField.text = Constants.recipeGroups[row]
+            tertiaryCategoryField.text = recipeOptions[row]
         }
     }
     
