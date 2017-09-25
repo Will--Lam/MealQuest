@@ -151,6 +151,7 @@ class AddRecipeViewController: UIViewController, UIPickerViewDelegate, UIPickerV
                 print(step)
                 let newIngredient = RecipeIngredient(id: -1)
                 let parse = step.components(separatedBy: CharacterSet.whitespaces)
+                var ingredientName = String()
                 guard (parse.count > 2) else {
                     throw addRecipeError.ingredientFormat
                 }
@@ -163,9 +164,11 @@ class AddRecipeViewController: UIViewController, UIPickerViewDelegate, UIPickerV
                     } else if (index == 1) {
                         newIngredient.unit = ingredient
                     } else {
-                        newIngredient.name = ingredient
+                        ingredientName += ingredient + " "
                     }
                 }
+                ingredientName.remove(at: ingredientName.index(before: ingredientName.endIndex))
+                newIngredient.name = ingredientName
                 allIngredients[index] = newIngredient
             }
             
