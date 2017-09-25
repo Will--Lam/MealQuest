@@ -187,6 +187,8 @@ class AddRecipeViewController: UIViewController, UIPickerViewDelegate, UIPickerV
                     if (tertiaryCategoryField.text != Constants.RecipeBlank) {
                         secondaryCategoryField.text = tertiaryCategoryField.text
                         tertiaryCategoryField.text = Constants.RecipeBlank
+                    } else {
+                        secondaryCategoryField.text = Constants.RecipeBlank
                     }
                 } else if (tertiaryCategoryField.text != Constants.RecipeBlank) {
                     primaryCategoryField.text = tertiaryCategoryField.text
@@ -206,9 +208,15 @@ class AddRecipeViewController: UIViewController, UIPickerViewDelegate, UIPickerV
             newRecipeItem.title = recipeNameField.text!
             newRecipeItem.calories = Int(caloriesField.text!)!
             newRecipeItem.servings = Double(servingSizeField.text!)!
-            newRecipeItem.readyTime = Double(readyTimeField.text!)!
-            newRecipeItem.prepTime = Double(prepTimeField.text!)!
-            newRecipeItem.cookTime = Double(totalTimeField.text!)!
+            if (readyTimeField.text! != "") {
+                newRecipeItem.readyTime = Double(readyTimeField.text!)!
+            }
+            if (prepTimeField.text! != "") {
+                newRecipeItem.prepTime = Double(prepTimeField.text!)!
+            }
+            if (totalTimeField.text! != "") {
+                newRecipeItem.cookTime = Double(totalTimeField.text!)!
+            }
             newRecipeItem.primary = primaryCategoryField.text!
             newRecipeItem.secondary = secondaryCategoryField.text!
             newRecipeItem.tertiary = tertiaryCategoryField.text!
