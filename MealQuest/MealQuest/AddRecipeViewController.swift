@@ -97,6 +97,7 @@ class AddRecipeViewController: UIViewController, UIPickerViewDelegate, UIPickerV
             for ingredient in recipeIngredients {
                 allIngredients += "\(ingredient.quantity)"  + " " + ingredient.unit + " " + ingredient.name + "\n"
             }
+            allIngredients.remove(at: allIngredients.index(before: allIngredients.endIndex))
             ingredientsTextView.text = allIngredients
             
             // Get the instruction info into a single displayable string
