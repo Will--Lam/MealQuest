@@ -358,7 +358,7 @@ class SQLiteDB {
                 ingredientName == ingredient)
             
             for iItem in try db!.prepare(selectQuery) {
-                recipeIDs.insert(iItem[recipeID])
+                recipeIDs.insert(iItem[ingredientRecipeID])
             }
             
             return Array(recipeIDs)
