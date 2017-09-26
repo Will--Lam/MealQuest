@@ -128,6 +128,7 @@ class SQLiteDB {
                 table.column(recipeSecondary)
                 table.column(recipeTertiary)
             })
+            print("Recipe table created")
         } catch {
             print("Unable to create recipe table")
         }
@@ -151,6 +152,7 @@ class SQLiteDB {
             
             return id
         } catch {
+            print("Error info: \(error)")
             print("Insert recipe failed")
             return nil
         }
@@ -271,6 +273,7 @@ class SQLiteDB {
             
             return id
         } catch {
+            print("Error info: \(error)")
             print("Insert ingredient failed")
             return nil
         }
