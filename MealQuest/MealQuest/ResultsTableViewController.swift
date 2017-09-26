@@ -33,10 +33,26 @@ class ResultsTableViewController: UITableViewController {
         
         self.navigationItem.title = group
         self.navigationController!.navigationBar.titleTextAttributes = titleAttributes
+        
+        if (group == "Search Results") {
+            addRecipeButton.isEnabled = false
+            addRecipeButton.isHidden = true
+        } else {
+            addRecipeButton.isEnabled = true
+            addRecipeButton.isHidden = false
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
         redrawTable()
+        
+        if (group == "Search Results") {
+            addRecipeButton.isEnabled = false
+            addRecipeButton.isHidden = true
+        } else {
+            addRecipeButton.isEnabled = true
+            addRecipeButton.isHidden = false
+        }
     }
 
     // MARK: - Table view data source
