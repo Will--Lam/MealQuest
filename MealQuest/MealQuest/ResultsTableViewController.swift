@@ -98,6 +98,7 @@ class ResultsTableViewController: UITableViewController {
         if (segue.identifier == "addRecipe") {
             let addVC = segue.destination as! AddRecipeViewController
             addVC.resultsObserver = self
+            addVC.category = group
         }
     }
 

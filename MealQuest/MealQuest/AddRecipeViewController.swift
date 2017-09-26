@@ -40,10 +40,11 @@ class AddRecipeViewController: UIViewController, UIPickerViewDelegate, UIPickerV
     let recipeOptions = Constants.recipeGroups.filter { $0 != Constants.RecipeAll}
     
     var edit = false
+    var category = ""
     var recipeDetails = RecipeItem(id: -1)
     var recipeIngredients = [RecipeIngredient]()
     var id = Int64(-1)
-    var categoryObserver = RecipeCategoryTableViewController()
+    var addFromCategory = false
     var recipeObserver = RecipeViewController()
     var resultsObserver = ResultsTableViewController()
     
@@ -232,11 +233,12 @@ class AddRecipeViewController: UIViewController, UIPickerViewDelegate, UIPickerV
                 // Need to redraw the view
                 recipeObserver.redrawView()
                 
+            } else if (addFromCategory) {
+                _ = createRecipe(recipeItem: newRecipeItem)
             } else {
-                
                 _ = createRecipe(recipeItem: newRecipeItem)
                 
-                //resultsObserver.resultsPassed = getFavoriteRecipes( )
+                resultsObserver.resultsPassed = getRecipes(category: category)
                 resultsObserver.redrawTable()
             }
             self.navigationController?.popViewController(animated: true)
