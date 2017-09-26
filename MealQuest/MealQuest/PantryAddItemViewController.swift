@@ -19,6 +19,8 @@ class PantryAddItemViewController: UIViewController, UIPickerViewDelegate, UIPic
     @IBOutlet weak var itemExpirationDate: UITextField!
     @IBOutlet var saveButton: UIBarButtonItem!
     
+    let validPantryGroups = Constants.pantryGroups.filter { $0 != Constants.PantryAll}
+    
     let groupPickerView = UIPickerView()
     let unitPickerView = UIPickerView()
     
@@ -50,9 +52,9 @@ class PantryAddItemViewController: UIViewController, UIPickerViewDelegate, UIPic
             itemUnit.text = Constants.units[0]
             
             itemGroup.text = itemGroupSuggestion
-            if (itemGroupSuggestion == "All") {
-                itemGroup.text = "Other Grocery"
-                itemGroupSuggestion = "Other Grocery"
+            if (itemGroupSuggestion == Constants.PantryAll) {
+                itemGroup.text = Constants.PantryOther
+                itemGroupSuggestion = Constants.PantryOther
             }
             
             // pre-fill in the category based on where the add button was pressed from
@@ -89,7 +91,7 @@ class PantryAddItemViewController: UIViewController, UIPickerViewDelegate, UIPic
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         if (pickerView.tag == 1) {
-            return Constants.pantryGroups.count
+            return validPantryGroups.count
         } else if (pickerView.tag == 2) {
             return Constants.units.count
         } else {
@@ -99,7 +101,7 @@ class PantryAddItemViewController: UIViewController, UIPickerViewDelegate, UIPic
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         if (pickerView.tag == 1) {
-            return Constants.pantryGroups[row]
+            return validPantryGroups[row]
         } else if (pickerView.tag == 2) {
             return Constants.units[row]
         } else {
@@ -109,7 +111,7 @@ class PantryAddItemViewController: UIViewController, UIPickerViewDelegate, UIPic
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if (pickerView.tag == 1) {
-            itemGroup.text = Constants.pantryGroups[row]
+            itemGroup.text = validPantryGroups[row]
         } else if (pickerView.tag == 2) {
             itemUnit.text = Constants.units[row]
         }
