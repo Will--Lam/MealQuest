@@ -63,10 +63,21 @@ func deleteRecipe(recipeID: Int64) {
     _ = SQLiteDB.instance.deleteRecipe(id: recipeID)
 }
 
+func getRecipeDetails(recipeID: Int64) -> RecipeItem {
+    let recipe = RecipeItem(id: -1)
+    let temp = SQLiteDB.instance.getRecipeByID(id: recipeID)
+    
+    if (temp != nil) {
+        return temp!
+    } else {
+        return recipe
+    }
+}
+
 func getRecipes(category: String) -> [RecipeItem] {
     var recipes = [RecipeItem]()
     for recipeID in SQLiteDB.instance.getRecipeIDsByCategory(category: category) {
-        recipes.append(SQLiteDB.instance.getRecipeByID(id: recipeID))
+        recipes.append(SQLiteDB.instance.getRecipeByID(id: recipeID)!)
     }
     
     return Array(recipes)
@@ -81,7 +92,7 @@ func getRandomRecipe(category: String) -> RecipeItem {
     var recipeID = SQLiteDB.instance.getRecipeIDsByCategory(category: category)
     let randomIndex = Int(arc4random_uniform(UInt32(recipeID.count)))
     if(recipeID.count != 0) {
-        recipe = SQLiteDB.instance.getRecipeByID(id: recipeID[randomIndex])
+        recipe = SQLiteDB.instance.getRecipeByID(id: recipeID[randomIndex])!
     }
 
     return recipe
@@ -106,7 +117,7 @@ func searchRecipes(query: [String], category: String) -> [RecipeItem] {
     
     for recipe in results {
         if (recipe.value >=  Int(ceil(Double(results.count / 2)))) {
-            recipes.append(SQLiteDB.instance.getRecipeByID(id: recipe.key))
+            recipes.append(SQLiteDB.instance.getRecipeByID(id: recipe.key)!)
         }
     }
     

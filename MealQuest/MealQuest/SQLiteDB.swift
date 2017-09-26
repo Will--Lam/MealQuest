@@ -187,7 +187,7 @@ class SQLiteDB {
         }
     }
     
-    func getRecipeByID(id: Int64) -> RecipeItem {
+    func getRecipeByID(id: Int64) -> RecipeItem? {
         var item = RecipeItem(id: id)
         
         do {
@@ -212,7 +212,7 @@ class SQLiteDB {
             return item
         } catch {
             print("Get recipe failed")
-            return item
+            return nil
         }
     }
     
