@@ -695,7 +695,7 @@
                         <outlet property="activityIndicator" destination="MrJ-kb-5D9" id="tBx-zP-kQV"/>
                         <outlet property="itemTable" destination="nGa-0p-3gL" id="qqc-l1-Pxt"/>
                         <outlet property="searchWPantryButton" destination="Q1j-Tq-akl" id="W1v-ob-dCU"/>
-                        <segue destination="CUd-2S-0O3" kind="show" id="l0F-JG-thb"/>
+                        <segue destination="CUd-2S-0O3" kind="show" identifier="searchRecipes" id="l0F-JG-thb"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Cx0-Mk-QEA" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -738,7 +738,7 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="06A-9R-ip6"/>
-        <segue reference="mAk-Wr-5lM"/>
         <segue reference="KjF-t7-zo3"/>
+        <segue reference="l0F-JG-thb"/>
     </inferredMetricsTieBreakers>
 </document>
