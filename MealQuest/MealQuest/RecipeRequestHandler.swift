@@ -120,8 +120,10 @@ func searchRecipes(query: [String], category: String) -> [RecipeItem] {
     
     // case insensitive comparison
     for searchString in query {
-        for id in SQLiteDB.instance.getRecipeIDByIngredient(ingredient: searchString) {
-            results[id]! += 1
+        let recipeIDsFromIngredientsTable = SQLiteDB.instance.getRecipeIDByIngredient(ingredient: searchString)
+        let commonRecipeIDs = recipeIDsFromIngredientsTable.filter{ recipeIDs.contains($0) }
+        for id in commonRecipeIDs {
+                results[id]! += 1
         }
     }
     
