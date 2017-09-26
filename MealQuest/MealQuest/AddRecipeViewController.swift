@@ -200,7 +200,7 @@ class AddRecipeViewController: UIViewController, UIPickerViewDelegate, UIPickerV
                     primaryCategoryField.text = tertiaryCategoryField.text
                     tertiaryCategoryField.text = Constants.RecipeBlank
                 } else {
-                    primaryCategoryField.text == Constants.RecipeOther
+                    primaryCategoryField.text = Constants.RecipeOther
                 }
             } else if (secondaryCategoryField.text == Constants.RecipeBlank) {
                 if (tertiaryCategoryField.text != Constants.RecipeBlank) {
