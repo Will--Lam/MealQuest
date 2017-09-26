@@ -59,6 +59,10 @@ func updateRecipeIngredients(recipeID: Int64, ingredients: [Int: RecipeIngredien
     return recipeID
 }
 
+func deleteRecipe(recipeID: Int64) {
+    _ = SQLiteDB.instance.deleteRecipe(id: recipeID)
+}
+
 func getRecipes(category: String) -> [RecipeItem] {
     var recipes = [RecipeItem]()
     for recipeID in SQLiteDB.instance.getRecipeIDsByCategory(category: category) {
