@@ -29,8 +29,8 @@ func createRecipe(recipeItem: RecipeItem) -> Int64 {
         tertiary:       recipeItem.tertiary)!
 }
 
-func updateRecipe(recipeItem: RecipeItem) -> Int64 {
-    return SQLiteDB.instance.updateRecipe(
+func updateRecipe(recipeItem: RecipeItem) {
+    _ = SQLiteDB.instance.updateRecipe(
         id: recipeItem.recipeID,
         title:          recipeItem.title,
         calories:       recipeItem.calories,
@@ -106,8 +106,12 @@ func getRandomRecipe(category: String) -> RecipeItem {
 
 func searchRecipes(query: [String], category: String) -> [RecipeItem] {
     var recipes = [RecipeItem]()
-    let recipeIDs = SQLiteDB.instance.getRecipeIDsByCategory(category: category)
-    
+    var recipeIDs = [Int64]()
+    if (category == Constants.RecipeAll) {
+        recipeIDs = SQLiteDB.instance.getAllRecipes()
+    } else {
+        recipeIDs = SQLiteDB.instance.getRecipeIDsByCategory(category: category)
+    }
     var results = [Int64:Int]()
     
     for id in recipeIDs {

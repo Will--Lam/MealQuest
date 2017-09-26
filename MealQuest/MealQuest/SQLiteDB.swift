@@ -355,7 +355,7 @@ class SQLiteDB {
         
         do {
             let selectQuery = ingredientTable.filter(
-                ingredientName.lowercaseString == ingredient.lowercased())
+                ingredientName == ingredient)
             
             for iItem in try db!.prepare(selectQuery) {
                 recipeIDs.insert(iItem[recipeID])

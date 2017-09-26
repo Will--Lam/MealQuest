@@ -232,7 +232,7 @@ class AddRecipeViewController: UIViewController, UIPickerViewDelegate, UIPickerV
             newRecipeItem.instructions = allInstructions
             
             if (edit) {
-                newRecipeItem.recipeID = updateRecipe(recipeItem: newRecipeItem)
+                updateRecipe(recipeItem: newRecipeItem)
             } else {
                 newRecipeItem.recipeID = createRecipe(recipeItem: newRecipeItem)
             }
