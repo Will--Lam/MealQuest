@@ -21,6 +21,7 @@ class SQLiteDB {
     private let deletePantryTable       = false
     private let deleteShoppingLists     = false
     private let deleteShoppingItem      = false
+    private let deleteRecipeTable       = false
     
     // Recipe table
     private let recipeTable         = Table("recipes")
@@ -115,6 +116,10 @@ class SQLiteDB {
     
     func createRecipeTable() {
         do {
+            if (deleteRecipeTable) {
+                try db?.run(recipeTable.drop(ifExists: true))
+            }
+            
             try db!.run(recipeTable.create(ifNotExists: true) { table in
                 table.column(recipeID, primaryKey: true)
                 table.column(recipeTitle)
