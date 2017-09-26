@@ -37,6 +37,7 @@ class AddRecipeViewController: UIViewController, UIPickerViewDelegate, UIPickerV
     let primaryPickerView = UIPickerView()
     let secondaryPickerView = UIPickerView()
     let tertiaryPickerView = UIPickerView()
+    let recipeOptions = Constants.recipeGroups.filter { $0 != Constants.RecipeAll}
     
     var edit = false
     var recipeDetails = RecipeItem(id: -1)
@@ -115,20 +116,20 @@ class AddRecipeViewController: UIViewController, UIPickerViewDelegate, UIPickerV
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return Constants.recipeGroups.count
+        return recipeOptions.count
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return Constants.recipeGroups[row]
+        return recipeOptions[row]
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if (pickerView.tag == 1) {
-            primaryCategoryField.text = Constants.recipeGroups[row]
+            primaryCategoryField.text = recipeOptions[row]
         } else if (pickerView.tag == 2) {
-            secondaryCategoryField.text = Constants.recipeGroups[row]
+            secondaryCategoryField.text = recipeOptions[row]
         } else if (pickerView.tag == 3) {
-            tertiaryCategoryField.text = Constants.recipeGroups[row]
+            tertiaryCategoryField.text = recipeOptions[row]
         }
     }
     
@@ -151,6 +152,7 @@ class AddRecipeViewController: UIViewController, UIPickerViewDelegate, UIPickerV
                 print(step)
                 let newIngredient = RecipeIngredient(id: -1)
                 let parse = step.components(separatedBy: CharacterSet.whitespaces)
+                var ingredientName = String()
                 guard (parse.count > 2) else {
                     throw addRecipeError.ingredientFormat
                 }
@@ -163,9 +165,11 @@ class AddRecipeViewController: UIViewController, UIPickerViewDelegate, UIPickerV
                     } else if (index == 1) {
                         newIngredient.unit = ingredient
                     } else {
-                        newIngredient.name = ingredient
+                        ingredientName += ingredient + " "
                     }
                 }
+                ingredientName.remove(at: ingredientName.index(before: ingredientName.endIndex))
+                newIngredient.name = ingredientName
                 allIngredients[index] = newIngredient
             }
             
@@ -184,6 +188,8 @@ class AddRecipeViewController: UIViewController, UIPickerViewDelegate, UIPickerV
                     if (tertiaryCategoryField.text != Constants.RecipeBlank) {
                         secondaryCategoryField.text = tertiaryCategoryField.text
                         tertiaryCategoryField.text = Constants.RecipeBlank
+                    } else {
+                        secondaryCategoryField.text = Constants.RecipeBlank
                     }
                 } else if (tertiaryCategoryField.text != Constants.RecipeBlank) {
                     primaryCategoryField.text = tertiaryCategoryField.text
@@ -203,9 +209,15 @@ class AddRecipeViewController: UIViewController, UIPickerViewDelegate, UIPickerV
             newRecipeItem.title = recipeNameField.text!
             newRecipeItem.calories = Int(caloriesField.text!)!
             newRecipeItem.servings = Double(servingSizeField.text!)!
-            newRecipeItem.readyTime = Double(readyTimeField.text!)!
-            newRecipeItem.prepTime = Double(prepTimeField.text!)!
-            newRecipeItem.cookTime = Double(totalTimeField.text!)!
+            if (readyTimeField.text! != "") {
+                newRecipeItem.readyTime = Double(readyTimeField.text!)!
+            }
+            if (prepTimeField.text! != "") {
+                newRecipeItem.prepTime = Double(prepTimeField.text!)!
+            }
+            if (totalTimeField.text! != "") {
+                newRecipeItem.cookTime = Double(totalTimeField.text!)!
+            }
             newRecipeItem.primary = primaryCategoryField.text!
             newRecipeItem.secondary = secondaryCategoryField.text!
             newRecipeItem.tertiary = tertiaryCategoryField.text!
