@@ -76,10 +76,16 @@ func getRecipeDetails(recipeID: Int64) -> RecipeItem {
 
 func getRecipes(category: String) -> [RecipeItem] {
     var recipes = [RecipeItem]()
-    for recipeID in SQLiteDB.instance.getRecipeIDsByCategory(category: category) {
-        recipes.append(SQLiteDB.instance.getRecipeByID(id: recipeID)!)
-    }
     
+    if (category == Constants.RecipeAll) {
+        for recipeID in SQLiteDB.instance.getAllRecipes() {
+            recipes.append(SQLiteDB.instance.getRecipeByID(id: recipeID)!)
+        }
+    } else {
+        for recipeID in SQLiteDB.instance.getRecipeIDsByCategory(category: category) {
+            recipes.append(SQLiteDB.instance.getRecipeByID(id: recipeID)!)
+        }
+    }
     return Array(recipes)
 }
 

@@ -216,6 +216,24 @@ class SQLiteDB {
         }
     }
     
+    func getAllRecipes() -> [Int64] {
+        var recipeIDs = Set<Int64>()
+        
+        do {
+            let selectQuery = recipeTable.filter(
+                recipeID != -1)
+            
+            for item in try db!.prepare(selectQuery) {
+                recipeIDs.insert(item[recipeID])
+            }
+            
+            return Array(recipeIDs)
+        } catch {
+            print("Get recipeIDs failed")
+            return Array(recipeIDs)
+        }
+    }
+    
     func getRecipeIDsByCategory(category: String) -> [Int64] {
         var recipeIDs = Set<Int64>()
         
