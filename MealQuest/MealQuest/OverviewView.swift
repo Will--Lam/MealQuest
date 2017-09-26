@@ -26,6 +26,7 @@ class OverviewView: UIView {
     
     var observer: RecipeViewController!
     
+    /*
     @IBAction func setRecipeImageAction(_ sender: Any) {
         print("Hello")
         
@@ -36,6 +37,6 @@ class OverviewView: UIView {
             imagePicker.allowsEditing = false
             observer.present(imagePicker, animated: true, completion: nil)
         }
-    }
+    }*/
     
 }

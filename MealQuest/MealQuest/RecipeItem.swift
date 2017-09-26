@@ -9,7 +9,7 @@
 import Foundation
 
 class RecipeItem {
-    let recipeID: Int64
+    var recipeID: Int64
     var title: String
     var calories: Int
     var servings: Double

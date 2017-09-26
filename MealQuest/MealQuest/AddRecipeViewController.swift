@@ -230,20 +230,18 @@ class AddRecipeViewController: UIViewController, UIPickerViewDelegate, UIPickerV
             newRecipeItem.tertiary = tertiaryCategoryField.text!
             newRecipeItem.instructions = allInstructions
             
+            if (edit) {
+                newRecipeItem.recipeID = updateRecipe(recipeItem: newRecipeItem)
+            } else {
+                newRecipeItem.recipeID = createRecipe(recipeItem: newRecipeItem)
+            }
             _ = updateRecipeIngredients(recipeID: newRecipeItem.recipeID, ingredients: allIngredients)
             
             // Call function to add the recipe the database
             if (edit) {
-                
-                _ = updateRecipe(recipeItem: newRecipeItem)
-                // Need to redraw the view
                 recipeObserver.redrawView()
-                
             } else if (addFromCategory) {
-                _ = createRecipe(recipeItem: newRecipeItem)
             } else {
-                _ = createRecipe(recipeItem: newRecipeItem)
-                
                 resultsObserver.resultsPassed = getRecipes(category: category)
                 resultsObserver.redrawTable()
             }

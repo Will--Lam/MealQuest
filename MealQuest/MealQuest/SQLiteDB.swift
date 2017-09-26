@@ -22,7 +22,6 @@ class SQLiteDB {
     private let deleteShoppingLists     = false
     private let deleteShoppingItem      = false
     private let deleteRecipeTable       = false
-    private let deleteIngredientTable   = false
     
     // Recipe table
     private let recipeTable         = Table("recipes")
