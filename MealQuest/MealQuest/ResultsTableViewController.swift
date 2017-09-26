@@ -20,6 +20,9 @@ class ResultsTableViewController: UITableViewController {
     @IBOutlet weak var addRecipeButton: UIButton!
     
     func redrawTable( ) {
+        if (group != "Search Results") {
+            resultsPassed = getRecipes(category: group)
+        }
         resultsTable.reloadData()
     }
     
@@ -80,30 +83,33 @@ class ResultsTableViewController: UITableViewController {
         cell.category = recipeCategory
         cell.titleLabel.text = titleText
         cell.calorieLabel.text = "\(calorieVal)"
+        cell.categoryIcon.image = UIImage(named: Constants.recipeIconMap[recipeCategory]!)
         
         return cell
     }
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        let currentCell = tableView.cellForRow(at: indexPath)! as! ResultsTableViewCell
+        if (group != "Search Results") {
+            let currentCell = tableView.cellForRow(at: indexPath)! as! ResultsTableViewCell
         
-        cellID = currentCell.id as Int64
+            cellID = currentCell.id as Int64
         
-        if editingStyle == .delete {
-            //1. Create the alert controller.
-            let alert = UIAlertController(title: "Confirm to delete the recipe?", message: "", preferredStyle: .alert)
-            // 3. Grab the value from the text field, and print it when the user clicks OK.
-            alert.addAction(UIAlertAction(title: "Cancel", style: .default))
-            alert.addAction(UIAlertAction(title: "Confirm", style: .default, handler: { _ in
+            if editingStyle == .delete {
+                //1. Create the alert controller.
+                let alert = UIAlertController(title: "Confirm to delete the recipe?", message: "", preferredStyle: .alert)
+                // 3. Grab the value from the text field, and print it when the user clicks OK.
+                alert.addAction(UIAlertAction(title: "Cancel", style: .default))
+                alert.addAction(UIAlertAction(title: "Confirm", style: .default, handler: { _ in
                 
-                deleteRecipe(recipeID: self.cellID)
-                print("Delete item from database!")
+                    deleteRecipe(recipeID: self.cellID)
+                    print("Delete item from database!")
                 
-                self.redrawTable()
+                    self.redrawTable()
                 
-            }))
-            // 4. Present the alert.
-            self.present(alert, animated: true, completion: nil)
+                }))
+                // 4. Present the alert.
+                self.present(alert, animated: true, completion: nil)
+            }
         }
     }
     
@@ -117,9 +123,19 @@ class ResultsTableViewController: UITableViewController {
         cellID = currentCell.id as Int64
         
 //**    Need to get recipe details by recipe ID -> getRecipeDetails(recipeID: Int64) -> RecipeItem
-        recipeIngredients = getIngredientsByRecipe(recipeID: cellID)
+        recipeDetails = getRecipeDetails(recipeID: cellID)
+        if (recipeDetails.recipeID == -1) {
+            //1. Create the alert controller.
+            let alert = UIAlertController(title: "Data corrupted and recipe could not be found. Delete and recreate recipe.", message: "", preferredStyle: .alert)
+            // 3. Grab the value from the text field, and print it when the user clicks OK.
+            alert.addAction(UIAlertAction(title: "OK", style: .default))
+            // 4. Present the alert.
+            self.present(alert, animated: true, completion: nil)
+        } else {
+            recipeIngredients = getIngredientsByRecipe(recipeID: cellID)
 
-        performSegue(withIdentifier: "viewDetails", sender: self)
+            performSegue(withIdentifier: "viewDetails", sender: self)
+        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any!){
