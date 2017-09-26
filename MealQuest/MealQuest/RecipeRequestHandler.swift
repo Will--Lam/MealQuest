@@ -136,8 +136,26 @@ func searchRecipes(query: [String], category: String) -> [RecipeItem] {
     return recipes
 }
 
-func searchWPantryRecipes(query: [String], category: String) -> [RecipeItem] {
-    let recipes = [RecipeItem]()
+func searchWPantryRecipes(category: String) -> [RecipeItem] {
+    var recipes = [RecipeItem]()
+    
+    var searchQuery = [String]()
+    
+    // Get pantry items marked for search
+    let pantrySearchItems = SQLiteDB.instance.getSearchPantryItems()
+    
+    for pantryItem in pantrySearchItems {
+        searchQuery.append(pantryItem.name)
+    }
+    
+    let recipeSearchResult = searchRecipes(query: searchQuery, category: category)
+    
+    for recipe in recipeSearchResult {
+        recipes.append(recipe)
+    }
+    
+    // Reset search flags in pantry
+    _ = SQLiteDB.instance.revertSearchPantryItems()
     
     return recipes
 }

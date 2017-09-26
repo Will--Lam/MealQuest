@@ -104,18 +104,8 @@ class SearchWPantryTableViewController: UIViewController, UITableViewDataSource,
     // send checked pantry items to search
     @IBAction func searchWithPantryAction(_ sender: Any) {
         
-        // get all search pantry items
-        let items = SQLiteDB.instance.getSearchPantryItems()
-
-//** Greg comment: the revert is used to unmark the user's search selection; it resets the search flag to 0 after getting the list of items to search with just above
-        // revert search status toggled items
-        _ = SQLiteDB.instance.revertSearchPantryItems()
-        
-//**    make search on recipes with query and category -> searchWPantryRecipes(query: [String], category: String) -> [RecipeItem]
-
-        // send this list of item names as input to search
-        let query = items.map{$0.name}.joined(separator: ",")
-        print(query)
+        // Call the following function with the category to be searched, returns a [RecipeItem]
+        // searchWPantryRecipes(category: String)
         
         //1. Create the alert controller.
         let alert = UIAlertController(title: "Sorry. Search functionality is not yet ready.", message: "", preferredStyle: .alert)
