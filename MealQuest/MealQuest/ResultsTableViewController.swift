@@ -84,6 +84,29 @@ class ResultsTableViewController: UITableViewController {
         return cell
     }
     
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        let currentCell = tableView.cellForRow(at: indexPath)! as! ResultsTableViewCell
+        
+        cellID = currentCell.id as Int64
+        
+        if editingStyle == .delete {
+            //1. Create the alert controller.
+            let alert = UIAlertController(title: "Confirm to delete the recipe?", message: "", preferredStyle: .alert)
+            // 3. Grab the value from the text field, and print it when the user clicks OK.
+            alert.addAction(UIAlertAction(title: "Cancel", style: .default))
+            alert.addAction(UIAlertAction(title: "Confirm", style: .default, handler: { _ in
+                
+                deleteRecipe(recipeID: self.cellID)
+                print("Delete item from database!")
+                
+                self.redrawTable()
+                
+            }))
+            // 4. Present the alert.
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print("You selected cell #\(indexPath.row)!")
         
