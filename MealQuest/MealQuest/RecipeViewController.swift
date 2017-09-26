@@ -39,7 +39,6 @@ class RecipeViewController: UIViewController, UITableViewDataSource, UITableView
         
         // Redraw the results table
         if (!random) {
-//**        Need to update observer data
             observer.redrawTable()
         }
     }
@@ -47,14 +46,8 @@ class RecipeViewController: UIViewController, UITableViewDataSource, UITableView
     func back(sender: UIBarButtonItem) {
         // Perform your custom actions
         if (!random) {
-            // initialize new view controller and cast it as your view controller
-            let stack = self.navigationController?.viewControllers
-            if ((stack?.count)! > 1) {
-                let resultsVC = stack?[(stack?.count)!-2] as! ResultsTableViewController
-                print("redraw favorite recipes")
-//**            Refetch information for resultsVC
-                resultsVC.redrawTable()
-            }
+            observer.redrawTable()
+
         }
         // Go back to the previous ViewController
         _ = navigationController?.popViewController(animated: true)

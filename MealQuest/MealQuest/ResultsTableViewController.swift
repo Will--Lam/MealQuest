@@ -122,8 +122,8 @@ class ResultsTableViewController: UITableViewController {
         
         cellID = currentCell.id as Int64
         
-//**    Need to get recipe details by recipe ID -> getRecipeDetails(recipeID: Int64) -> RecipeItem
         recipeDetails = getRecipeDetails(recipeID: cellID)
+        
         if (recipeDetails.recipeID == -1) {
             //1. Create the alert controller.
             let alert = UIAlertController(title: "Data corrupted and recipe could not be found. Delete and recreate recipe.", message: "", preferredStyle: .alert)
