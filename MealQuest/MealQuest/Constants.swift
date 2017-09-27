@@ -31,21 +31,21 @@ struct Constants {
     
     public static let pantryGroups = [
         Constants.PantryAll,
-        Constants.PantryDairy,
-        Constants.PantryProteins,
-        Constants.PantryVeggies,
-        Constants.PantryBakery,
-        Constants.PantryOther,
-        Constants.PantryBakingGood,
-        Constants.PantryFrozen,
-        Constants.PantryNonPerish,
         Constants.PantryHousehold,
+        Constants.PantryNonPerish,
+        Constants.PantryFrozen,
         Constants.PantryPasta,
-        Constants.PantryCondiment,
-        Constants.PantrySnacks,
-        Constants.PantryOil,
+        Constants.PantryBakery,
+        Constants.PantryBakingGood,
+        Constants.PantryVeggies,
+        Constants.PantryProteins,
+        Constants.PantryDairy,
         Constants.PantryDrinks,
-        Constants.PantrySpreads]
+        Constants.PantrySnacks,
+        Constants.PantrySpreads,
+        Constants.PantryCondiment,
+        Constants.PantryOil,
+        Constants.PantryOther]
     
     private static let ignoredPantryGroups = [Constants.PantryAll, Constants.PantryHousehold]
     

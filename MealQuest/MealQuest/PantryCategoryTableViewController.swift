@@ -62,8 +62,6 @@ class PantryCategoryTableViewController: UITableViewController {
         }
         return cell
     }
-
-//** Look at allowing users to rearrange order of items
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print("You selected cell #\(indexPath.row)!")
