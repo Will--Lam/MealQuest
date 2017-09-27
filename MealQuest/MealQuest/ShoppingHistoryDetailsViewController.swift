@@ -90,23 +90,30 @@ class ShoppingHistoryDetailsViewController: UIViewController, UITableViewDataSou
     }
     
     @IBAction func addToCartAction(_ sender: Any) {
+        var response = -1
         //1. Create the alert controller.
         let alert = UIAlertController(title: "Confirm to add the selected items to your current shopping list?", message: "", preferredStyle: .alert)
         // 3. Grab the value from the text field, and print it when the user clicks OK.
         alert.addAction(UIAlertAction(title: "Cancel", style: .default))
         alert.addAction(UIAlertAction(title: "Confirm", style: .default, handler: { _ in
+//**        Need to add a response from addSelectedItems to signal success
             addSelectedItemsToShoppingList(self.itemID)
+            response = 1
             print("Adding items to active list!")
-            
-            let stack = self.navigationController?.viewControllers
-            if ((stack?.count)! > 1) {
-                addSelectedItemsToShoppingList(self.listID)
-                self.observer.redrawTable()
-                self.navigationController?.popToRootViewController(animated: true)
-            }
         }))
         // 4. Present the alert.
         self.present(alert, animated: true, completion: nil)
+    
+        if (response != -1) {
+            //1. Create the alert controller.
+            let alert = UIAlertController(title: "Selected items have been added to the shopping list.", message: "", preferredStyle: .alert)
+            
+            // 3. Grab the value from the text field, and print it when the user clicks OK.
+            alert.addAction(UIAlertAction(title: "OK", style: .default))
+            
+            // 4. Present the alert.
+            self.present(alert, animated: true, completion: nil)
+        }
     }
 
 }

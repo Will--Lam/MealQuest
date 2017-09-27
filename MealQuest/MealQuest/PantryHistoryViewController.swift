@@ -87,7 +87,8 @@ class PantryHistoryViewController: UIViewController, UITableViewDataSource, UITa
     
     // add all toggled items to shopping list
     @IBAction func addShoppingAction(_ sender: Any) {
-
+        var response = -1
+        
         //1. Create the alert controller.
         let alert = UIAlertController(title: "Confirm to add the selected items to your current shopping list?", message: "", preferredStyle: .alert)
         // 3. Grab the value from the text field, and print it when the user clicks OK.
@@ -97,13 +98,26 @@ class PantryHistoryViewController: UIViewController, UITableViewDataSource, UITa
             let items = getToggledPantryItems()
             
             // add toggled items to shopping list
+//**        Need to get a response from addPantryItems to signal success
             addPantryItemsToShoppingList(items)
+            response = 1
             
             self.refreshData()
         }))
         
         // 4. Present the alert.
         self.present(alert, animated: true, completion: nil)
+        
+        if (response != -1) {
+            //1. Create the alert controller.
+            let alert = UIAlertController(title: "Selected pantry items have been added to the active shopping list.", message: "", preferredStyle: .alert)
+            
+            // 3. Grab the value from the text field, and print it when the user clicks OK.
+            alert.addAction(UIAlertAction(title: "OK", style: .default))
+            
+            // 4. Present the alert.
+            self.present(alert, animated: true, completion: nil)
+        }
 
     }
 
