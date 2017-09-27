@@ -112,7 +112,7 @@ class PantryGroupTableViewController: UITableViewController {
             alert.addAction(UIAlertAction(title: "Cancel", style: .default))
             alert.addAction(UIAlertAction(title: "Confirm", style: .default, handler: { _ in
             
-                _ = SQLiteDB.instance.archivePantryItem(pantryId: currentCell.id)
+                archivePantryItem(pantryId: currentCell.id)
                 print("Delete item from database!")
             
                 // initialize new view controller and cast it as your view controller

@@ -187,8 +187,7 @@ func addSelectedItemsToShoppingList(_ listID: Int64) {
 // add array of ShoppingItems to pantry db
 func addCheckedOutItemsToPantry(items: [ShoppingItem]) {
     for item in items {
-        let expireDate = SQLDateFormatter.string(from: item.expirationDate)
-        _ = SQLiteDB.instance.storePantryItem(name: item.name, group: item.group, quantity: item.quantity, unit: item.unit, calories: 0, expiration: expireDate, purchase: Date().datatypeValue, archive: "")
+        _ = SQLiteDB.instance.storePantryItem(name: item.name, group: item.group, quantity: item.quantity, unit: item.unit, calories: 0, expiration: item.expirationDate, purchase: Date(), archive: Date())
     }
 }
 

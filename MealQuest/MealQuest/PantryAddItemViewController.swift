@@ -22,8 +22,9 @@ class PantryAddItemViewController: UIViewController, UIPickerViewDelegate, UIPic
     let groupPickerView = UIPickerView()
     let unitPickerView = UIPickerView()
     
-    var purchaseDate = Date()
-    var expirationDate = Date()
+    var purchaseDate    = Date()
+    var expirationDate  = Date()
+    var archiveDate     = Date()
     
     var viewItem = PantryItem(id: 1)
     var viewMode = false
@@ -195,14 +196,41 @@ class PantryAddItemViewController: UIViewController, UIPickerViewDelegate, UIPic
             print(expireString)
             
             var res: Int64?
-            res = nil
+            res = 1
             var message = "Pantry Item successfully added!"
                 
             if (viewMode == false) {
-                res = SQLiteDB.instance.storePantryItem(name: itemNameString!, group: itemGroup.text!, quantity: Double(itemQuantityVal!)!, unit: itemUnit.text!, calories: itemCaloriesInput, expiration: expireString, purchase: purchaseString, archive: "")
+                let newPantryItem = PantryItem(
+                    id:             -1,
+                    name:           itemNameString!,
+                    group:          itemGroup.text!,
+                    quantity:       Double(itemQuantityVal!)!,
+                    unit:           itemUnit.text!,
+                    calories:       itemCaloriesInput,
+                    isArchive:      0,
+                    expiration:     expirationDate,
+                    purchase:       purchaseDate,
+                    archive:        archiveDate,
+                    toggle:         0,
+                    search:         0)
+                createPantryItem(itemInfo: newPantryItem)
             } else {
-                res = SQLiteDB.instance.updatePantryItem(pantryId: viewItem.id, name: itemNameString!, group: itemGroup.text!, quantity: Double(itemQuantityVal!)!, unit: itemUnit.text!, calories: itemCaloriesInput, expiration: expireString, purchase: purchaseString, archive: "")
-                    message = "Pantry Item successfully updated!"
+                
+                let newPantryItem = PantryItem(
+                    id:             viewItem.id,
+                    name:           itemNameString!,
+                    group:          itemGroup.text!,
+                    quantity:       Double(itemQuantityVal!)!,
+                    unit:           itemUnit.text!,
+                    calories:       itemCaloriesInput,
+                    isArchive:      0,
+                    expiration:     expirationDate,
+                    purchase:       purchaseDate,
+                    archive:        archiveDate,
+                    toggle:         0,
+                    search:         0)
+                
+                updatePantryItem(itemInfo: newPantryItem)
             }
                 
             if (res == nil) {

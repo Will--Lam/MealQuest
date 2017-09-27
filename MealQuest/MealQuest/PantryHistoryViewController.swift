@@ -44,7 +44,7 @@ class PantryHistoryViewController: UIViewController, UITableViewDataSource, UITa
     }
     
     func refreshData() {
-        archiveArray = SQLiteDB.instance.getGroupPantryItemArchived()
+        archiveArray = getGroupPantryItemArchived()
         archiveTable.reloadData()
     }
     
@@ -94,12 +94,7 @@ class PantryHistoryViewController: UIViewController, UITableViewDataSource, UITa
         alert.addAction(UIAlertAction(title: "Cancel", style: .default))
         alert.addAction(UIAlertAction(title: "Confirm", style: .default, handler: { _ in
             // get all toggled items
-            let items = SQLiteDB.instance.getToggledPantryItems()
-
-//** comment by Greg - why would you delete items that are added to the shopping list
-//** if this is unused, the deletToggledPantryItems can be deleted from SQLiteDB.swift
-            // delete all toggled items
-            // _ = SQLiteDB.instance.deleteToggledPantryItems()
+            let items = getToggledPantryItems()
             
             // add toggled items to shopping list
             addPantryItemsToShoppingList(items)

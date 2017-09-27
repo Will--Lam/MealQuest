@@ -22,24 +22,15 @@ class PantryArchiveCell: UITableViewCell {
     
     @IBAction func toggleCheckBox(sender: UIButton) {
         if (search) {
-//**        Toggle the search flag in pantry
-            _ = SQLiteDB.instance.setSearchPantryItem(pantryId: pantryItem.id, current: pantryItem.search)
+            setSearchPantryItem(pantryId: pantryItem.id, searchValue: pantryItem.search)
             
             searchObserver.refreshData()
         } else {
-            _ = SQLiteDB.instance.togglePantryItem(pantryId: pantryItem.id, current: pantryItem.toggle)
+            togglePantryItem(pantryId: pantryItem.id, toggleValue: pantryItem.toggle)
         
             observer.refreshData()
         }
-        /*
-        // delete the item from pantry
-        // _ = SQLiteDB.instance.deletePantryItem(pantryId: self.archiveArray[indexPath.item].id!)
-             
-        let deadlineTime = DispatchTime.now() + .milliseconds(200)
-        DispatchQueue.main.asyncAfter(deadline: deadlineTime) {
-            self.refreshData()
-        }
-        */
+
     }
     override func awakeFromNib() {
         super.awakeFromNib()

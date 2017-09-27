@@ -8,6 +8,53 @@
 
 import Foundation
 
+func createPantryItem(itemInfo: PantryItem) -> Int64? {
+    return SQLiteDB.instance.storePantryItem(
+        name:           itemInfo.name,
+        group:          itemInfo.group,
+        quantity:       itemInfo.quantity,
+        unit:           itemInfo.unit,
+        calories:       itemInfo.calories,
+        expiration:     itemInfo.expiration,
+        purchase:       itemInfo.purchase,
+        archive:        itemInfo.archive)
+}
+
+func updatePantryItem(itemInfo: PantryItem) -> Int64? {
+    return SQLiteDB.instance.updatePantryItem(
+        pantryId:       itemInfo.id,
+        name:           itemInfo.name,
+        group:          itemInfo.group,
+        quantity:       itemInfo.quantity,
+        unit:           itemInfo.unit,
+        calories:       itemInfo.calories,
+        expiration:     itemInfo.expiration,
+        purchase:       itemInfo.purchase,
+        archive:        itemInfo.archive)
+}
+
+func setSearchPantryItem(pantryId: Int64, searchValue: Int) {
+    _ = SQLiteDB.instance.setSearchPantryItem(pantryId: pantryId, current: searchValue)
+}
+
+func togglePantryItem(pantryId: Int64, toggleValue: Int) {
+    _ = SQLiteDB.instance.togglePantryItem(pantryId: pantryId, current: toggleValue)
+
+}
+
+func getToggledPantryItems() -> [PantryItem] {
+    return SQLiteDB.instance.getToggledPantryItems()
+}
+
+func archivePantryItem(pantryId: Int64) {
+    _ = SQLiteDB.instance.archivePantryItem(pantryId: pantryId)
+}
+
+func getGroupPantryItemArchived() -> [PantryItem] {
+    return SQLiteDB.instance.getGroupPantryItemArchived()
+}
+
+
 func getGroupPantryItem(pantryGroup: String) -> [PantryItem] {
     return SQLiteDB.instance.getGroupPantryItem(pantryGroup: pantryGroup)
 }

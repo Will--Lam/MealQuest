@@ -411,12 +411,8 @@ class SQLiteDB {
     }
     
     // insert a new pantry item
-    func storePantryItem(name: String, group: String, quantity: Double, unit: String, calories: Int, expiration: String, purchase: String, archive: String) -> Int64? {
+    func storePantryItem(name: String, group: String, quantity: Double, unit: String, calories: Int, expiration: Date, purchase: Date, archive: Date) -> Int64? {
         do {
-            let archiveDate = convertDate(dateString: archive)
-            let purchaseDate = convertDate(dateString: purchase)
-            let expirationDate = convertDate(dateString: expiration)
-
             let insert = pantryTable.insert(
                 pantryItemName          <- name,
                 pantryItemGroup         <- group,
@@ -424,9 +420,9 @@ class SQLiteDB {
                 pantryItemUnit          <- unit,
                 pantryItemCalories      <- calories,
                 pantryItemArchived      <- 0,
-                pantryItemExpiration    <- expirationDate,
-                pantryItemPurchase      <- purchaseDate!,
-                pantryItemArchive       <- archiveDate,
+                pantryItemExpiration    <- expiration,
+                pantryItemPurchase      <- purchase,
+                pantryItemArchive       <- archive,
                 pantryItemToggle        <- 0,
                 pantryItemSearch        <- 0)
             
@@ -588,14 +584,8 @@ class SQLiteDB {
     }
     
     // update an existing pantry item
-    func updatePantryItem(pantryId: Int64, name: String, group: String, quantity: Double, unit: String, calories: Int, expiration: String, purchase: String, archive: String) -> Int64? {
+    func updatePantryItem(pantryId: Int64, name: String, group: String, quantity: Double, unit: String, calories: Int, expiration: Date, purchase: Date, archive: Date) -> Int64 {
         do {
-            var archiveDate: Date?
-            archiveDate = nil
-            if (archive != "") {
-                archiveDate = Date.fromDatatypeValue(archive)
-            }
-
             let updateQuery = pantryTable.filter(
                 pantryItemId == pantryId)
             
@@ -607,14 +597,14 @@ class SQLiteDB {
                     pantryItemUnit          <- unit,
                     pantryItemCalories      <- calories,
                     pantryItemArchived      <- 0,
-                    pantryItemExpiration    <- Date.fromDatatypeValue(expiration),
-                    pantryItemPurchase      <- Date.fromDatatypeValue(purchase),
-                    pantryItemArchive       <- archiveDate))
+                    pantryItemExpiration    <- expiration,
+                    pantryItemPurchase      <- purchase,
+                    pantryItemArchive       <- archive))
             
             return Int64(id)
         } catch {
             print("Update pantry item failed")
-            return nil
+            return -1
         }
     }
     
@@ -629,7 +619,7 @@ class SQLiteDB {
             return Int64(id)
         } catch {
             print("Delete pantry item failed")
-            return 0
+            return -1
         }
     }
     
@@ -647,7 +637,7 @@ class SQLiteDB {
             return Int64(id)
         } catch {
             print("Archive pantry item failed")
-            return 0
+            return -1
         }
     }
     
@@ -664,7 +654,7 @@ class SQLiteDB {
             return Int64(id)
         } catch {
             print("Toggle pantry item failed")
-            return 0
+            return -1
         }
     }
     
@@ -681,7 +671,7 @@ class SQLiteDB {
             return Int64(id)
         } catch {
             print("Mark pantry item as search failed")
-            return 0
+            return -1
         }
     }
     
