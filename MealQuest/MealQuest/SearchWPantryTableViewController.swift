@@ -15,6 +15,7 @@ class SearchWPantryTableViewController: UIViewController, UITableViewDataSource,
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     var category = String()
+    var searchResults = [RecipeItem]()
     
     var pantryItemDic: [String: [PantryItem]] = [:]
     
@@ -104,15 +105,26 @@ class SearchWPantryTableViewController: UIViewController, UITableViewDataSource,
     // send checked pantry items to search
     @IBAction func searchWithPantryAction(_ sender: Any) {
         
-        // Call the following function with the category to be searched, returns a [RecipeItem]
-        // searchWPantryRecipes(category: String)
+        self.view.isUserInteractionEnabled = false
+        activityIndicator.startAnimating()
         
-        //1. Create the alert controller.
-        let alert = UIAlertController(title: "Sorry. Search functionality is not yet ready.", message: "", preferredStyle: .alert)
-        // 3. Grab the value from the text field, and print it when the user clicks OK.
-        alert.addAction(UIAlertAction(title: "OK", style: .default))
-        // 4. Present the alert.
-        self.present(alert, animated: true, completion: nil)
+        searchResults = searchWPantryRecipes(category: category)
+        
+        performSegue(withIdentifier: "searchRecipes", sender: self)
+        
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any!){
+        
+        if (segue.identifier == "searchRecipes") {
+            print("attempting to segue on search")
+            
+            let resultsVC = segue.destination as! ResultsTableViewController
+            // To use this properly, change the stringPassed variable in ResultsViewController to dictionary structure
+            resultsVC.resultsPassed = searchResults
+            activityIndicator.stopAnimating()
+            self.view.isUserInteractionEnabled = true
+        }
         
     }
 

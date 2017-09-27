@@ -44,6 +44,7 @@ extension RecipeViewController {
         
     }
     
+    /*
     func imagePickerController(_ picker:UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         if let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
             overviewView.imagePicked.contentMode = .scaleAspectFit
@@ -62,6 +63,6 @@ extension RecipeViewController {
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         self.dismiss(animated: true, completion: nil)
-    }
+    }*/
     
 }

@@ -64,7 +64,7 @@ class AddRecipeViewController: UIViewController, UIPickerViewDelegate, UIPickerV
         primaryPickerView.delegate = self
         primaryPickerView.tag = 1
         primaryCategoryField.inputView = primaryPickerView
-        if (category != "") {
+        if ((category != "") && (category != Constants.RecipeAll)) {
             primaryCategoryField.text = category
         } else {
             primaryCategoryField.text = Constants.RecipeBlank

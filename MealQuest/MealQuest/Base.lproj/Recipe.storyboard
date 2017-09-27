@@ -494,7 +494,7 @@
                                 <rect key="frame" x="81" y="93" width="213" height="137"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="bezel" placeholder="Chicken, apple, cheese..." textAlignment="natural" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="rea-AD-yqD">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="bezel" placeholder="List of ingredients (bread, cheese, ...)" textAlignment="natural" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="rea-AD-yqD">
                                 <rect key="frame" x="16" y="250" width="344" height="37"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <nil key="textColor"/>
@@ -695,7 +695,7 @@
                         <outlet property="activityIndicator" destination="MrJ-kb-5D9" id="tBx-zP-kQV"/>
                         <outlet property="itemTable" destination="nGa-0p-3gL" id="qqc-l1-Pxt"/>
                         <outlet property="searchWPantryButton" destination="Q1j-Tq-akl" id="W1v-ob-dCU"/>
-                        <segue destination="CUd-2S-0O3" kind="show" id="l0F-JG-thb"/>
+                        <segue destination="CUd-2S-0O3" kind="show" identifier="searchRecipes" id="l0F-JG-thb"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Cx0-Mk-QEA" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -738,7 +738,7 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="06A-9R-ip6"/>
-        <segue reference="l0F-JG-thb"/>
         <segue reference="KjF-t7-zo3"/>
+        <segue reference="l0F-JG-thb"/>
     </inferredMetricsTieBreakers>
 </document>
