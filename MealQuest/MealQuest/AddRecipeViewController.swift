@@ -38,6 +38,15 @@ class AddRecipeViewController: UIViewController, UIPickerViewDelegate, UIPickerV
     let secondaryPickerView = UIPickerView()
     let tertiaryPickerView = UIPickerView()
     let recipeOptions = Constants.recipeGroups.filter { $0 != Constants.RecipeAll}
+    var primarySelected: String {
+        return UserDefaults.standard.string(forKey: "selected") ?? ""
+    }
+    var secondarySelected: String {
+        return UserDefaults.standard.string(forKey: "selected") ?? ""
+    }
+    var tertiarySelected: String {
+        return UserDefaults.standard.string(forKey: "selected") ?? ""
+    }
     
     var edit = false
     var category = ""
@@ -69,16 +78,26 @@ class AddRecipeViewController: UIViewController, UIPickerViewDelegate, UIPickerV
         } else {
             primaryCategoryField.text = Constants.RecipeBlank
         }
+        primaryPickerView.selectRow(recipeOptions.index(of: primaryCategoryField.text!)!, inComponent:0, animated:true)
+        if let row = recipeOptions.index(of: primarySelected) {
+            primaryPickerView.selectRow(row, inComponent: 0, animated: false)
+        }
         
         secondaryPickerView.delegate = self
         secondaryPickerView.tag = 2
         secondaryCategoryField.inputView = secondaryPickerView
         secondaryCategoryField.text = Constants.RecipeBlank
+        if let row = recipeOptions.index(of: secondarySelected) {
+            primaryPickerView.selectRow(row, inComponent: 0, animated: false)
+        }
         
         tertiaryPickerView.delegate = self
         tertiaryPickerView.tag = 3
         tertiaryCategoryField.inputView = tertiaryPickerView
         tertiaryCategoryField.text = Constants.RecipeBlank
+        if let row = recipeOptions.index(of: tertiarySelected) {
+            primaryPickerView.selectRow(row, inComponent: 0, animated: false)
+        }
         
         if (edit) {
             // Pre-populate all the information into the text fields.
@@ -89,8 +108,11 @@ class AddRecipeViewController: UIViewController, UIPickerViewDelegate, UIPickerV
             totalTimeField.text = String(recipeDetails.cookTime)
             prepTimeField.text = String(recipeDetails.prepTime)
             primaryCategoryField.text = recipeDetails.primary
+            primaryPickerView.selectRow(recipeOptions.index(of: recipeDetails.primary)!, inComponent:0, animated:true)
             secondaryCategoryField.text = recipeDetails.secondary
+            secondaryPickerView.selectRow(recipeOptions.index(of: recipeDetails.secondary)!, inComponent:0, animated:true)
             tertiaryCategoryField.text = recipeDetails.tertiary
+            tertiaryPickerView.selectRow(recipeOptions.index(of: recipeDetails.tertiary)!, inComponent:0, animated:true)
  
             // Get the ingredients into a single displayable string
             var allIngredients = String()
@@ -132,11 +154,15 @@ class AddRecipeViewController: UIViewController, UIPickerViewDelegate, UIPickerV
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if (pickerView.tag == 1) {
             primaryCategoryField.text = recipeOptions[row]
+            UserDefaults.standard.set(recipeOptions[row], forKey: "primarySelected")
         } else if (pickerView.tag == 2) {
             secondaryCategoryField.text = recipeOptions[row]
+            UserDefaults.standard.set(recipeOptions[row], forKey: "secondarySelected")
         } else if (pickerView.tag == 3) {
             tertiaryCategoryField.text = recipeOptions[row]
+            UserDefaults.standard.set(recipeOptions[row], forKey: "tertiarySelected")
         }
+        
     }
     
     @IBAction func saveFavoriteAction(_ sender: Any) {
