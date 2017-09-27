@@ -26,7 +26,8 @@ func createRecipe(recipeItem: RecipeItem) -> Int64 {
         instructions:   recipeItem.instructions,
         primary:        recipeItem.primary,
         secondary:      recipeItem.secondary,
-        tertiary:       recipeItem.tertiary)!
+        tertiary:       recipeItem.tertiary,
+        imagePath:      recipeItem.imagePath)!
 }
 
 func updateRecipe(recipeItem: RecipeItem) {
@@ -41,7 +42,8 @@ func updateRecipe(recipeItem: RecipeItem) {
         instructions:   recipeItem.instructions,
         primary:        recipeItem.primary,
         secondary:      recipeItem.secondary,
-        tertiary:       recipeItem.tertiary)!
+        tertiary:       recipeItem.tertiary,
+        imagePath:      recipeItem.imagePath)!
 }
 
 func updateRecipeIngredients(recipeID: Int64, ingredients: [Int: RecipeIngredient]) -> Int64 {

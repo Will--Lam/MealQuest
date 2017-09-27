@@ -225,7 +225,7 @@ class PantryAddItemViewController: UIViewController, UIPickerViewDelegate, UIPic
             
             var res: Int64?
             res = 1
-            var message = "Pantry Item successfully added!"
+            let message = "Pantry Item successfully added!"
                 
             if (viewMode == false) {
                 let newPantryItem = PantryItem(

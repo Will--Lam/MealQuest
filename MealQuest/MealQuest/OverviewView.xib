@@ -74,7 +74,7 @@
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="G1d-oD-zwr">
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="G1d-oD-zwr">
                     <rect key="frame" x="20" y="20" width="335" height="182"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </imageView>
@@ -97,6 +97,14 @@
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="right" contentVerticalAlignment="bottom" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rj9-Kp-yLJ">
+                    <rect key="frame" x="20" y="20" width="327" height="177"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <state key="normal" image="cameraIcon"/>
+                    <connections>
+                        <action selector="setRecipeImageAction:" destination="H5Q-kS-572" eventType="touchUpInside" id="khg-nL-uOI"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
             <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO"/>
@@ -116,4 +124,7 @@
             <point key="canvasLocation" x="176.5" y="-73.5"/>
         </view>
     </objects>
+    <resources>
+        <image name="cameraIcon" width="25" height="25"/>
+    </resources>
 </document>

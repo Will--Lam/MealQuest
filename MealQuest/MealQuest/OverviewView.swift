@@ -26,7 +26,6 @@ class OverviewView: UIView {
     
     var observer: RecipeViewController!
     
-    /*
     @IBAction func setRecipeImageAction(_ sender: Any) {
         print("Hello")
         
@@ -34,9 +33,18 @@ class OverviewView: UIView {
             imagePicker.delegate = observer
             imagePicker.sourceType = .camera
             imagePicker.cameraCaptureMode = .photo
-            imagePicker.allowsEditing = false
+            imagePicker.allowsEditing = true
             observer.present(imagePicker, animated: true, completion: nil)
+        } else {
+            //1. Create the alert controller.
+            let alert = UIAlertController(title: "Please grant permission to the app to have ability to edit recipe image.", message: "", preferredStyle: .alert)
+            
+            // 3. Grab the value from the text field, and print it when the user clicks OK.
+            alert.addAction(UIAlertAction(title: "OK", style: .default))
+            
+            // 4. Present the alert.
+            observer.present(alert, animated: true, completion: nil)
         }
-    }*/
+    }
     
 }

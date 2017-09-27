@@ -17,11 +17,11 @@ class SQLiteDB {
     // Testing constants to reset databases
     private let testingConstant         = false
     private let deleteCategoryTable     = false
-    private let deleteIngredientTable   = false
     private let deletePantryTable       = false
     private let deleteShoppingLists     = false
     private let deleteShoppingItem      = false
-    private let deleteRecipeTable       = false
+    private let deleteRecipeTable       = true      // recipe table and ingredient table tightly coupled, should treat as such, remove option to delete separately and just couple it
+    private let deleteIngredientTable   = true
     
     // Recipe table
     private let recipeTable         = Table("recipes")
@@ -36,6 +36,7 @@ class SQLiteDB {
     private let recipePrimary       = Expression<String>("primary")
     private let recipeSecondary     = Expression<String>("secondary")
     private let recipeTertiary      = Expression<String>("tertiary")
+    private let recipeImagePath     = Expression<String>("imagePath")
     
     // Ingredient table
     private let ingredientTable     = Table("ingredients")
@@ -132,6 +133,7 @@ class SQLiteDB {
                 table.column(recipePrimary)
                 table.column(recipeSecondary)
                 table.column(recipeTertiary)
+                table.column(recipeImagePath)
             })
             print("Recipe table created")
         } catch {
@@ -139,7 +141,7 @@ class SQLiteDB {
         }
     }
     
-    func insertRecipe(title: String, calories: Int, servings: Double, readyTime: Double, prepTime: Double, cookTime: Double, instructions: String, primary: String, secondary: String, tertiary: String) -> Int64? {
+    func insertRecipe(title: String, calories: Int, servings: Double, readyTime: Double, prepTime: Double, cookTime: Double, instructions: String, primary: String, secondary: String, tertiary: String, imagePath: String) -> Int64? {
         do {
             let insert = recipeTable.insert(
                 recipeTitle         <- title,
@@ -151,7 +153,8 @@ class SQLiteDB {
                 recipeInstructions  <- instructions,
                 recipePrimary       <- primary,
                 recipeSecondary     <- secondary,
-                recipeTertiary      <- tertiary)
+                recipeTertiary      <- tertiary,
+                recipeImagePath     <- imagePath)
             
             let id = try db!.run(insert)
             
@@ -163,7 +166,7 @@ class SQLiteDB {
         }
     }
     
-    func updateRecipe(id: Int64, title: String, calories: Int, servings: Double, readyTime: Double, prepTime: Double, cookTime: Double, instructions: String, primary: String, secondary: String, tertiary: String) -> Int64? {
+    func updateRecipe(id: Int64, title: String, calories: Int, servings: Double, readyTime: Double, prepTime: Double, cookTime: Double, instructions: String, primary: String, secondary: String, tertiary: String, imagePath: String) -> Int64? {
         do {
             let updateQuery = recipeTable.filter(
                 recipeID == id)
@@ -178,7 +181,8 @@ class SQLiteDB {
                 recipeInstructions  <- instructions,
                 recipePrimary       <- primary,
                 recipeSecondary     <- secondary,
-                recipeTertiary      <- tertiary))
+                recipeTertiary      <- tertiary,
+                recipeImagePath     <- imagePath))
             
             return Int64(id)
         } catch {
@@ -206,7 +210,8 @@ class SQLiteDB {
                     instructions:   rItem[recipeInstructions],
                     primary:        rItem[recipePrimary],
                     secondary:      rItem[recipeSecondary],
-                    tertiary:       rItem[recipeTertiary])
+                    tertiary:       rItem[recipeTertiary],
+                    imagePath:      rItem[recipeImagePath])
             }
             
             return item

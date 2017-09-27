@@ -20,6 +20,7 @@ class RecipeItem {
     var primary: String
     var secondary: String
     var tertiary: String
+    var imagePath: String
     
     init (id: Int64) {
         recipeID = id
@@ -33,9 +34,10 @@ class RecipeItem {
         primary = ""
         secondary = ""
         tertiary = ""
+        imagePath = ""
     }
     
-    init(id: Int64, title: String, calories: Int, servings: Double, readyTime: Double, prepTime: Double, cookTime: Double, instructions: String, primary: String, secondary: String, tertiary: String) {
+    init(id: Int64, title: String, calories: Int, servings: Double, readyTime: Double, prepTime: Double, cookTime: Double, instructions: String, primary: String, secondary: String, tertiary: String, imagePath: String) {
         recipeID = id
         self.title = title
         self.calories = calories
@@ -47,6 +49,7 @@ class RecipeItem {
         self.primary = primary
         self.secondary = secondary
         self.tertiary = tertiary
+        self.imagePath = imagePath
     }
     
 }

@@ -23,6 +23,10 @@ class RecipeViewController: UIViewController, UITableViewDataSource, UITableView
     var ingredientsArray = [RecipeIngredient]()
     var servingSize = Double(1)
 
+    var imagesDirectoryPath:String!
+    var images:[UIImage]!
+    var titles:[String]!
+    
     var categoryResults = [RecipeItem]()
     var recipeDetails = RecipeItem(id: -1)
     var detailsPassed = RecipeItem(id: -1)
