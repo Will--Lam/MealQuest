@@ -38,9 +38,10 @@ extension RecipeViewController {
         overviewView.primaryCategoryLabel.text = "Primary Category: " + primary
         overviewView.secondaryCategoryLabel.text = "Secondary Category: " + secondary
         overviewView.tertiaryCategoryLabel.text = "Tertiary Category: " + tertiary
+        overviewView.categoryImage.image = UIImage(named: Constants.recipeIconMap[primary]!)
         
         if (recipeDetails.imagePath == "") {
-            overviewView.recipeImage.image = UIImage(named: Constants.recipeIconMap[primary]!)
+            overviewView.recipeImage.image = UIImage(named: "imageNotFound")
         } else {
             let fileManager = FileManager.default
             let imagePAth = (self.getDirectoryPath() as NSString).appendingPathComponent(recipeDetails.imagePath)

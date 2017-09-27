@@ -20,6 +20,7 @@ class OverviewView: UIView {
     @IBOutlet weak var primaryCategoryLabel: UILabel!
     @IBOutlet weak var secondaryCategoryLabel: UILabel!
     @IBOutlet weak var tertiaryCategoryLabel: UILabel!
+    @IBOutlet weak var categoryImage: UIImageView!
     
     var imagePicked = UIImageView()
     let imagePicker = UIImagePickerController()
