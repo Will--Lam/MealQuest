@@ -24,7 +24,13 @@ class ShoppingEditItemViewController: UIViewController, UIPickerViewDelegate, UI
     var observer: Observer!
     
     let groupPickerView = UIPickerView()
+    var groupSelected: String {
+        return UserDefaults.standard.string(forKey: "selected") ?? ""
+    }
     let unitPickerView = UIPickerView()
+    var unitSelected: String {
+        return UserDefaults.standard.string(forKey: "selected") ?? ""
+    }
     
     var itemDetails = ShoppingItem(id: -1)
     var id = Int64()
@@ -51,10 +57,12 @@ class ShoppingEditItemViewController: UIViewController, UIPickerViewDelegate, UI
         groupPickerView.delegate = self
         groupPickerView.tag = 1
         groupTextField.inputView = groupPickerView
+        groupPickerView.selectRow(Constants.validPantryGroups.index(of: groupTextField.text!)!, inComponent:0, animated:true)
         
         unitPickerView.delegate = self
         unitPickerView.tag = 2
         unitTextField.inputView = unitPickerView
+        unitPickerView.selectRow(Constants.units.index(of: unitTextField.text!)!, inComponent:0, animated:true)
         
         self.hideKeyboardWhenTappedAround()
     }
@@ -65,7 +73,7 @@ class ShoppingEditItemViewController: UIViewController, UIPickerViewDelegate, UI
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         if (pickerView.tag == 1) {
-            return Constants.pantryGroups.count
+            return Constants.validPantryGroups.count
         } else if (pickerView.tag == 2) {
             return Constants.units.count
         } else {
@@ -75,7 +83,7 @@ class ShoppingEditItemViewController: UIViewController, UIPickerViewDelegate, UI
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         if (pickerView.tag == 1) {
-            return Constants.pantryGroups[row]
+            return Constants.validPantryGroups[row]
         } else if (pickerView.tag == 2) {
             return Constants.units[row]
         } else {
@@ -85,17 +93,23 @@ class ShoppingEditItemViewController: UIViewController, UIPickerViewDelegate, UI
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if (pickerView.tag == 1) {
-            groupTextField.text = Constants.pantryGroups[row]
+            groupTextField.text = Constants.validPantryGroups[row]
+            UserDefaults.standard.set(Constants.validPantryGroups[row], forKey: "groupSelected")
         } else if (pickerView.tag == 2) {
             unitTextField.text = Constants.units[row]
+            UserDefaults.standard.set(Constants.units[row], forKey: "unitSelected")
         }
     }
-    
     
     @IBAction func dateTextFieldEditing(_ sender: UITextField) {
         let datePickerView:UIDatePicker = UIDatePicker()
         datePickerView.datePickerMode = UIDatePickerMode.date
         sender.inputView = datePickerView
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = DateFormatter.Style.medium
+        dateFormatter.timeStyle = DateFormatter.Style.none
+        let date = dateFormatter.date(from: expirationTextField.text!)!
+        datePickerView.date = date
         datePickerView.addTarget(self, action: #selector(ShoppingAddItemViewController.datePickerValueChanged), for: UIControlEvents.valueChanged)
     }
     

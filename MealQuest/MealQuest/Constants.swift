@@ -49,6 +49,8 @@ struct Constants {
     
     private static let ignoredPantryGroups = [Constants.PantryAll, Constants.PantryHousehold]
     
+    public static let validPantryGroups = Constants.pantryGroups.filter { $0 != Constants.PantryAll}
+    
     public static let pantrySearchGroups = pantryGroups.filter { !ignoredPantryGroups.contains($0)}
     
     public static let pantryIconMap : [String: String] = [
