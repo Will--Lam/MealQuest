@@ -18,6 +18,9 @@ class ShoppingCompareViewController: UIViewController, UIPickerViewDelegate, UIP
     @IBOutlet weak var item1Button: UIButton!
     
     var item1UnitPickerView = UIPickerView()
+    var unit1Selected: String {
+        return UserDefaults.standard.string(forKey: "selected") ?? ""
+    }
     
     @IBOutlet weak var item2Name: UITextField!
     @IBOutlet weak var item2Quantity: UITextField!
@@ -27,6 +30,9 @@ class ShoppingCompareViewController: UIViewController, UIPickerViewDelegate, UIP
     @IBOutlet weak var item2Button: UIButton!
     
     var item2UnitPickerView = UIPickerView()
+    var unit2Selected: String {
+        return UserDefaults.standard.string(forKey: "selected") ?? ""
+    }
     
     @IBOutlet weak var historicBestValue: UILabel!
     
@@ -75,8 +81,10 @@ class ShoppingCompareViewController: UIViewController, UIPickerViewDelegate, UIP
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if (pickerView.tag == 1) {
             item1Unit.text = Constants.units[row]
+            UserDefaults.standard.set(Constants.validPantryGroups[row], forKey: "unit1Selected")
         } else if (pickerView.tag == 2) {
             item2Unit.text = Constants.units[row]
+            UserDefaults.standard.set(Constants.validPantryGroups[row], forKey: "unit2Selected")
         }
     }
     
