@@ -67,7 +67,7 @@ class HistoryItemTableViewController: UITableViewController {
         cell.purchased = shoppingItemList[shoppingItemList.index(shoppingItemList.startIndex, offsetBy: indexPath.item)].purchased
         cell.expiration = shoppingItemList[shoppingItemList.index(shoppingItemList.startIndex, offsetBy: indexPath.item)].expirationDate
         
-        cell.shoppingGroupImage.image = UIImage(named: cell.group)
+        cell.shoppingGroupImage.image = UIImage(named: Constants.pantryIconMap[cell.group]!)
         
         cell.itemNameLabel.text = cell.name + " (" + cell.quantity + " " + cell.unit + ")"
         cell.itemCostLabel.text = cell.cost.dollarString

@@ -78,7 +78,7 @@ class ShoppingHistoryDetailsViewController: UIViewController, UITableViewDataSou
             cell.toggleButton.setImage(UIImage(named: "uncheckedBox.png"), for: .normal)
         }
         
-        cell.shoppingGroupImage.image = UIImage(named: cell.group)
+        cell.shoppingGroupImage.image = UIImage(named: Constants.pantryIconMap[cell.group]!)
         
         cell.observer = self
         cell.shopping = false
