@@ -8,16 +8,20 @@
 
 import UIKit
 
-class ResultsTableViewController: UITableViewController {
-
+class ResultsTableViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+    
+    @IBOutlet var resultsTable: UITableView!
+    @IBOutlet weak var addRecipeButton: UIButton!
+    @IBOutlet weak var searchFooter: SearchFooter!
+    
+    let searchController = UISearchController(searchResultsController: nil)
+    
     var resultsPassed = [RecipeItem]()
+    var filteredResults = [RecipeItem]()
     var recipeDetails = RecipeItem(id: -1)
     var recipeIngredients = [RecipeIngredient]()
     var cellID = Int64()
     var group = "Search Results"
-    
-    @IBOutlet var resultsTable: UITableView!
-    @IBOutlet weak var addRecipeButton: UIButton!
     
     func redrawTable( ) {
         if (group != "Search Results") {
@@ -44,6 +48,16 @@ class ResultsTableViewController: UITableViewController {
             addRecipeButton.isEnabled = true
             addRecipeButton.isHidden = false
         }
+        
+        self.resultsTable.dataSource = self
+        self.resultsTable.delegate = self
+        
+        searchController.searchResultsUpdater = self
+        searchController.dimsBackgroundDuringPresentation = false
+        definesPresentationContext = true
+        searchController.searchBar.scopeButtonTitles = [Constants.scopeName, Constants.scopeGroup, Constants.scopeGreaterCookTime, Constants.scopeLesserCookTime]
+        searchController.searchBar.delegate = self
+        resultsTable.tableHeaderView = searchController.searchBar
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -60,23 +74,35 @@ class ResultsTableViewController: UITableViewController {
 
     // MARK: - Table view data source
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return resultsPassed.count
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if isFiltering() {
+            searchFooter.setIsFilteringToShow(filteredItemCount: filteredResults.count, of: resultsPassed.count)
+            return filteredResults.count
+        } else {
+            searchFooter.setNotFiltering()
+            return resultsPassed.count
+        }
     }
 
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ResultsTableViewCell", for: indexPath) as! ResultsTableViewCell
         
-        let idVal = resultsPassed[indexPath.item].recipeID 
-        let titleText = resultsPassed[indexPath.item].title
-        let calorieVal = resultsPassed[indexPath.item].calories
-        let recipeCategory = resultsPassed[indexPath.item].primary
+        let item: RecipeItem
+        
+        if isFiltering() {
+            item = filteredResults[indexPath.item]
+        } else {
+            item = resultsPassed[indexPath.item]
+        }
+        
+        let idVal = item.recipeID
+        let titleText = item.title
+        let calorieVal = item.calories
+        let recipeCategory = item.primary
         
         // Configure the cell...
         cell.id = idVal
@@ -88,7 +114,7 @@ class ResultsTableViewController: UITableViewController {
         return cell
     }
     
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if (group != "Search Results") {
             let currentCell = tableView.cellForRow(at: indexPath)! as! ResultsTableViewCell
         
@@ -113,8 +139,7 @@ class ResultsTableViewController: UITableViewController {
         }
     }
     
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("You selected cell #\(indexPath.row)!")
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         // Get Cell Label
         let indexPath = tableView.indexPathForSelectedRow!
@@ -156,5 +181,66 @@ class ResultsTableViewController: UITableViewController {
             addVC.category = group
         }
     }
+    
+    // MARK: Search Bar Configuration
+    func filterContentForSearchText(searchText: String, scope: String) {
+        
+        // Filter the array using the filter method
+        if self.resultsPassed.isEmpty {
+            self.filteredResults = []
+            return
+        }
+        self.filteredResults = self.resultsPassed.filter({( anItem: RecipeItem) -> Bool in
+            if searchBarIsEmpty() {
+                return true
+            } else if (scope == Constants.scopeName) {
+                return anItem.title.lowercased().contains(searchText.lowercased())
+            } else if (scope == Constants.scopeGroup) {
+                return (anItem.primary.lowercased().contains(searchText.lowercased()) || anItem.secondary.lowercased().contains(searchText.lowercased()) || anItem.tertiary.lowercased().contains(searchText.lowercased()))
+            } else if (scope == Constants.scopeGreaterCookTime) {
+                if let value = Double(searchText) {
+                    return (anItem.cookTime > value)
+                } else {
+                    return false
+                }
+            } else if (scope == Constants.scopeLesserCookTime) {
+                if let value = Double(searchText) {
+                    return (anItem.cookTime < value)
+                } else {
+                    return false
+                }
+            } else {
+                return true
+            }
+        })
+        
+        resultsTable.reloadData()
+    }
+    
+    func searchBarIsEmpty() -> Bool {
+        // Returns true if the text is empty or nil
+        return searchController.searchBar.text?.isEmpty ?? true
+    }
+    
+    func isFiltering() -> Bool {
+        let searchBarScopeIsFiltering = searchController.searchBar.selectedScopeButtonIndex != 0
+        return searchController.isActive && (!searchBarIsEmpty() || searchBarScopeIsFiltering)
+    }
 
+}
+
+extension ResultsTableViewController: UISearchBarDelegate {
+    // MARK: - UISearchBar Delegate
+    func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
+        filterContentForSearchText(searchText: searchBar.text!, scope: searchBar.scopeButtonTitles![selectedScope])
+    }
+}
+
+extension ResultsTableViewController: UISearchResultsUpdating {
+    // MARK: - UISearchResultsUpdating Delegate
+    func updateSearchResults(for searchController: UISearchController) {
+        let searchBar = searchController.searchBar
+        let scope = searchBar.scopeButtonTitles![searchBar.selectedScopeButtonIndex]
+        filterContentForSearchText(searchText: searchController.searchBar.text!, scope: scope)
+    }
 }

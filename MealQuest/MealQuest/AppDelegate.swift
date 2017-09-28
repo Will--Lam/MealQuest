@@ -18,6 +18,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UINavigationBar.appearance().barTintColor = Constants.mqBlueColour
         UINavigationBar.appearance().tintColor = Constants.mqWhiteColour
         UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName:Constants.mqWhiteColour]
+        UISearchBar.appearance().barTintColor = Constants.mqBlueColour
+        UISearchBar.appearance().tintColor = Constants.mqWhiteColour
+        UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).tintColor = Constants.mqBlueColour
         
         if (SQLiteDB.instance.expirationDaysCount() < 1) {
             _ = SQLiteDB.instance.initializeExpiration()

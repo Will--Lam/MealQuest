@@ -20,8 +20,8 @@ class SQLiteDB {
     private let deletePantryTable       = false
     private let deleteShoppingLists     = false
     private let deleteShoppingItem      = false
-    private let deleteRecipeTable       = true      // recipe table and ingredient table tightly coupled, should treat as such, remove option to delete separately and just couple it
-    private let deleteIngredientTable   = true
+    private let deleteRecipeTable       = false      // recipe table and ingredient table tightly coupled, should treat as such, remove option to delete separately and just couple it
+    private let deleteIngredientTable   = false
     
     // Recipe table
     private let recipeTable         = Table("recipes")
