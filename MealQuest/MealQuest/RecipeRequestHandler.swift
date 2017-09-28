@@ -165,66 +165,50 @@ func searchWPantryRecipes(category: String) -> [RecipeItem] {
 
 // TODO
 func sendMissingIngredientsToShoppingCart(_ recipeID: Int64) {
-    /*
-    let recipeDict = SQLiteDB.instance.getRecipeFieldFromDB(recipeID: recipeID) as [String:Any]
-    let ingredients = recipeDict["ingredients"] as! String
-    var ingredientsArray = [[String:String]]()
     
-    let tempArray = ingredients.components(separatedBy: "@")
-    for ingredient in tempArray {
-        var item = ingredient.components(separatedBy: "|")
-        var tempDict = [String:String]()
-        tempDict = [
-            "amount": item[0],
-            "unit": item[1],
-            "ingredient": item[2]
-        ]
-        ingredientsArray.append(tempDict)
-    }
-    let date = Date()
+    let recipeIngredients = SQLiteDB.instance.getIngredientsByRecipeID(recipeID: recipeID)
     
     var activeListID = SQLiteDB.instance.getActiveListID()
+    let date = Date()
+    
     if(activeListID == 0) {
         _ = SQLiteDB.instance.insertNewList(listCost: 0, listDate: date, isActive: true)
         activeListID = SQLiteDB.instance.getActiveListID()
     }
-    for ingredient in ingredientsArray {
-        var amountVal = Double(ingredient["amount"]!)!
-        let unit = ingredient["unit"]!
-        let name = ingredient["ingredient"]!
-        // TODO: Check pantry item for quantity -> use converter -> subtract & round for remaining quantity
-        let pantryItems = SQLiteDB.instance.getPantryItemsByName(itemName: name)
-        //let pantryItems = [PantryItem]()
+    
+    for ingredientItem in recipeIngredients {
+        var amountVal = ingredientItem.quantity
+        
+        let pantryItems = SQLiteDB.instance.getPantryItemsByName(itemName: ingredientItem.name)
         var aggregateQuantity = 0.0
         for item in pantryItems {
-            aggregateQuantity += convert(item.quantity, item.unit, unit)
-            
-        }
-        // round to 5 decimal places to ensure proper double subtraction
-        amountVal = amountVal.roundTo(places: Constants.roundingPlaces) - aggregateQuantity.roundTo(places: Constants.roundingPlaces)
-        if(amountVal > 0) {
-            let relevantItem = SQLiteDB.instance.getShoppingItemByName(listID: activeListID!, name: name.lowercased())
-            
-            if(relevantItem.listID == -1) {
-                var itemGroup = Constants.pantryGroups[4]
-                for item in pantryItems {
-                    if(item.group != "") {
-                        itemGroup = item.group
+            aggregateQuantity += convert(item.quantity, item.unit, ingredientItem.unit)
+            // round to 5 decimal places to ensure proper double subtraction
+            amountVal = amountVal.roundTo(places: Constants.roundingPlaces) - aggregateQuantity.roundTo(places: Constants.roundingPlaces)
+            if(amountVal > 0) {
+                let relevantItem = SQLiteDB.instance.getShoppingItemByName(listID: activeListID!, name: ingredientItem.name.lowercased())
+                
+                if(relevantItem.listID == -1) {
+                    var itemGroup = Constants.PantryOther
+                    for item in pantryItems {
+                        if(item.group != "") {
+                            itemGroup = item.group
+                        }
                     }
+                    _ = SQLiteDB.instance.insertNewItem(listID: activeListID!, itemName: ingredientItem.name, itemCost: 0, unit: ingredientItem.unit, quantity: amountVal, group: itemGroup, purchased: false, expirationDate: date, repurchase: false)
+                } else {
+                    let shoppingQuantity = relevantItem.quantity + convert(amountVal, ingredientItem.unit, relevantItem.unit)
+                    _ = SQLiteDB.instance.updateItem(listID: activeListID!, itemID: relevantItem.id, itemName: relevantItem.name, itemCost: 0, unit: relevantItem.unit, quantity: shoppingQuantity, group: relevantItem.group, purchased: relevantItem.purchased, expirationDate: relevantItem.expirationDate, repurchase: relevantItem.repurchase)
                 }
-                _ = SQLiteDB.instance.insertNewItem(listID: activeListID!, itemName: name, itemCost: 0, unit: unit, quantity: amountVal, group: itemGroup, purchased: false, expirationDate: date, repurchase: false)
-            } else {
-                let shoppingQuantity = relevantItem.quantity + convert(amountVal, unit, relevantItem.unit)
-                _ = SQLiteDB.instance.updateItem(listID: activeListID!, itemID: relevantItem.id, itemName: relevantItem.name, itemCost: 0, unit: relevantItem.unit, quantity: shoppingQuantity, group: relevantItem.group, purchased: relevantItem.purchased, expirationDate: relevantItem.expirationDate, repurchase: relevantItem.repurchase)
             }
         }
     }
-    */
 }
 
 
 //TODO
 func consumePantryItemsFromRecipe(_ recipeID: Int64, _ multiplier :Double) {
+    
     /*
     let recipeDict = SQLiteDB.instance.getRecipeFieldFromDB(recipeID: recipeID) as [String:Any]
     let ingredients = recipeDict["ingredients"] as! String
