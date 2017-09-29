@@ -33,6 +33,13 @@ class IngredientsView: UIView {
         }
         
         observer.ingredientsArray = ingredientsArray
+        
+        var allIngredients = [Int: RecipeIngredient]()
+        for i in 0...(ingredientsArray.count - 1) {
+            allIngredients[i] = ingredientsArray[i]
+        }
+        
+        _ = updateRecipeIngredients(recipeID: observer.recipeDetails.recipeID, ingredients: allIngredients)
     }
     
     @IBAction func changedServing(sender: UIButton) {
@@ -51,7 +58,8 @@ class IngredientsView: UIView {
         alert.addAction(UIAlertAction(title: "Confirm", style: .default, handler: { [weak alert] (_) in
             let textField = alert?.textFields![0] // Force unwrapping because we know it exists.
             if (!textField!.text!.isEmpty) {
-                self.newServingSize = Double(textField!.text!)!
+                self.observer.recipeDetails.servings = Double(textField!.text!)!
+                updateRecipe(recipeItem: self.observer.recipeDetails)
                 self.redrawTable()
             }
         }))

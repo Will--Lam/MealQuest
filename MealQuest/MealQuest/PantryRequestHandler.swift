@@ -33,8 +33,8 @@ func updatePantryItem(itemInfo: PantryItem) -> Int64? {
         archive:        itemInfo.archive)
 }
 
-func deletePantryItem(itemInfo: PantryItem) -> Int64? {
-    return SQLiteDB.instance.deletePantryItem(pantryId: itemInfo.id)
+func deletePantryItem(pantryId: Int64) -> Int64? {
+    return SQLiteDB.instance.deletePantryItem(pantryId: pantryId)
 }
 
 func setSearchPantryItem(pantryId: Int64, searchValue: Int) {
