@@ -266,6 +266,8 @@ class AddRecipeViewController: UIViewController, UIPickerViewDelegate, UIPickerV
             
             // Call function to add the recipe the database
             if (edit) {
+                recipeObserver.recipeDetails = newRecipeItem
+                recipeObserver.ingredientsArray = getIngredientsByRecipe(recipeID: newRecipeItem.recipeID)
                 recipeObserver.redrawView()
             } else if (addFromCategory) {
             } else {
