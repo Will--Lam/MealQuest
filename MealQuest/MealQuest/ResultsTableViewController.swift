@@ -126,7 +126,17 @@ class ResultsTableViewController: UIViewController, UITableViewDataSource, UITab
                 // 3. Grab the value from the text field, and print it when the user clicks OK.
                 alert.addAction(UIAlertAction(title: "Cancel", style: .default))
                 alert.addAction(UIAlertAction(title: "Confirm", style: .default, handler: { _ in
-                
+                    let recipeItem = getRecipeDetails(recipeID: self.cellID)
+                    let oldImagePath = recipeItem.imagePath
+                    if (oldImagePath != "") {
+                        // Need to delete the old image on success
+                        do {
+                            try FileManager.default.removeItem(atPath: oldImagePath)
+                        } catch let error as NSError {
+                            print(error.debugDescription)
+                        }
+                    }
+                    
                     deleteRecipe(recipeID: self.cellID)
                     print("Delete item from database!")
                 

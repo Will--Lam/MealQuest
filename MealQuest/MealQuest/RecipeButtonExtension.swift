@@ -25,7 +25,7 @@ extension RecipeViewController {
     @IBAction func planAction(_ sender: Any) {
         var response = -1
         //1. Create the alert controller.
-        let alert = UIAlertController(title: "Confirm adding these items to shopping list?", message: "", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Confirm adding missing ingredients based on pantry to shopping list?", message: "", preferredStyle: .alert)
         // 3. Grab the value from the text field, and print it when the user clicks OK.
         alert.addAction(UIAlertAction(title: "Cancel", style: .default))
         alert.addAction(UIAlertAction(title: "Confirm", style: .default, handler: { _ in
@@ -53,7 +53,7 @@ extension RecipeViewController {
         var response = -1
         
         //1. Create the alert controller.
-        let alert = UIAlertController(title: "Confirm cooking and eating the meal?", message: "The corresponding skills will be increased for your performance, and the calories will be added to the diary. \n\n Please enter the amount of servings created.", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Confirm cooking and eating the meal?", message: "The corresponding ingredients will be removed from the pantry, prioritizing expiring items. \n\n Please enter the amount of servings created.", preferredStyle: .alert)
         
         //2. Add the text field. You can configure it however you need.
         alert.addTextField { (textField) in

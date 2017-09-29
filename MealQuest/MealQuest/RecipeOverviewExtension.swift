@@ -30,7 +30,7 @@ extension RecipeViewController {
         
         overviewView.titleLabel.text = titleText
         overviewView.titleLabel.adjustsFontSizeToFitWidth = true
-        overviewView.calorieLabel.text = "Calories/Serving: " + "\(calorieVal)"
+        overviewView.calorieLabel.text = "Calories: " + "\(calorieVal)"
         overviewView.totalTimeLabel.text = "Total Time: " + "\(totalTime)"
         overviewView.prepTimeLabel.text = "Prep Time: " + "\(prepTime)"
         overviewView.cookTimeLabel.text = "Cook Time: " + "\(cookTime)"
@@ -40,14 +40,20 @@ extension RecipeViewController {
         overviewView.tertiaryCategoryLabel.text = "Tertiary Category: " + tertiary
         overviewView.categoryImage.image = UIImage(named: Constants.recipeIconMap[primary]!)
         
+        // 9DE8B21A-3E0E-4DDE-8D25-35674D2F6F0B
+        
+        // /var/mobile/Containers/Data/Application/9AF5E9BF-A718-4F60-A098-3FA8F315C5D3/Documents/RecipeImages/2017-09-2902:59:25+0000.png
+        // /var/mobile/Containers/Data/Application/9AF5E9BF-A718-4F60-A098-3FA8F315C5D3/Documents/RecipeImages/2017-09-2902:59:25+0000.png
+        
         if (recipeDetails.imagePath == "") {
             overviewView.recipeImage.image = UIImage(named: "imageNotFound")
         } else {
             let fileManager = FileManager.default
-            let imagePAth = (self.getDirectoryPath() as NSString).appendingPathComponent(recipeDetails.imagePath)
-            if fileManager.fileExists(atPath: imagePAth){
-                overviewView.recipeImage.image = UIImage(contentsOfFile: imagePAth)
-            }else{
+            let imagePath = (self.getDirectoryPath() as NSString).appendingPathComponent(recipeDetails.imagePath)
+            print(imagePath)
+            if fileManager.fileExists(atPath: imagePath) {
+                overviewView.recipeImage.image = UIImage(contentsOfFile: imagePath)
+            } else {
                 print("No Image")
                 overviewView.recipeImage.image = UIImage(named: "imageNotFound")
             }
@@ -90,6 +96,7 @@ extension RecipeViewController {
             
             var imagePath = NSDate().description
             imagePath = imagePath.replacingOccurrences(of: " ", with: "")
+            let newImagePath = "/\(imagePath).png"
             imagePath = imagesDirectoryPath.appending("/\(imagePath).png")
             let data = UIImagePNGRepresentation(overviewView.recipeImage.image!)
             let success = FileManager.default.createFile(atPath: imagePath, contents: data, attributes: nil)
@@ -98,11 +105,25 @@ extension RecipeViewController {
                 print("error")
             }
             
+            let oldImagePath = recipeDetails.imagePath
             // Update the database that the image has been saved successfully
-            recipeDetails.imagePath = imagePath
+            print(recipeDetails.imagePath)
+            recipeDetails.imagePath = newImagePath
+            print(recipeDetails.imagePath)
 //**        Need response from the update
             var response = -1
             updateRecipe(recipeItem: recipeDetails)
+            print(recipeDetails.imagePath)
+            
+            if (oldImagePath != "") {
+                // Need to delete the old image on success
+                do {
+                    try FileManager.default.removeItem(atPath: oldImagePath)
+                } catch let error as NSError {
+                    print(error.debugDescription)
+                }
+            }
+            
             response = 1
             if (response != -1) {
                 //1. Create the alert controller.

@@ -104,6 +104,35 @@ class PantryHistoryViewController: UIViewController, UITableViewDataSource, UITa
         return cell
     }
     
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            var currentCell: PantryItem
+            
+            if isFiltering() {
+                currentCell = filteredArray[indexPath.row]
+            } else {
+                currentCell = archiveArray[indexPath.row]
+            }
+            
+            //1. Create the alert controller.
+            let alert = UIAlertController(title: "Confirm to delete the current item from your pantry history?", message: "", preferredStyle: .alert)
+            
+            // 3. Grab the value from the text field, and print it when the user clicks OK.
+            alert.addAction(UIAlertAction(title: "Cancel", style: .default))
+            alert.addAction(UIAlertAction(title: "Confirm", style: .default, handler: { _ in
+                
+                _ = deletePantryItem(pantryId: currentCell.id)
+                print("Delete item from database!")
+                
+                // initialize new view controller and cast it as your view controller
+                self.archiveTable.reloadData()
+                
+            }))
+            
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
+    
     // add all toggled items to shopping list
     @IBAction func addShoppingAction(_ sender: Any) {
         var response = -1

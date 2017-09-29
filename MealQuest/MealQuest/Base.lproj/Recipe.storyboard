@@ -414,7 +414,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="jcE-fh-bfq">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ResultsTableViewCell" id="jcE-fh-bfq" customClass="ResultsTableViewCell" customModule="MealQuest" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="375" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="jcE-fh-bfq" id="A0i-si-cRd">
@@ -448,6 +448,11 @@
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="calorieLabel" destination="wwN-eg-OTP" id="aUv-Fp-zd8"/>
+                                            <outlet property="categoryIcon" destination="0s7-yZ-yMR" id="vBz-TH-noh"/>
+                                            <outlet property="titleLabel" destination="l7Z-Or-K3P" id="mzw-2F-x9i"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
@@ -465,6 +470,9 @@
                                 <rect key="frame" x="334" y="9" width="25" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" image="plusIcon"/>
+                                <connections>
+                                    <segue destination="Jyo-b8-4JN" kind="show" identifier="addRecipe" id="QZ3-4R-b1q"/>
+                                </connections>
                             </button>
                         </barButtonItem>
                     </navigationItem>
@@ -740,7 +748,7 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="s8s-8D-maw"/>
-        <segue reference="Z0o-GA-Qir"/>
+        <segue reference="QZ3-4R-b1q"/>
         <segue reference="hSz-XX-515"/>
     </inferredMetricsTieBreakers>
 </document>
