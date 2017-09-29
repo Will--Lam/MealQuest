@@ -101,21 +101,21 @@ class ShoppingHistoryDetailsViewController: UIViewController, UITableViewDataSou
             self.historicListTable.reloadData()
             
             response = 1
+            
+            if (response != -1) {
+                //1. Create the alert controller.
+                let alert = UIAlertController(title: "Selected items have been added to the shopping list.", message: "", preferredStyle: .alert)
+                
+                // 3. Grab the value from the text field, and print it when the user clicks OK.
+                alert.addAction(UIAlertAction(title: "OK", style: .default))
+                
+                // 4. Present the alert.
+                self.present(alert, animated: true, completion: nil)
+            }
             print("Adding items to active list!")
         }))
         // 4. Present the alert.
         self.present(alert, animated: true, completion: nil)
-        
-        if (response != -1) {
-            //1. Create the alert controller.
-            let alert = UIAlertController(title: "Selected items have been added to the shopping list.", message: "", preferredStyle: .alert)
-            
-            // 3. Grab the value from the text field, and print it when the user clicks OK.
-            alert.addAction(UIAlertAction(title: "OK", style: .default))
-            
-            // 4. Present the alert.
-            self.present(alert, animated: true, completion: nil)
-        }
     }
 
 }

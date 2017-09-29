@@ -21,6 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UISearchBar.appearance().barTintColor = Constants.mqBlueColour
         UISearchBar.appearance().tintColor = Constants.mqWhiteColour
         UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).tintColor = Constants.mqBlueColour
+        UITabBarItem.appearance().setTitleTextAttributes([NSFontAttributeName: UIFont.systemFont(ofSize: 12, weight: UIFontWeightBold)], for: .normal)
         
         if (SQLiteDB.instance.expirationDaysCount() < 1) {
             _ = SQLiteDB.instance.initializeExpiration()

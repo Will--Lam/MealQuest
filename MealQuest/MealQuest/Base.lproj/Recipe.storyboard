@@ -6,8 +6,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
-        <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
-        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -287,11 +285,13 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DHE-hI-oOO">
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DHE-hI-oOO">
                                 <rect key="frame" x="0.0" y="64" width="375" height="40"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="yFz-Al-ljT">
+                                    <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="yFz-Al-ljT">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="41"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" red="0.43921568630000002" green="0.81568627449999997" blue="0.92549019610000005" alpha="1" colorSpace="calibratedRGB"/>
                                         <segments>
                                             <segment title="Overview"/>
@@ -305,74 +305,48 @@
                                     </segmentedControl>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstItem="yFz-Al-ljT" firstAttribute="top" secondItem="DHE-hI-oOO" secondAttribute="top" id="58f-vq-H1c"/>
-                                    <constraint firstAttribute="bottom" secondItem="yFz-Al-ljT" secondAttribute="bottom" id="SPd-Cc-Naj"/>
-                                    <constraint firstAttribute="trailing" secondItem="yFz-Al-ljT" secondAttribute="trailing" id="TEs-8A-vGC"/>
-                                    <constraint firstItem="yFz-Al-ljT" firstAttribute="leading" secondItem="DHE-hI-oOO" secondAttribute="leading" id="ajt-S5-T8U"/>
-                                </constraints>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mnG-0a-lRX">
-                                <rect key="frame" x="0.0" y="104" width="375" height="474"/>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mnG-0a-lRX">
+                                <rect key="frame" x="0.0" y="104" width="375" height="487"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.65490196079999996" green="0.65490196079999996" blue="0.65490196079999996" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yvd-sH-Jmk" userLabel="Plan">
-                                <rect key="frame" x="187" y="578" width="188" height="40"/>
-                                <color key="backgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="187.5" id="ahp-go-uvf"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y24-0S-DY7" userLabel="Plan">
+                                <rect key="frame" x="0.0" y="568" width="188" height="50"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.97548583119999999" green="0.98059308690000002" blue="0.98059308690000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
                                 <state key="normal" title="   Plan" image="planIcon">
-                                    <color key="titleColor" red="0.4392156862745098" green="0.81568627450980391" blue="0.92549019607843142" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleColor" red="0.43921568630000002" green="0.81568627449999997" blue="0.92549019610000005" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
-                                    <action selector="planAction:" destination="NN3-MI-ESo" eventType="touchUpInside" id="755-Mk-R11"/>
+                                    <action selector="planAction:" destination="NN3-MI-ESo" eventType="touchUpInside" id="4T0-a7-jqB"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="V8R-a2-8pW" userLabel="Eat">
-                                <rect key="frame" x="0.0" y="578" width="188" height="40"/>
-                                <color key="backgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="187.5" id="EDl-7M-9jH"/>
-                                    <constraint firstAttribute="height" constant="40" id="upR-a3-D1D"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
-                                <state key="normal" title="   Make" image="eatIcon">
-                                    <color key="titleColor" red="0.60000002379999995" green="0.60000002379999995" blue="0.60000002379999995" alpha="1" colorSpace="calibratedRGB"/>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="V8R-a2-8pW" userLabel="Eat">
+                                <rect key="frame" x="187" y="568" width="188" height="50"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.97608610905812287" green="0.98119650753486698" blue="0.98119650753486698" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
+                                <state key="normal" title="   Make" image="blueEatIcon">
+                                    <color key="titleColor" red="0.4392156862745098" green="0.81568627450980391" blue="0.93333333333333335" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
                                     <action selector="eatAction:" destination="NN3-MI-ESo" eventType="touchUpInside" id="ks3-Vp-mhU"/>
                                 </connections>
                             </button>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wfh-r8-5Bw">
-                                <rect key="frame" x="0.0" y="578" width="375" height="2"/>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sX1-LE-3Aa">
+                                <rect key="frame" x="0.0" y="567" width="375" height="2"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.50196081400000003" green="0.50196081400000003" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.49803921579999999" green="0.49803921579999999" blue="0.49803921579999999" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qrR-y9-hot">
-                                <rect key="frame" x="186" y="578" width="2" height="40"/>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LMl-Jc-a79">
+                                <rect key="frame" x="184" y="568" width="2" height="50"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.50196081400000003" green="0.50196081400000003" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.49803921579999999" green="0.49803921579999999" blue="0.49803921579999999" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="V8R-a2-8pW" firstAttribute="top" secondItem="mnG-0a-lRX" secondAttribute="bottom" id="ChO-qC-uNs"/>
-                            <constraint firstAttribute="bottom" secondItem="DHE-hI-oOO" secondAttribute="bottom" constant="563" id="Eax-7e-sR4"/>
-                            <constraint firstItem="yvd-sH-Jmk" firstAttribute="top" secondItem="V8R-a2-8pW" secondAttribute="top" id="LHD-cV-XDe"/>
-                            <constraint firstAttribute="trailing" secondItem="DHE-hI-oOO" secondAttribute="trailing" id="TeW-Wt-vnF"/>
-                            <constraint firstItem="DHE-hI-oOO" firstAttribute="leading" secondItem="4Ko-hK-HkU" secondAttribute="leading" id="VaO-cc-uZH"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="yvd-sH-Jmk" secondAttribute="trailing" constant="-16" id="XqT-Mo-CaE"/>
-                            <constraint firstItem="DHE-hI-oOO" firstAttribute="top" secondItem="vfW-OI-Hcr" secondAttribute="bottom" id="aFr-US-w98"/>
-                            <constraint firstItem="mnG-0a-lRX" firstAttribute="leading" secondItem="DHE-hI-oOO" secondAttribute="leading" id="aL0-rY-JFw"/>
-                            <constraint firstItem="mnG-0a-lRX" firstAttribute="leading" secondItem="V8R-a2-8pW" secondAttribute="leading" id="aoA-0u-U8m"/>
-                            <constraint firstItem="V8R-a2-8pW" firstAttribute="bottom" secondItem="PfK-a0-3oK" secondAttribute="top" id="dWq-CE-D5e"/>
-                            <constraint firstItem="yvd-sH-Jmk" firstAttribute="baseline" secondItem="V8R-a2-8pW" secondAttribute="firstBaseline" id="feL-4E-pPO"/>
-                            <constraint firstItem="mnG-0a-lRX" firstAttribute="trailing" secondItem="DHE-hI-oOO" secondAttribute="trailing" id="jSd-JO-Xfa"/>
-                            <constraint firstItem="mnG-0a-lRX" firstAttribute="top" secondItem="DHE-hI-oOO" secondAttribute="bottom" id="mTk-Kq-1CY"/>
-                            <constraint firstItem="yvd-sH-Jmk" firstAttribute="firstBaseline" secondItem="V8R-a2-8pW" secondAttribute="baseline" id="tPk-Vy-t5M"/>
-                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="ja2-4R-QRV">
                         <barButtonItem key="rightBarButtonItem" style="plain" id="dZx-DJ-BO4">
@@ -390,7 +364,6 @@
                         <outlet property="containerView" destination="mnG-0a-lRX" id="Y9N-J6-9Ej"/>
                         <outlet property="eatButton" destination="V8R-a2-8pW" id="KCb-Nq-Oe0"/>
                         <outlet property="editButton" destination="LKr-uv-Vyq" id="GUU-Tk-Sbl"/>
-                        <outlet property="planButton" destination="yvd-sH-Jmk" id="oq1-4l-3Ld"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="N5X-hE-Ggy" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -735,8 +708,8 @@
     <resources>
         <image name="SplashScreen" width="180" height="120"/>
         <image name="background" width="1082" height="1537"/>
+        <image name="blueEatIcon" width="40" height="25"/>
         <image name="dropDownIcon" width="25" height="25"/>
-        <image name="eatIcon" width="40" height="25"/>
         <image name="favoriteRecipesIcon" width="25" height="25"/>
         <image name="mealAddIcon" width="370" height="409"/>
         <image name="pencilIcon" width="25" height="25"/>
@@ -748,7 +721,7 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="s8s-8D-maw"/>
-        <segue reference="QZ3-4R-b1q"/>
         <segue reference="hSz-XX-515"/>
+        <segue reference="KjF-t7-zo3"/>
     </inferredMetricsTieBreakers>
 </document>

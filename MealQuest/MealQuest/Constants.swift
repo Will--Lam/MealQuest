@@ -47,6 +47,24 @@ struct Constants {
         Constants.PantryOil,
         Constants.PantryOther]
     
+    public static let pantryExpirationMap: [String: Int] = [
+        Constants.PantryAll: 0,
+        Constants.PantryHousehold: 0,
+        Constants.PantryNonPerish: 0,
+        Constants.PantryFrozen: 30,
+        Constants.PantryPasta: 120,
+        Constants.PantryBakery: 3,
+        Constants.PantryBakingGood: 120,
+        Constants.PantryVeggies: 2,
+        Constants.PantryProteins: 3,
+        Constants.PantryDairy: 7,
+        Constants.PantryDrinks: 120,
+        Constants.PantrySnacks: 14,
+        Constants.PantrySpreads: 30,
+        Constants.PantryCondiment: 30,
+        Constants.PantryOil: 0,
+        Constants.PantryOther: 0]
+    
     private static let ignoredPantryGroups = [Constants.PantryAll, Constants.PantryHousehold]
     
     public static let validPantryGroups = Constants.pantryGroups.filter { $0 != Constants.PantryAll}

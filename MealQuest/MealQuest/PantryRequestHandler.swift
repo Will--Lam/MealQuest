@@ -33,7 +33,7 @@ func updatePantryItem(itemInfo: PantryItem) -> Int64? {
         archive:        itemInfo.archive)
 }
 
-func deletePantryItem(pantryId: Int64) -> Int64? {
+func deletePantryItem(pantryId: Int64) -> Int64 {
     return SQLiteDB.instance.deletePantryItem(pantryId: pantryId)
 }
 
@@ -121,6 +121,10 @@ func getGroupExpiration(groupName: String) -> Int {
 func addPantryItemsToShoppingList(_ pantryItems: [PantryItem]) {
     let activeListID = SQLiteDB.instance.getActiveListID()
     let date = Date()
+//    var insertSuccess = Int64(-1)
+//    var updateSuccess = Int64(-2)
+//    var toggleSuccess = Int64(-3)
+    
     for item in pantryItems {
         let relevantItem = SQLiteDB.instance.getShoppingItemByName(listID: activeListID!, name: item.name)
         if(relevantItem.listID == -1) {
@@ -130,7 +134,7 @@ func addPantryItemsToShoppingList(_ pantryItems: [PantryItem]) {
                     itemGroup = item.group
                 }
             }
-            _ = SQLiteDB.instance.insertNewItem(listID: activeListID!, itemName: item.name, itemCost: 0, unit: item.unit, quantity: 0, group: item.group, purchased: false, expirationDate: date, repurchase: false)
+            _ = SQLiteDB.instance.insertNewItem(listID: activeListID!, itemName: item.name, itemCost: 0, unit: item.unit, quantity: 0, group: itemGroup, purchased: false, expirationDate: date, repurchase: false)
         } else {
             let shoppingQuantity = relevantItem.quantity
             _ = SQLiteDB.instance.updateItem(listID: activeListID!, itemID: relevantItem.id, itemName: relevantItem.name, itemCost: 0, unit: relevantItem.unit, quantity: shoppingQuantity, group: relevantItem.group, purchased: relevantItem.purchased, expirationDate: relevantItem.expirationDate, repurchase: relevantItem.repurchase)

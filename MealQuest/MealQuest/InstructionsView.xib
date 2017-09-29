@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -15,27 +15,27 @@
             <rect key="frame" x="0.0" y="94" width="375" height="524"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sCI-uB-ANQ">
+                    <rect key="frame" x="0.0" y="464" width="375" height="60"/>
+                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                </view>
                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="4g2-TU-P0a">
-                    <rect key="frame" x="16" y="10" width="343" height="464"/>
+                    <rect key="frame" x="11" y="0.0" width="353" height="462"/>
                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                     <fontDescription key="fontDescription" type="system" pointSize="20"/>
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                 </textView>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sCI-uB-ANQ">
-                    <rect key="frame" x="0.0" y="474" width="375" height="50"/>
-                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                </view>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstItem="4g2-TU-P0a" firstAttribute="centerX" secondItem="sCI-uB-ANQ" secondAttribute="centerX" id="4Yr-TZ-fH9"/>
                 <constraint firstItem="4g2-TU-P0a" firstAttribute="centerX" secondItem="VIP-C7-0fc" secondAttribute="centerX" id="E5w-lT-Bxy"/>
-                <constraint firstItem="sCI-uB-ANQ" firstAttribute="top" secondItem="VIP-C7-0fc" secondAttribute="top" constant="474" id="mPh-zg-D7K"/>
-                <constraint firstItem="4g2-TU-P0a" firstAttribute="top" secondItem="VIP-C7-0fc" secondAttribute="top" constant="10" id="mZ4-44-5Gv"/>
-                <constraint firstItem="4g2-TU-P0a" firstAttribute="leading" secondItem="VIP-C7-0fc" secondAttribute="leading" constant="16" id="quX-DW-EuD"/>
+                <constraint firstItem="sCI-uB-ANQ" firstAttribute="top" secondItem="VIP-C7-0fc" secondAttribute="top" constant="464" id="mPh-zg-D7K"/>
+                <constraint firstItem="4g2-TU-P0a" firstAttribute="top" secondItem="VIP-C7-0fc" secondAttribute="top" id="mZ4-44-5Gv"/>
+                <constraint firstItem="4g2-TU-P0a" firstAttribute="leading" secondItem="VIP-C7-0fc" secondAttribute="leading" constant="11" id="quX-DW-EuD"/>
                 <constraint firstItem="sCI-uB-ANQ" firstAttribute="leading" secondItem="VIP-C7-0fc" secondAttribute="leading" id="tOS-rB-3y2"/>
-                <constraint firstAttribute="bottom" secondItem="4g2-TU-P0a" secondAttribute="bottom" constant="50" id="w0m-Xc-B7S"/>
+                <constraint firstAttribute="bottom" secondItem="4g2-TU-P0a" secondAttribute="bottom" constant="62" id="w0m-Xc-B7S"/>
                 <constraint firstAttribute="bottom" secondItem="sCI-uB-ANQ" secondAttribute="bottom" id="yzb-bl-8MX"/>
             </constraints>
             <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO"/>

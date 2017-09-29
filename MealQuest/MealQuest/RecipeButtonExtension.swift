@@ -29,24 +29,25 @@ extension RecipeViewController {
         // 3. Grab the value from the text field, and print it when the user clicks OK.
         alert.addAction(UIAlertAction(title: "Cancel", style: .default))
         alert.addAction(UIAlertAction(title: "Confirm", style: .default, handler: { _ in
-//**        Function is currently incomplete - Call update to shopping cart
 //**        Add response in response from send missing ingredients to shopping cart
             sendMissingIngredientsToShoppingCart(self.id)
             response = 1
+            
+            if (response != -1) {
+                //1. Create the alert controller.
+                let alert = UIAlertController(title: "Missing ingredients have been added to the active shopping list.", message: "", preferredStyle: .alert)
+                
+                // 3. Grab the value from the text field, and print it when the user clicks OK.
+                alert.addAction(UIAlertAction(title: "OK", style: .default))
+                
+                // 4. Present the alert.
+                self.present(alert, animated: true, completion: nil)
+            }
+
         }))
         // 4. Present the alert.
         self.present(alert, animated: true, completion: nil)
         
-        if (response != -1) {
-            //1. Create the alert controller.
-            let alert = UIAlertController(title: "Missing ingredients have been added to the active shopping list.", message: "", preferredStyle: .alert)
-            
-            // 3. Grab the value from the text field, and print it when the user clicks OK.
-            alert.addAction(UIAlertAction(title: "OK", style: .default))
-            
-            // 4. Present the alert.
-            self.present(alert, animated: true, completion: nil)
-        }
     }
     
     @IBAction func eatAction(_ sender: Any) {
@@ -72,24 +73,23 @@ extension RecipeViewController {
             
             let servingMultiplier = Double(Double(textField!.text!)!/Double(self.servingSize))
             
-//**        Function is currently incomplete - delete pantry item ingredients
 //**        Add in response from consumePantryItems
             consumePantryItemsFromRecipe(self.id, servingMultiplier)
             response = 1
+            
+            if (response != -1) {
+                //1. Create the alert controller.
+                let alert = UIAlertController(title: "Pantry items have been removed from the pantry.", message: "", preferredStyle: .alert)
+                
+                // 3. Grab the value from the text field, and print it when the user clicks OK.
+                alert.addAction(UIAlertAction(title: "OK", style: .default))
+                
+                // 4. Present the alert.
+                self.present(alert, animated: true, completion: nil)
+            }
         }))
         
         // 4. Present the alert.
         self.present(alert, animated: true, completion: nil)
-        
-        if (response != -1) {
-            //1. Create the alert controller.
-            let alert = UIAlertController(title: "Pantry items have been removed from the pantry.", message: "", preferredStyle: .alert)
-            
-            // 3. Grab the value from the text field, and print it when the user clicks OK.
-            alert.addAction(UIAlertAction(title: "OK", style: .default))
-            
-            // 4. Present the alert.
-            self.present(alert, animated: true, completion: nil)
-        }
     }
 }

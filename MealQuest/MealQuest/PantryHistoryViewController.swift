@@ -122,7 +122,6 @@ class PantryHistoryViewController: UIViewController, UITableViewDataSource, UITa
             alert.addAction(UIAlertAction(title: "Confirm", style: .default, handler: { _ in
                 
                 _ = deletePantryItem(pantryId: currentCell.id)
-                print("Delete item from database!")
                 
                 // initialize new view controller and cast it as your view controller
                 self.archiveTable.reloadData()
@@ -150,22 +149,22 @@ class PantryHistoryViewController: UIViewController, UITableViewDataSource, UITa
             addPantryItemsToShoppingList(items)
             response = 1
             
+            if (response != -1) {
+                //1. Create the alert controller.
+                let alert = UIAlertController(title: "Selected pantry items have been added to the active shopping list.", message: "", preferredStyle: .alert)
+                
+                // 3. Grab the value from the text field, and print it when the user clicks OK.
+                alert.addAction(UIAlertAction(title: "OK", style: .default))
+                
+                // 4. Present the alert.
+                self.present(alert, animated: true, completion: nil)
+            }
+            
             self.refreshData()
         }))
         
         // 4. Present the alert.
         self.present(alert, animated: true, completion: nil)
-        
-        if (response != -1) {
-            //1. Create the alert controller.
-            let alert = UIAlertController(title: "Selected pantry items have been added to the active shopping list.", message: "", preferredStyle: .alert)
-            
-            // 3. Grab the value from the text field, and print it when the user clicks OK.
-            alert.addAction(UIAlertAction(title: "OK", style: .default))
-            
-            // 4. Present the alert.
-            self.present(alert, animated: true, completion: nil)
-        }
 
     }
     

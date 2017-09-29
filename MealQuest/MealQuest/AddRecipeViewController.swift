@@ -13,6 +13,7 @@ enum addRecipeError: Error {
     case fieldMissing
     case ingredientFormat
     case fieldFormat
+    case ingredientUnit
 }
 
 class AddRecipeViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
@@ -195,6 +196,9 @@ class AddRecipeViewController: UIViewController, UIPickerViewDelegate, UIPickerV
                         }
                         newIngredient.quantity = Double(ingredient)!
                     } else if (index == 1) {
+                        guard Constants.units.contains(ingredient) else {
+                            throw addRecipeError.ingredientUnit
+                        }
                         newIngredient.unit = ingredient
                     } else {
                         ingredientName += ingredient + " "
@@ -284,6 +288,8 @@ class AddRecipeViewController: UIViewController, UIPickerViewDelegate, UIPickerV
             msg = "Ingredient format in correct. Please follow the '# unit ingredient' format."
         } catch addRecipeError.fieldMissing {
             msg = "Required fields are missing. Please fill in values for all required fields."
+        } catch addRecipeError.ingredientUnit {
+            msg = "Ingredient unit specified does not match valid units. Please choose a valid unit type."
         } catch {
             msg = "Unknown error has been found. Please check the form again to follow specifications."
         }

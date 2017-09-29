@@ -17,9 +17,10 @@ class SQLiteDB {
     // Testing constants to reset databases
     private let testingConstant         = false
     private let deleteCategoryTable     = false
+    private let deleteExpirationTable   = false
     private let deletePantryTable       = false
-    private let deleteShoppingLists     = true
-    private let deleteShoppingItem      = true
+    private let deleteShoppingLists     = false
+    private let deleteShoppingItem      = false
     private let deleteRecipeTable       = false      // recipe table and ingredient table tightly coupled, should treat as such, remove option to delete separately and just couple it
     private let deleteIngredientTable   = false
     
@@ -851,6 +852,10 @@ class SQLiteDB {
     
     func createPantryExpirationTable() {
         do {
+            if (deleteExpirationTable) {
+                try db?.run(pantryExpirationTable.drop(ifExists: true))
+            }
+            
             try db!.run(pantryExpirationTable.create(ifNotExists: true) { table in
                 table.column(pantryExpirationID, primaryKey: true)
                 table.column(pantryExpirationGroup)
@@ -874,7 +879,7 @@ class SQLiteDB {
     
     func initializeExpiration() {
         for groupName in Constants.pantryGroups {
-            _ = SQLiteDB.instance.insertNewName(expirationGroup: groupName, expirationDays: getExpiration(expirationGroup: groupName).expirationDays)
+            _ = SQLiteDB.instance.insertNewName(expirationGroup: groupName, expirationDays: Constants.pantryExpirationMap[groupName]!)
         }
     }
     
