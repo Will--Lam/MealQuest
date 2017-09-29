@@ -79,6 +79,7 @@
 		BED5C7281EF745E000D98D0B /* PantryAddItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED5C7271EF745E000D98D0B /* PantryAddItemViewController.swift */; };
 		BED7E29A1F1C0D9800400647 /* ShoppingCompareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED7E2991F1C0D9800400647 /* ShoppingCompareViewController.swift */; };
 		BEE8E75C1F195B160023FD1A /* SearchWPantryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE8E75B1F195B160023FD1A /* SearchWPantryTableViewController.swift */; };
+		BEE915E41F7D680400D9701F /* SearchFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE915E31F7D680400D9701F /* SearchFooter.swift */; };
 		BEF15D2F1F16C26300A8EAE4 /* xpCircleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF15D2E1F16C26300A8EAE4 /* xpCircleView.swift */; };
 /* End PBXBuildFile section */
 
@@ -241,6 +242,7 @@
 		BED5C7271EF745E000D98D0B /* PantryAddItemViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PantryAddItemViewController.swift; sourceTree = "<group>"; };
 		BED7E2991F1C0D9800400647 /* ShoppingCompareViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShoppingCompareViewController.swift; sourceTree = "<group>"; };
 		BEE8E75B1F195B160023FD1A /* SearchWPantryTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchWPantryTableViewController.swift; sourceTree = "<group>"; };
+		BEE915E31F7D680400D9701F /* SearchFooter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchFooter.swift; sourceTree = "<group>"; };
 		BEF15D2E1F16C26300A8EAE4 /* xpCircleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = xpCircleView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -362,6 +364,7 @@
 				BE7B5B541ED6AB5A00200C29 /* ShoppingViewController.swift */,
 				BE1DB0A81F0D7033004701F9 /* ShoppingItemCell.swift */,
 				BE1DB0AD1F0D7A4F004701F9 /* Active List Subviews */,
+				BEE915D91F7D678000D9701F /* Item Recommendation */,
 				BE1DB0B41F0DA091004701F9 /* History Subviews */,
 				BE1DB0AC1F0D75EE004701F9 /* Shopping UI */,
 			);
@@ -383,8 +386,6 @@
 				BEB781191EF9A236007BB921 /* ShoppingEditItemViewController.swift */,
 				BED7E2991F1C0D9800400647 /* ShoppingCompareViewController.swift */,
 				BEB781101EF9A226007BB921 /* ShoppingAddItemViewController.swift */,
-				BE1DB0AE1F0D936F004701F9 /* HistoryItemTableViewController.swift */,
-				BE1DB0B01F0D9384004701F9 /* HistoryItemCell.swift */,
 			);
 			name = "Active List Subviews";
 			sourceTree = "<group>";
@@ -498,6 +499,7 @@
 			isa = PBXGroup;
 			children = (
 				BE8A20DA1F0FFD8400FD1DA5 /* Observer.swift */,
+				BEE915E31F7D680400D9701F /* SearchFooter.swift */,
 				BEA5E26E1F4297AB007921D9 /* CustomFunctions.swift */,
 				3C58405D1F05E16900DF67C0 /* Constants.swift */,
 				BE8A20E31F1008D900FD1DA5 /* UnitConverter.swift */,
@@ -517,6 +519,15 @@
 				BEC637031F194BA5009B57C5 /* RecipeButtonExtension.swift */,
 			);
 			name = "Recipe Subview Extension";
+			sourceTree = "<group>";
+		};
+		BEE915D91F7D678000D9701F /* Item Recommendation */ = {
+			isa = PBXGroup;
+			children = (
+				BE1DB0AE1F0D936F004701F9 /* HistoryItemTableViewController.swift */,
+				BE1DB0B01F0D9384004701F9 /* HistoryItemCell.swift */,
+			);
+			name = "Item Recommendation";
 			sourceTree = "<group>";
 		};
 		BEF15D2B1F16C21E00A8EAE4 /* Shopping Classes */ = {
@@ -776,6 +787,7 @@
 				1B1FAC031F756AB600900442 /* RecipeIngredient.swift in Sources */,
 				BE30516C1F7594CC0094BC15 /* RecipeCategoryTableViewController.swift in Sources */,
 				1B1FABF61F7478DD00900442 /* PantryUtility.swift in Sources */,
+				BEE915E41F7D680400D9701F /* SearchFooter.swift in Sources */,
 				BEC637041F194BA5009B57C5 /* RecipeButtonExtension.swift in Sources */,
 				BE8A14971EE8FCA100377566 /* RecipeViewController.swift in Sources */,
 				1B1FABED1F74667D00900442 /* PantryRequestHandler.swift in Sources */,

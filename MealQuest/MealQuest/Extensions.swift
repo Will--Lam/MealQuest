@@ -115,7 +115,6 @@ let SQLDateFormatter: DateFormatter = {
     return formatter
 }()
 
-// TODO MARY: delete
 extension Date {
     
     static var declaredDatatype: String {

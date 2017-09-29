@@ -139,7 +139,17 @@ struct Constants {
         Constants.RecipeBreads: "breadRecipesIcon",
         Constants.RecipeHolidays: "holidayRecipesIcon",
         Constants.RecipeEntertaining: "entertainingRecipesIcon" ]
-        
+    
+    // constants for shopping history item scope bar
+    public static let scopeName = "Name"
+    public static let scopeGroup = "Group"
+    
+    public static let scopeGreaterCost = "> Cost"   // Specific for shopping item
+    public static let scopeLesserCost = "< Cost"    // Specific for shopping item
+    
+    public static let scopeGreaterCookTime = "> Time"   // Specific for recipe item
+    public static let scopeLesserCookTime = "< Time"    // Specific for recipe item
+    
     // constant for rounding
     public static let roundingPlaces = 5
     
