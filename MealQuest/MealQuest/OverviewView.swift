@@ -34,7 +34,7 @@ class OverviewView: UIView {
             imagePicker.delegate = observer
             imagePicker.sourceType = .camera
             imagePicker.cameraCaptureMode = .photo
-            imagePicker.allowsEditing = true
+            imagePicker.allowsEditing = false
             observer.present(imagePicker, animated: true, completion: nil)
         } else {
             //1. Create the alert controller.
