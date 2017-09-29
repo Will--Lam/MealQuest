@@ -131,7 +131,14 @@ class ResultsTableViewController: UIViewController, UITableViewDataSource, UITab
                     if (oldImagePath != "") {
                         // Need to delete the old image on success
                         do {
-                            try FileManager.default.removeItem(atPath: oldImagePath)
+                            let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
+                            // Get the Document directory path
+                            let documentDirectoryPath:String = paths[0]
+                            // Create a new path for the new images folder
+                            let imagesDirectoryPath = documentDirectoryPath.appending("/RecipeImages")
+                            let imagePath = imagesDirectoryPath.appending(oldImagePath)
+                            print(imagePath)
+                            try FileManager.default.removeItem(atPath: imagePath)
                         } catch let error as NSError {
                             print(error.debugDescription)
                         }

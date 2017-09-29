@@ -45,11 +45,16 @@ extension RecipeViewController {
         // /var/mobile/Containers/Data/Application/9AF5E9BF-A718-4F60-A098-3FA8F315C5D3/Documents/RecipeImages/2017-09-2902:59:25+0000.png
         // /var/mobile/Containers/Data/Application/9AF5E9BF-A718-4F60-A098-3FA8F315C5D3/Documents/RecipeImages/2017-09-2902:59:25+0000.png
         
+        let fileManager = FileManager.default
+        let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
+        // Get the Document directory path
+        let documentDirectoryPath:String = paths[0]
+        // Create a new path for the new images folder
+        imagesDirectoryPath = documentDirectoryPath.appending("/RecipeImages")
         if (recipeDetails.imagePath == "") {
             overviewView.recipeImage.image = UIImage(named: "imageNotFound")
         } else {
-            let fileManager = FileManager.default
-            let imagePath = (self.getDirectoryPath() as NSString).appendingPathComponent(recipeDetails.imagePath)
+            let imagePath = imagesDirectoryPath.appending(recipeDetails.imagePath)
             print(imagePath)
             if fileManager.fileExists(atPath: imagePath) {
                 overviewView.recipeImage.image = UIImage(contentsOfFile: imagePath)
@@ -59,12 +64,6 @@ extension RecipeViewController {
             }
         }
         
-        images = []
-        let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
-        // Get the Document directory path
-        let documentDirectoryPath:String = paths[0]
-        // Create a new path for the new images folder
-        imagesDirectoryPath = documentDirectoryPath.appending("/RecipeImages")
         var objcBool:ObjCBool = true
         let isExist = FileManager.default.fileExists(atPath: imagesDirectoryPath, isDirectory: &objcBool)
         // If the folder with the given path doesn't exist already, create it
@@ -85,7 +84,6 @@ extension RecipeViewController {
         let documentsDirectory = paths[0]
         return documentsDirectory
     }
-
     
     func imagePickerController(_ picker:UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         if let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
@@ -96,9 +94,9 @@ extension RecipeViewController {
             
             var imagePath = NSDate().description
             imagePath = imagePath.replacingOccurrences(of: " ", with: "")
-            let newImagePath = "/\(imagePath).png"
-            imagePath = imagesDirectoryPath.appending("/\(imagePath).png")
-            let data = UIImagePNGRepresentation(overviewView.recipeImage.image!)
+            let newImagePath = "/\(imagePath).jpeg"
+            imagePath = imagesDirectoryPath.appending("/\(imagePath).jpeg")
+            let data = UIImageJPEGRepresentation(overviewView.recipeImage.image!, 0.25)
             let success = FileManager.default.createFile(atPath: imagePath, contents: data, attributes: nil)
             
             if (!success) {
@@ -116,9 +114,10 @@ extension RecipeViewController {
             print(recipeDetails.imagePath)
             
             if (oldImagePath != "") {
-                // Need to delete the old image on success
                 do {
-                    try FileManager.default.removeItem(atPath: oldImagePath)
+                    let imagePath = imagesDirectoryPath.appending(oldImagePath)
+                    print(imagePath)
+                    try FileManager.default.removeItem(atPath: imagePath)
                 } catch let error as NSError {
                     print(error.debugDescription)
                 }
