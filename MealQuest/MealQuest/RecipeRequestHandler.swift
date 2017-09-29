@@ -188,7 +188,7 @@ func sendMissingIngredientsToShoppingCart(_ recipeID: Int64) {
         }
         
         if(amountVal > 0) {
-            let relevantItem = SQLiteDB.instance.getShoppingItemByName(listID: activeListID!, name: ingredientItem.name.lowercased())
+            let relevantItem = SQLiteDB.instance.getShoppingItemByName(listID: activeListID!, name: ingredientItem.name)
             
             if(relevantItem.listID == -1) {
                 var itemGroup = Constants.PantryOther

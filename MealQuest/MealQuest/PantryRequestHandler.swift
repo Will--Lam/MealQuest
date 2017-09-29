@@ -122,7 +122,20 @@ func addPantryItemsToShoppingList(_ pantryItems: [PantryItem]) {
     let activeListID = SQLiteDB.instance.getActiveListID()
     let date = Date()
     for item in pantryItems {
-        _ = SQLiteDB.instance.insertNewItem(listID: activeListID!, itemName: item.name, itemCost: 0, unit: item.unit, quantity: Double(item.quantity), group: item.group, purchased: false, expirationDate: date, repurchase: false)
+        let relevantItem = SQLiteDB.instance.getShoppingItemByName(listID: activeListID!, name: item.name)
+        if(relevantItem.listID == -1) {
+            var itemGroup = Constants.PantryOther
+            for item in pantryItems {
+                if(item.group != "") {
+                    itemGroup = item.group
+                }
+            }
+            _ = SQLiteDB.instance.insertNewItem(listID: activeListID!, itemName: item.name, itemCost: 0, unit: item.unit, quantity: 0, group: item.group, purchased: false, expirationDate: date, repurchase: false)
+        } else {
+            let shoppingQuantity = relevantItem.quantity
+            _ = SQLiteDB.instance.updateItem(listID: activeListID!, itemID: relevantItem.id, itemName: relevantItem.name, itemCost: 0, unit: relevantItem.unit, quantity: shoppingQuantity, group: relevantItem.group, purchased: relevantItem.purchased, expirationDate: relevantItem.expirationDate, repurchase: relevantItem.repurchase)
+        }
+        
         _ = SQLiteDB.instance.togglePantryItem(pantryId: item.id, current: item.toggle)
     }
     
