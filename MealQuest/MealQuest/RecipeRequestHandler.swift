@@ -97,10 +97,15 @@ func getIngredientsByRecipe(recipeID: Int64) -> [RecipeIngredient] {
 
 func getRandomRecipe(category: String) -> RecipeItem {
     var recipe = RecipeItem(id: -1)
-    var recipeID = SQLiteDB.instance.getRecipeIDsByCategory(category: category)
-    let randomIndex = Int(arc4random_uniform(UInt32(recipeID.count)))
-    if(recipeID.count != 0) {
-        recipe = SQLiteDB.instance.getRecipeByID(id: recipeID[randomIndex])!
+    var recipeIDs = [Int64]()
+    if (category == Constants.RecipeAll) {
+        recipeIDs = SQLiteDB.instance.getAllRecipes()
+    } else {
+        recipeIDs = SQLiteDB.instance.getRecipeIDsByCategory(category: category)
+    }
+    let randomIndex = Int(arc4random_uniform(UInt32(recipeIDs.count)))
+    if(recipeIDs.count != 0) {
+        recipe = SQLiteDB.instance.getRecipeByID(id: recipeIDs[randomIndex])!
     }
 
     return recipe
