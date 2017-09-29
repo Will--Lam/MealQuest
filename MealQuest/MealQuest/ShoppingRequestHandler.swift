@@ -181,6 +181,7 @@ func addSelectedItemsToShoppingList(_ listID: Int64) {
     for itemID in markedItemIDs {
         let itemInfo = SQLiteDB.instance.getItemInformation(listID: listID, itemID: itemID)
         _ = SQLiteDB.instance.insertNewItem(listID: activeListID!, itemName: itemInfo.name , itemCost: itemInfo.itemCost, unit: itemInfo.unit, quantity: itemInfo.quantity, group: itemInfo.group, purchased: false, expirationDate: itemInfo.expirationDate, repurchase: false)
+        changeRepurchaseState(ListID: listID, ItemID: itemID, repurchaseState: false)
     }
 }
 
@@ -190,14 +191,3 @@ func addCheckedOutItemsToPantry(items: [ShoppingItem]) {
         _ = SQLiteDB.instance.storePantryItem(name: item.name, group: item.group, quantity: item.quantity, unit: item.unit, calories: 0, expiration: item.expirationDate, purchase: Date(), archive: Date())
     }
 }
-
-func addPantryItemsToShoppingList(_ pantryItems: [PantryItem]) {
-    let activeListID = SQLiteDB.instance.getActiveListID()
-    let date = Date()
-    for item in pantryItems {
-        _ = SQLiteDB.instance.insertNewItem(listID: activeListID!, itemName: item.name, itemCost: 0, unit: item.unit, quantity: Double(item.quantity), group: item.group, purchased: false, expirationDate: date, repurchase: false)
-    }
-}
-
-
-

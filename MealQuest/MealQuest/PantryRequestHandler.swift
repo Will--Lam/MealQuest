@@ -113,3 +113,13 @@ func getAllGroupExpiration() -> [PantryExpiration] {
 func getGroupExpiration(groupName: String) -> Int {
     return SQLiteDB.instance.getExpiration(expirationGroup: groupName).expirationDays
 }
+
+func addPantryItemsToShoppingList(_ pantryItems: [PantryItem]) {
+    let activeListID = SQLiteDB.instance.getActiveListID()
+    let date = Date()
+    for item in pantryItems {
+        _ = SQLiteDB.instance.insertNewItem(listID: activeListID!, itemName: item.name, itemCost: 0, unit: item.unit, quantity: Double(item.quantity), group: item.group, purchased: false, expirationDate: date, repurchase: false)
+        _ = SQLiteDB.instance.togglePantryItem(pantryId: item.id, current: item.toggle)
+    }
+    
+}

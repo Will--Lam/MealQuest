@@ -185,21 +185,22 @@ func sendMissingIngredientsToShoppingCart(_ recipeID: Int64) {
             aggregateQuantity += convert(item.quantity, item.unit, ingredientItem.unit)
             // round to 5 decimal places to ensure proper double subtraction
             amountVal = amountVal.roundTo(places: Constants.roundingPlaces) - aggregateQuantity.roundTo(places: Constants.roundingPlaces)
-            if(amountVal > 0) {
-                let relevantItem = SQLiteDB.instance.getShoppingItemByName(listID: activeListID!, name: ingredientItem.name.lowercased())
-                
-                if(relevantItem.listID == -1) {
-                    var itemGroup = Constants.PantryOther
-                    for item in pantryItems {
-                        if(item.group != "") {
-                            itemGroup = item.group
-                        }
+        }
+        
+        if(amountVal > 0) {
+            let relevantItem = SQLiteDB.instance.getShoppingItemByName(listID: activeListID!, name: ingredientItem.name.lowercased())
+            
+            if(relevantItem.listID == -1) {
+                var itemGroup = Constants.PantryOther
+                for item in pantryItems {
+                    if(item.group != "") {
+                        itemGroup = item.group
                     }
-                    _ = SQLiteDB.instance.insertNewItem(listID: activeListID!, itemName: ingredientItem.name, itemCost: 0, unit: ingredientItem.unit, quantity: amountVal, group: itemGroup, purchased: false, expirationDate: date, repurchase: false)
-                } else {
-                    let shoppingQuantity = relevantItem.quantity + convert(amountVal, ingredientItem.unit, relevantItem.unit)
-                    _ = SQLiteDB.instance.updateItem(listID: activeListID!, itemID: relevantItem.id, itemName: relevantItem.name, itemCost: 0, unit: relevantItem.unit, quantity: shoppingQuantity, group: relevantItem.group, purchased: relevantItem.purchased, expirationDate: relevantItem.expirationDate, repurchase: relevantItem.repurchase)
                 }
+                _ = SQLiteDB.instance.insertNewItem(listID: activeListID!, itemName: ingredientItem.name, itemCost: 0, unit: ingredientItem.unit, quantity: amountVal, group: itemGroup, purchased: false, expirationDate: date, repurchase: false)
+            } else {
+                let shoppingQuantity = relevantItem.quantity + convert(amountVal, ingredientItem.unit, relevantItem.unit)
+                _ = SQLiteDB.instance.updateItem(listID: activeListID!, itemID: relevantItem.id, itemName: relevantItem.name, itemCost: 0, unit: relevantItem.unit, quantity: shoppingQuantity, group: relevantItem.group, purchased: relevantItem.purchased, expirationDate: relevantItem.expirationDate, repurchase: relevantItem.repurchase)
             }
         }
     }
@@ -209,66 +210,28 @@ func sendMissingIngredientsToShoppingCart(_ recipeID: Int64) {
 //TODO
 func consumePantryItemsFromRecipe(_ recipeID: Int64, _ multiplier :Double) {
     
-    /*
-    let recipeDict = SQLiteDB.instance.getRecipeFieldFromDB(recipeID: recipeID) as [String:Any]
-    let ingredients = recipeDict["ingredients"] as! String
-    var ingredientsArray = [[String:String]]()
+    let recipeIngredients = SQLiteDB.instance.getIngredientsByRecipeID(recipeID: recipeID)
     
-    let tempArray = ingredients.components(separatedBy: "@")
-    for ingredient in tempArray {
-        var item = ingredient.components(separatedBy: "|")
-        var tempDict = [String:String]()
-        tempDict = [
-            "amount": item[0],
-            "unit": item[1],
-            "ingredient": item[2]
-        ]
-        ingredientsArray.append(tempDict)
-    }
-    
-    for ingredient in ingredientsArray {
-        let amountVal = Double(ingredient["amount"]!)!
-        let unit = ingredient["unit"]!
-        let name = ingredient["ingredient"]!
-
-        let pantryItems = SQLiteDB.instance.getPantryItemsByName(itemName: name)
-        var amountLeft = amountVal
-        if(pantryItems.count > 0) {
-//**            Need to re-evaluate how to decrement ingredients from recipe creation
-        }
-        // while amountLeft is positive, keep deleting pantry items
+    for ingredient in recipeIngredients {
+        
+        let pantryItems = SQLiteDB.instance.getPantryItemsByName(itemName: ingredient.name)
+        
+        var amountLeft = ingredient.quantity * multiplier
+        
         for item in pantryItems {
-            let itemAmount = convert(item.quantity, item.unit, unit)
-            print("item amount")
-            print(itemAmount)
+            let itemAmount = convert(item.quantity, item.unit, ingredient.unit)
             
             // round to 5 decimal places to ensure proper double subtraction
             amountLeft = amountLeft.roundTo(places: Constants.roundingPlaces) - itemAmount.roundTo(places: Constants.roundingPlaces)
-            
-            // delete item and break
-            if (amountLeft <= 0.0) {
-                if (amountLeft == 0.0) {
-                    _ = SQLiteDB.instance.archivePantryItem(pantryId: item.id)
-                } else {
-                    let updateAmount = -1 * amountLeft
-                    print(updateAmount)
-                    _ = SQLiteDB.instance.updatePantryItem(pantryId: item.id, name: item.name, group: item.group, quantity: updateAmount, unit: item.unit, calories: item.calories, expiration: item.expiration.datatypeValue, purchase: item.purchase.datatypeValue, archive: item.archive.datatypeValue)
-                    
-                }
-                
-                break
+
+            if (amountLeft >= 0.0) {
+                _ = SQLiteDB.instance.archivePantryItem(pantryId: item.id)
+            } else {
+                let newAmount = (-1) * amountLeft
+                _ = SQLiteDB.instance.updatePantryItem(pantryId: item.id, name: item.name, group: item.group, quantity: newAmount, unit: item.unit, calories: item.calories, expiration: item.expiration, purchase: item.purchase, archive: item.archive)
             }
-            
-            // just archive item
-            _ = SQLiteDB.instance.archivePantryItem(pantryId: item.id)
         }
     }
-    // Kushal's function with recipeDict[title], recipeDict[calorie], recipeDict[servingsize], plus 4 group amount
-    // multiplier for individual groups
-    // let specifiedServing = Double(recipeDict["servings"] as! String)! * multiplier
-    // addRecipeFoodItem(name: recipeDict["title"] as! String, calories: Double(recipeDict["calorie"] as! String)! * specifiedServing, proteins: groups["Proteins"]! * multiplier, vegetables: groups["Fruits and Veggies"]! * multiplier, dairy: groups["Dairy"]! * multiplier, grains: groups["Wheat and Bakery"]! * multiplier, servings: specifiedServing)
-    */
- */
 }
 
 

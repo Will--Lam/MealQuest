@@ -97,13 +97,15 @@ class ShoppingHistoryDetailsViewController: UIViewController, UITableViewDataSou
         alert.addAction(UIAlertAction(title: "Cancel", style: .default))
         alert.addAction(UIAlertAction(title: "Confirm", style: .default, handler: { _ in
 //**        Need to add a response from addSelectedItems to signal success
-            addSelectedItemsToShoppingList(self.itemID)
+            addSelectedItemsToShoppingList(self.listID)
+            self.historicListTable.reloadData()
+            
             response = 1
             print("Adding items to active list!")
         }))
         // 4. Present the alert.
         self.present(alert, animated: true, completion: nil)
-    
+        
         if (response != -1) {
             //1. Create the alert controller.
             let alert = UIAlertController(title: "Selected items have been added to the shopping list.", message: "", preferredStyle: .alert)
