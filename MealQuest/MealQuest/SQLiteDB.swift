@@ -1296,7 +1296,7 @@ class SQLiteDB {
         do {
             let selectQuery = shoppingItemTable.filter(
                 shoppingItemListID == listID &&
-                shoppingItemName == name)
+                shoppingItemName.lowercaseString == name.lowercased())
             
             for sItem in try db!.prepare(selectQuery) {
                 shoppingItem = ShoppingItem(
