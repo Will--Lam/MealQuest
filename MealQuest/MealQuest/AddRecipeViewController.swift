@@ -32,6 +32,7 @@ class AddRecipeViewController: UIViewController, UIPickerViewDelegate, UIPickerV
     var tertiary = String()
     @IBOutlet weak var ingredientsTextView: UITextView!
     @IBOutlet weak var instructionsTextView: UITextView!
+    var imagePath = String()
     
     @IBOutlet weak var saveFavorite: UIButton!
     
@@ -114,6 +115,7 @@ class AddRecipeViewController: UIViewController, UIPickerViewDelegate, UIPickerV
             secondaryPickerView.selectRow(recipeOptions.index(of: recipeDetails.secondary)!, inComponent:0, animated:true)
             tertiaryCategoryField.text = recipeDetails.tertiary
             tertiaryPickerView.selectRow(recipeOptions.index(of: recipeDetails.tertiary)!, inComponent:0, animated:true)
+            imagePath = recipeDetails.imagePath
  
             // Get the ingredients into a single displayable string
             var allIngredients = String()
@@ -252,6 +254,7 @@ class AddRecipeViewController: UIViewController, UIPickerViewDelegate, UIPickerV
             var newRecipeItem = RecipeItem(id: -1)
             if (edit) {
                 newRecipeItem = RecipeItem(id: self.id)
+                newRecipeItem.imagePath = imagePath
             }
             newRecipeItem.title = recipeNameField.text!
             newRecipeItem.calories = Int(caloriesField.text!)!
