@@ -59,6 +59,7 @@ extension RecipeViewController {
         //2. Add the text field. You can configure it however you need.
         alert.addTextField { (textField) in
             // TODO: add place holder text
+            textField.keyboardType = .decimalPad
             textField.placeholder = "\(self.servingSize)"
         }
         

@@ -136,7 +136,7 @@ class PantryGroupTableViewController: UIViewController, UITableViewDataSource, U
             }
         
             //1. Create the alert controller.
-            let alert = UIAlertController(title: "Confirm to delete the current item from your pantry?", message: "", preferredStyle: .alert)
+            let alert = UIAlertController(title: "Confirm to archive the current item from your pantry?", message: "", preferredStyle: .alert)
         
             // 3. Grab the value from the text field, and print it when the user clicks OK.
             alert.addAction(UIAlertAction(title: "Cancel", style: .default))
@@ -152,15 +152,6 @@ class PantryGroupTableViewController: UIViewController, UITableViewDataSource, U
             
             self.present(alert, animated: true, completion: nil)
         }
-    }
-    
-    func badInputAlert() {
-        //1. Create the alert controller.
-        let alert = UIAlertController(title: "Please enter a valid quantity to consume.", message: "", preferredStyle: .alert)
-        // 3. Grab the value from the text field, and print it when the user clicks OK.
-        alert.addAction(UIAlertAction(title: "OK", style: .default))
-        // 4. Present the alert.
-        self.present(alert, animated: true, completion: nil)
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
