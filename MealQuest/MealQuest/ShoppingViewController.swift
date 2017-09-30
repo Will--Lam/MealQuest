@@ -24,6 +24,7 @@ class ShoppingViewController: UIViewController, UITableViewDataSource, UITableVi
     var purchased = Bool()
     
     func calculateSubtotal( ) {
+        subtotalValue = 0
         for item in shoppingItemList {
             if (item.purchased) {
                 subtotalValue += item.itemCost
@@ -39,6 +40,8 @@ class ShoppingViewController: UIViewController, UITableViewDataSource, UITableVi
     func redrawTable( ) {
         shoppingItemList = getActiveList()
         self.navigationItem.title = "Active (" + "\(shoppingItemList.count)" + ")"
+        calculateSubtotal()
+        subtotalValueLabel.text = subtotalValue.dollarString
         activeListTable.reloadData()
     }
 
@@ -72,6 +75,8 @@ class ShoppingViewController: UIViewController, UITableViewDataSource, UITableVi
     override func viewDidAppear(_ animated: Bool) {
         shoppingItemList = getActiveList()
         self.navigationItem.title = "Active (" + "\(shoppingItemList.count)" + ")"
+        calculateSubtotal()
+        subtotalValueLabel.text = subtotalValue.dollarString
         activeListTable.reloadData()
     }
     
