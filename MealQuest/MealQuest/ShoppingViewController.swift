@@ -66,6 +66,7 @@ class ShoppingViewController: UIViewController, UITableViewDataSource, UITableVi
         
         self.navigationItem.title = "Active (" + "\(shoppingItemList.count)" + ")"
         self.navigationController!.navigationBar.titleTextAttributes = titleAttributes
+        self.hideKeyboardWhenTappedAround()
     }
     
     override func viewDidAppear(_ animated: Bool) {

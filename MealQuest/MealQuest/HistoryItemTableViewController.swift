@@ -42,6 +42,8 @@ class HistoryItemTableViewController: UIViewController, UITableViewDataSource, U
         searchController.searchBar.scopeButtonTitles = [Constants.scopeName, Constants.scopeGroup, Constants.scopeGreaterCost, Constants.scopeLesserCost]
         searchController.searchBar.delegate = self
         historyItemTable.tableHeaderView = searchController.searchBar
+    
+        self.hideKeyboardWhenTappedAround()
     }
     
     override func viewWillAppear(_ animated: Bool) {

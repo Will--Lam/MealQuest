@@ -51,6 +51,8 @@ class PantrySettingsViewController: UIViewController {
         let logo = UIImage(named: "logoWhite.png")
         let imageView = UIImageView(image:logo)
         self.navigationItem.titleView = imageView
+        
+        self.hideKeyboardWhenTappedAround()
     }
     
     override func viewDidAppear(_ animated: Bool) {

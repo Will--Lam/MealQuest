@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="rOb-lc-EbN">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="rOb-lc-EbN">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -86,7 +86,7 @@
                     <navigationItem key="navigationItem" id="Chn-Nd-GpN">
                         <barButtonItem key="leftBarButtonItem" style="plain" id="0mX-Uc-oaN">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="BKK-ix-lJM">
-                                <rect key="frame" x="16" y="9.5" width="25" height="25"/>
+                                <rect key="frame" x="16" y="9" width="25" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" image="historyIcon"/>
                                 <connections>
@@ -96,7 +96,7 @@
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" style="plain" id="Ine-US-P8g">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="q0O-kg-KPE">
-                                <rect key="frame" x="309" y="9.5" width="50" height="25"/>
+                                <rect key="frame" x="309" y="9" width="50" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" image="checkoutIcon"/>
                                 <connections>
@@ -386,9 +386,6 @@
                                 <state key="normal" title="Select from History">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
-                                <connections>
-                                    <segue destination="3mL-NY-pr3" kind="show" id="IAB-0d-eET"/>
-                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -412,6 +409,7 @@
                         <outlet property="quantityTextField" destination="zqK-RV-Fte" id="Gnq-Rj-bdI"/>
                         <outlet property="selectFromHistoryButton" destination="kWI-gI-E7M" id="aVf-iF-ErQ"/>
                         <outlet property="unitTextField" destination="nAK-mn-bIG" id="6sz-G9-1Ri"/>
+                        <segue destination="3mL-NY-pr3" kind="show" identifier="selectFromHistory" id="83v-Fx-TIH"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UNm-QP-gOV" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -427,7 +425,7 @@
                         <viewControllerLayoutGuide type="bottom" id="K6l-2g-vqW"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="tc0-du-UHN">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="717"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="50" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="aOm-lA-2ji">

@@ -53,6 +53,8 @@ class PantryGroupTableViewController: UIViewController, UITableViewDataSource, U
         self.navigationItem.title = group
         self.navigationController!.navigationBar.titleTextAttributes = titleAttributes
         
+        self.hideKeyboardWhenTappedAround()
+        
         expiringArray = getGroupPantryItemStale(pantryGroup: group)
         otherArray = getGroupPantryItemFresh(pantryGroup: group)
         allItemsArray = [expiringArray, otherArray]

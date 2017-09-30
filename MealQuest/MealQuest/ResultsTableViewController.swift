@@ -58,6 +58,8 @@ class ResultsTableViewController: UIViewController, UITableViewDataSource, UITab
         searchController.searchBar.scopeButtonTitles = [Constants.scopeName, Constants.scopeGroup, Constants.scopeGreaterCookTime, Constants.scopeLesserCookTime]
         searchController.searchBar.delegate = self
         resultsTable.tableHeaderView = searchController.searchBar
+        
+        self.hideKeyboardWhenTappedAround()
     }
     
     override func viewDidAppear(_ animated: Bool) {

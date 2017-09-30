@@ -185,13 +185,12 @@ class ShoppingAddItemViewController: UIViewController, UIPickerViewDelegate, UIP
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any!){
         
-        if (segue.identifier == "viewOldItems") {
+        if (segue.identifier == "selectFromHistory") {
             // initialize new view controller and cast it as your view controller
             let historicItemsVC = segue.destination as! HistoryItemTableViewController
             // Your new view controller should have property that will store passed value
             historicItemsVC.observer = self
         }
-        
     }
     
 }

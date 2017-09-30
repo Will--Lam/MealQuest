@@ -30,6 +30,7 @@ class PantryHistoryViewController: UIViewController, UITableViewDataSource, UITa
         
         self.navigationItem.title = "Historic Items"
         self.navigationController!.navigationBar.titleTextAttributes = titleAttributes
+        self.hideKeyboardWhenTappedAround()
         // Do any additional setup after loading the view.
         
         // set data source for tables
