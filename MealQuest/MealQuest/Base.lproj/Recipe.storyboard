@@ -186,7 +186,7 @@
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MbC-h2-o9n">
                                         <rect key="frame" x="25" y="570" width="132" height="113"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <string key="text">[Quantity #] {space} [Unit] {space} [Ingredient] {new line}   Units: [mg, g, kg, tsp, tbsp, lb, ton, oz, pt, gal, ml, l, kl, cup]</string>
+                                        <string key="text">[Quantity #] {space} [Unit] {space} [Ingredient] {new line}   Units: [-, mg, g, kg, tsp, tbsp, lb, ton, oz, pt, gal, ml, l, kl, cup]</string>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>

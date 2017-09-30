@@ -196,10 +196,19 @@ class AddRecipeViewController: UIViewController, UIPickerViewDelegate, UIPickerV
                         }
                         newIngredient.quantity = Double(ingredient)!
                     } else if (index == 1) {
-                        guard Constants.units.contains(ingredient) else {
-                            throw addRecipeError.ingredientUnit
+                        let last1 = ingredient.substring(from: ingredient.index(ingredient.endIndex, offsetBy: -1))
+                        if (last1 == "s") {
+                            let truncated = ingredient.substring(to: ingredient.index(before: ingredient.endIndex))
+                            guard Constants.units.contains(truncated) else {
+                                throw addRecipeError.ingredientUnit
+                            }
+                            newIngredient.unit = truncated
+                        } else {
+                            guard Constants.units.contains(ingredient) else {
+                                throw addRecipeError.ingredientUnit
+                            }
+                            newIngredient.unit = ingredient
                         }
-                        newIngredient.unit = ingredient
                     } else {
                         ingredientName += ingredient + " "
                     }
@@ -281,11 +290,11 @@ class AddRecipeViewController: UIViewController, UIPickerViewDelegate, UIPickerV
             self.navigationController?.popViewController(animated: true)
             
         } catch addRecipeError.ingredientAmount {
-            msg = "An ingredient amount is incorrect. Please check that all new lines start with a number."
+            msg = "An ingredient amount is incorrect. Please check that all new lines start with a number. Fractions are not allowed."
         } catch addRecipeError.fieldFormat {
             msg = "The serving size or calorie field is incorrect. Please ensure they are numbers."
         } catch addRecipeError.ingredientFormat {
-            msg = "Ingredient format in correct. Please follow the '# unit ingredient' format."
+            msg = "Ingredient format in correct. Please follow the '# unit ingredient' format. No trailing lines."
         } catch addRecipeError.fieldMissing {
             msg = "Required fields are missing. Please fill in values for all required fields."
         } catch addRecipeError.ingredientUnit {
