@@ -24,6 +24,7 @@ class ShoppingViewController: UIViewController, UITableViewDataSource, UITableVi
     var purchased = Bool()
     
     func calculateSubtotal( ) {
+        subtotalValue = 0
         for item in shoppingItemList {
             if (item.purchased) {
                 subtotalValue += item.itemCost
@@ -39,6 +40,8 @@ class ShoppingViewController: UIViewController, UITableViewDataSource, UITableVi
     func redrawTable( ) {
         shoppingItemList = getActiveList()
         self.navigationItem.title = "Active (" + "\(shoppingItemList.count)" + ")"
+        calculateSubtotal()
+        subtotalValueLabel.text = subtotalValue.dollarString
         activeListTable.reloadData()
     }
 
@@ -66,11 +69,14 @@ class ShoppingViewController: UIViewController, UITableViewDataSource, UITableVi
         
         self.navigationItem.title = "Active (" + "\(shoppingItemList.count)" + ")"
         self.navigationController!.navigationBar.titleTextAttributes = titleAttributes
+        self.hideKeyboardWhenTappedAround()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         shoppingItemList = getActiveList()
         self.navigationItem.title = "Active (" + "\(shoppingItemList.count)" + ")"
+        calculateSubtotal()
+        subtotalValueLabel.text = subtotalValue.dollarString
         activeListTable.reloadData()
     }
     
@@ -81,7 +87,7 @@ class ShoppingViewController: UIViewController, UITableViewDataSource, UITableVi
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        print("drawing table now")
+        // print("drawing table now")
         return shoppingItemList.count
     }
     
@@ -106,7 +112,7 @@ class ShoppingViewController: UIViewController, UITableViewDataSource, UITableVi
         cell.observer = self
         cell.shopping = true
         
-        cell.shoppingGroupImage.image = UIImage(named: cell.group)
+        cell.shoppingGroupImage.image = UIImage(named: Constants.pantryIconMap[cell.group]!)
         
         cell.itemNameLabel.text = cell.name + " (" + cell.quantity + " " + cell.unit + ")"
         cell.itemCostLabel.text = cell.cost.dollarString

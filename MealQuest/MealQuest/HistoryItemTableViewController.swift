@@ -8,26 +8,19 @@
 
 import UIKit
 
-class HistoryItemTableViewController: UITableViewController {
+class HistoryItemTableViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
     @IBOutlet var historyItemTable: UITableView!
+    @IBOutlet weak var searchFooter: SearchFooter!
+    
+    let searchController = UISearchController(searchResultsController: nil)
     
     var observer: Observer!
     
     var shoppingItemList = [ShoppingItem]()
+    var filteredItemList = [ShoppingItem]()
     var detailsPassed = [String:Any]()
     var cellID = Int64()
-    
-    func initializeTable( ) {
-        self.historyItemTable.dataSource = self
-        self.historyItemTable.delegate = self
-        
-        let cellNib = UINib(nibName: "ShoppingItemCell", bundle: nil)
-        self.historyItemTable.register(cellNib, forCellReuseIdentifier: "ShoppingItemCell")
-        
-        shoppingItemList = getAllShoppingItems()
-        
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,34 +33,66 @@ class HistoryItemTableViewController: UITableViewController {
         self.navigationItem.title = "Historic Items"
         self.navigationController!.navigationBar.titleTextAttributes = titleAttributes
         
-        initializeTable()
+        historyItemTable.dataSource = self
+        historyItemTable.delegate = self
+        
+        searchController.searchResultsUpdater = self
+        searchController.dimsBackgroundDuringPresentation = false
+        definesPresentationContext = true
+        searchController.searchBar.scopeButtonTitles = [Constants.scopeName, Constants.scopeGroup, Constants.scopeGreaterCost, Constants.scopeLesserCost]
+        searchController.searchBar.delegate = self
+        historyItemTable.tableHeaderView = searchController.searchBar
+    
+        self.hideKeyboardWhenTappedAround()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        refreshData()
+    }
+    
+    func refreshData() {
+        shoppingItemList = getAllShoppingItems()
+        historyItemTable.reloadData()
     }
     
     // MARK: - Table view data source
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
     }
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return shoppingItemList.count
+        if isFiltering() {
+            searchFooter.setIsFilteringToShow(filteredItemCount: filteredItemList.count, of: shoppingItemList.count)
+            return filteredItemList.count
+        } else {
+            searchFooter.setNotFiltering()
+            return shoppingItemList.count
+        }
     }
 
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "HistoryItemCell", for: indexPath) as! HistoryItemCell
+        let item: ShoppingItem
+        if isFiltering() {
+            item = filteredItemList[filteredItemList.index(filteredItemList.startIndex, offsetBy: indexPath.item)]
+        } else {
+            item = shoppingItemList[shoppingItemList.index(shoppingItemList.startIndex, offsetBy: indexPath.item)]
+        }
         
-        cell.id = shoppingItemList[shoppingItemList.index(shoppingItemList.startIndex, offsetBy: indexPath.item)].id
-        cell.quantity = "\(shoppingItemList[shoppingItemList.index(shoppingItemList.startIndex, offsetBy: indexPath.item)].quantity)"
-        cell.unit = "\(shoppingItemList[shoppingItemList.index(shoppingItemList.startIndex, offsetBy: indexPath.item)].unit)"
-        cell.name = shoppingItemList[shoppingItemList.index(shoppingItemList.startIndex, offsetBy: indexPath.item)].name
-        cell.cost = shoppingItemList[shoppingItemList.index(shoppingItemList.startIndex, offsetBy: indexPath.item)].itemCost
-        cell.group = shoppingItemList[shoppingItemList.index(shoppingItemList.startIndex, offsetBy: indexPath.item)].group
-        cell.purchased = shoppingItemList[shoppingItemList.index(shoppingItemList.startIndex, offsetBy: indexPath.item)].purchased
-        cell.expiration = shoppingItemList[shoppingItemList.index(shoppingItemList.startIndex, offsetBy: indexPath.item)].expirationDate
+        cell.id = item.id
+        cell.quantity = "\(item.quantity)"
+        cell.unit = "\(item.unit)"
+        cell.name = item.name
+        cell.cost = item.itemCost
+        cell.group = item.group
+        cell.purchased = item.purchased
+        cell.expiration = item.expirationDate
         
-        cell.shoppingGroupImage.image = UIImage(named: cell.group)
+        cell.shoppingGroupImage.image = UIImage(named: Constants.pantryIconMap[cell.group]!)
         
         cell.itemNameLabel.text = cell.name + " (" + cell.quantity + " " + cell.unit + ")"
         cell.itemCostLabel.text = cell.cost.dollarString
@@ -75,7 +100,7 @@ class HistoryItemTableViewController: UITableViewController {
         return cell
     }
 
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print("You selected cell #\(indexPath.row)!")
         
         // Get Cell Label
@@ -105,4 +130,64 @@ class HistoryItemTableViewController: UITableViewController {
         self.navigationController?.popViewController(animated: true)
     }
     
+    // MARK: Search Bar Configuration
+    func filterContentForSearchText(searchText: String, scope: String) {
+        
+        // Filter the array using the filter method
+        if self.shoppingItemList.isEmpty {
+            self.filteredItemList = []
+            return
+        }
+        self.filteredItemList = self.shoppingItemList.filter({( anItem: ShoppingItem) -> Bool in
+            if searchBarIsEmpty() {
+                return true
+            } else if (scope == Constants.scopeName) {
+                return anItem.name.lowercased().contains(searchText.lowercased())
+            } else if (scope == Constants.scopeGroup) {
+                return anItem.group.lowercased().contains(searchText.lowercased())
+            } else if (scope == Constants.scopeGreaterCost) {
+                if let value = Double(searchText) {
+                    return (anItem.itemCost > value)
+                } else {
+                    return false
+                }
+            } else if (scope == Constants.scopeLesserCost) {
+                if let value = Double(searchText) {
+                    return (anItem.itemCost < value)
+                } else {
+                    return false
+                }
+            } else {
+                return true
+            }
+        })
+        
+        historyItemTable.reloadData()
+    }
+    
+    func searchBarIsEmpty() -> Bool {
+        // Returns true if the text is empty or nil
+        return searchController.searchBar.text?.isEmpty ?? true
+    }
+    
+    func isFiltering() -> Bool {
+        let searchBarScopeIsFiltering = searchController.searchBar.selectedScopeButtonIndex != 0
+        return searchController.isActive && (!searchBarIsEmpty() || searchBarScopeIsFiltering)
+    }
+}
+
+extension HistoryItemTableViewController: UISearchBarDelegate {
+    // MARK: - UISearchBar Delegate
+    func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
+        filterContentForSearchText(searchText: searchBar.text!, scope: searchBar.scopeButtonTitles![selectedScope])
+    }
+}
+
+extension HistoryItemTableViewController: UISearchResultsUpdating {
+    // MARK: - UISearchResultsUpdating Delegate
+    func updateSearchResults(for searchController: UISearchController) {
+        let searchBar = searchController.searchBar
+        let scope = searchBar.scopeButtonTitles![searchBar.selectedScopeButtonIndex]
+        filterContentForSearchText(searchText: searchController.searchBar.text!, scope: scope)
+    }
 }

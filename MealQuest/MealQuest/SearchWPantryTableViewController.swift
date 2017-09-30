@@ -14,7 +14,10 @@ class SearchWPantryTableViewController: UIViewController, UITableViewDataSource,
     @IBOutlet weak var searchWPantryButton: UIButton!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
-    var itemArray = [PantryItem]()
+    var category = String()
+    var searchResults = [RecipeItem]()
+    
+    var pantryItemDic: [String: [PantryItem]] = [:]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,7 +38,7 @@ class SearchWPantryTableViewController: UIViewController, UITableViewDataSource,
         let cellNib = UINib(nibName: "PantryArchiveCell", bundle: nil)
         itemTable.register(cellNib, forCellReuseIdentifier: "PantryArchiveCell")
         
-        itemArray = getUniqueActivePantryItems()
+        getUniqueActivePantryItems()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -43,47 +46,58 @@ class SearchWPantryTableViewController: UIViewController, UITableViewDataSource,
     }
     
     // get unique list of pantry items (base case-insensitive name)
-    func getUniqueActivePantryItems() -> [PantryItem] {
-        let items = SQLiteDB.instance.getAllPantryItems()
-        return Array(Set(items))
+    func getUniqueActivePantryItems() {
+        for i in 0...(Constants.pantrySearchGroups.count - 1) {
+            pantryItemDic[Constants.pantrySearchGroups[i]] = getGroupPantryItem(pantryGroup: Constants.pantrySearchGroups[i])
+        }
     }
 
     func refreshData() {
-        itemArray = getUniqueActivePantryItems()
+        getUniqueActivePantryItems()
         itemTable.reloadData()
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 1
+        return Constants.pantrySearchGroups.count
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if section < Constants.pantrySearchGroups.count {
+            return Constants.pantrySearchGroups[section]
+        }
+        return nil
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return itemArray.count
+        return pantryItemDic[Constants.pantrySearchGroups[section]]!.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "PantryArchiveCell", for: indexPath) as! PantryArchiveCell
 
-        cell.itemName.text = itemArray[indexPath.item].name
-        if (itemArray[indexPath.item].search == 0) {
+        cell.itemName.text = pantryItemDic[Constants.pantrySearchGroups[indexPath.section]]?[indexPath.item].name
+        if (pantryItemDic[Constants.pantrySearchGroups[indexPath.section]]?[indexPath.item].search == 0) {
             cell.checkBox.setImage(UIImage(named: "uncheckedBox"), for: .normal)
         } else {
             cell.checkBox.setImage(UIImage(named: "checkedBox"), for: .normal)
         }
         
-        let date = itemArray[indexPath.item].expiration
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateStyle = DateFormatter.Style.medium
-        dateFormatter.timeStyle = DateFormatter.Style.none
-        cell.itemExpire.text = "Expiring on " + dateFormatter.string(from: date)
-        
-        cell.groupImage.image = UIImage(named: itemArray[indexPath.item].group)
+        let date = pantryItemDic[Constants.pantrySearchGroups[indexPath.section]]?[indexPath.item].expiration
+        let dateText = getRelativeDate(date: date!)
+        let last2 = dateText.substring(from:dateText.index(dateText.endIndex, offsetBy: -2))
+        if (last2 == "d.") {
+            cell.itemExpire.textColor = UIColor.red
+        } else {
+            cell.itemExpire.textColor = UIColor.gray
+        }
+        cell.itemExpire.text = dateText
+        cell.groupImage.image = UIImage(named: Constants.pantryIconMap[(pantryItemDic[Constants.pantrySearchGroups[indexPath.section]]?[indexPath.item].group)!]!)
         
         cell.search = true
         cell.searchObserver = self
-        cell.pantryItem = itemArray[indexPath.item]
+        cell.pantryItem = pantryItemDic[Constants.pantrySearchGroups[indexPath.section]]?[indexPath.item]
 
         return cell
     }
@@ -91,22 +105,26 @@ class SearchWPantryTableViewController: UIViewController, UITableViewDataSource,
     // send checked pantry items to search
     @IBAction func searchWithPantryAction(_ sender: Any) {
         
-        // get all search pantry items
-        let items = SQLiteDB.instance.getSearchPantryItems()
+        self.view.isUserInteractionEnabled = false
+        activityIndicator.startAnimating()
         
-        // revert search status toggled items
-        _ = SQLiteDB.instance.revertSearchPantryItems()
+        searchResults = searchWPantryRecipes(category: category)
         
-        // send this list of item names as input to search
-        let query = items.map{$0.name}.joined(separator: ",")
-        print(query)
+        performSegue(withIdentifier: "searchRecipes", sender: self)
         
-        //1. Create the alert controller.
-        let alert = UIAlertController(title: "Sorry. Search functionality is not yet ready.", message: "", preferredStyle: .alert)
-        // 3. Grab the value from the text field, and print it when the user clicks OK.
-        alert.addAction(UIAlertAction(title: "OK", style: .default))
-        // 4. Present the alert.
-        self.present(alert, animated: true, completion: nil)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any!){
+        
+        if (segue.identifier == "searchRecipes") {
+            print("attempting to segue on search")
+            
+            let resultsVC = segue.destination as! ResultsTableViewController
+            // To use this properly, change the stringPassed variable in ResultsViewController to dictionary structure
+            resultsVC.resultsPassed = searchResults
+            activityIndicator.stopAnimating()
+            self.view.isUserInteractionEnabled = true
+        }
         
     }
 

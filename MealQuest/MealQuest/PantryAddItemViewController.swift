@@ -20,10 +20,17 @@ class PantryAddItemViewController: UIViewController, UIPickerViewDelegate, UIPic
     @IBOutlet var saveButton: UIBarButtonItem!
     
     let groupPickerView = UIPickerView()
+    var groupSelected: String {
+        return UserDefaults.standard.string(forKey: "selected") ?? ""
+    }
     let unitPickerView = UIPickerView()
+    var unitSelected: String {
+        return UserDefaults.standard.string(forKey: "selected") ?? ""
+    }
     
-    var purchaseDate = Date()
-    var expirationDate = Date()
+    var purchaseDate    = Date()
+    var expirationDate  = Date()
+    var archiveDate     = Date()
     
     var viewItem = PantryItem(id: 1)
     var viewMode = false
@@ -39,21 +46,29 @@ class PantryAddItemViewController: UIViewController, UIPickerViewDelegate, UIPic
         groupPickerView.delegate = self
         groupPickerView.tag = 1
         itemGroup.inputView = groupPickerView
+        if let row = Constants.validPantryGroups.index(of: groupSelected) {
+            groupPickerView.selectRow(row, inComponent: 0, animated: false)
+        }
         
         unitPickerView.delegate = self
         unitPickerView.tag = 2
         itemUnit.inputView = unitPickerView
+        if let row = Constants.units.index(of: unitSelected) {
+            unitPickerView.selectRow(row, inComponent: 0, animated: false)
+        }
         
         if (viewMode == false) {
             itemQuantity.isUserInteractionEnabled = true
             itemQuantity.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
             itemUnit.text = Constants.units[0]
+            unitPickerView.selectRow(Constants.units.index(of: itemUnit.text!)!, inComponent:0, animated:true)
             
             itemGroup.text = itemGroupSuggestion
-            if (itemGroupSuggestion == "All") {
-                itemGroup.text = "Other Grocery"
-                itemGroupSuggestion = "Other Grocery"
+            if (itemGroupSuggestion == Constants.PantryAll) {
+                itemGroup.text = Constants.PantryOther
+                itemGroupSuggestion = Constants.PantryOther
             }
+            groupPickerView.selectRow(Constants.validPantryGroups.index(of: itemGroup.text!)!, inComponent:0, animated:true)
             
             // pre-fill in the category based on where the add button was pressed from
             
@@ -66,10 +81,12 @@ class PantryAddItemViewController: UIViewController, UIPickerViewDelegate, UIPic
             // set values from viewItem
             itemName.text = viewItem.name
             itemQuantity.text = String(viewItem.quantity)
-            itemQuantity.isUserInteractionEnabled = false
-            itemQuantity.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
+            // itemQuantity.isUserInteractionEnabled = false
+            // itemQuantity.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
             itemGroup.text = viewItem.group
+            groupPickerView.selectRow(Constants.validPantryGroups.index(of: itemGroup.text!)!, inComponent:0, animated:true)
             itemUnit.text = viewItem.unit
+            unitPickerView.selectRow(Constants.units.index(of: itemUnit.text!)!, inComponent:0, animated:true)
             
             let dateFormatter = DateFormatter()
             dateFormatter.dateStyle = DateFormatter.Style.medium
@@ -89,7 +106,7 @@ class PantryAddItemViewController: UIViewController, UIPickerViewDelegate, UIPic
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         if (pickerView.tag == 1) {
-            return Constants.pantryGroups.count
+            return Constants.validPantryGroups.count
         } else if (pickerView.tag == 2) {
             return Constants.units.count
         } else {
@@ -99,7 +116,7 @@ class PantryAddItemViewController: UIViewController, UIPickerViewDelegate, UIPic
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         if (pickerView.tag == 1) {
-            return Constants.pantryGroups[row][0]
+            return Constants.validPantryGroups[row]
         } else if (pickerView.tag == 2) {
             return Constants.units[row]
         } else {
@@ -109,9 +126,11 @@ class PantryAddItemViewController: UIViewController, UIPickerViewDelegate, UIPic
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if (pickerView.tag == 1) {
-            itemGroup.text = Constants.pantryGroups[row][0]
+            itemGroup.text = Constants.validPantryGroups[row]
+            UserDefaults.standard.set(Constants.validPantryGroups[row], forKey: "groupSelected")
         } else if (pickerView.tag == 2) {
             itemUnit.text = Constants.units[row]
+            UserDefaults.standard.set(Constants.units[row], forKey: "unitSelected")
         }
     }
     
@@ -127,6 +146,11 @@ class PantryAddItemViewController: UIViewController, UIPickerViewDelegate, UIPic
         let datePickerView:UIDatePicker = UIDatePicker()
         datePickerView.datePickerMode = UIDatePickerMode.date
         sender.inputView = datePickerView
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = DateFormatter.Style.medium
+        dateFormatter.timeStyle = DateFormatter.Style.none
+        let date = dateFormatter.date(from: itemPurchaseDate.text!)!
+        datePickerView.date = date
         datePickerView.addTarget(self, action: #selector(PantryAddItemViewController.purchaseDatePickerValueChanged), for: UIControlEvents.valueChanged)
     }
     
@@ -142,6 +166,11 @@ class PantryAddItemViewController: UIViewController, UIPickerViewDelegate, UIPic
         let datePickerView:UIDatePicker = UIDatePicker()
         datePickerView.datePickerMode = UIDatePickerMode.date
         sender.inputView = datePickerView
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = DateFormatter.Style.medium
+        dateFormatter.timeStyle = DateFormatter.Style.none
+        let date = dateFormatter.date(from: itemExpirationDate.text!)!
+        datePickerView.date = date
         datePickerView.addTarget(self, action: #selector(PantryAddItemViewController.expirationDatePickerValueChanged), for: UIControlEvents.valueChanged)
     }
     
@@ -195,14 +224,41 @@ class PantryAddItemViewController: UIViewController, UIPickerViewDelegate, UIPic
             print(expireString)
             
             var res: Int64?
-            res = nil
-            var message = "Pantry Item successfully added!"
+            res = 1
+            let message = "Pantry Item successfully added!"
                 
             if (viewMode == false) {
-                res = SQLiteDB.instance.storePantryItem(name: itemNameString!, group: itemGroup.text!, quantity: Double(itemQuantityVal!)!, unit: itemUnit.text!, calories: itemCaloriesInput, expiration: expireString, purchase: purchaseString, archive: "")
+                let newPantryItem = PantryItem(
+                    id:             -1,
+                    name:           itemNameString!,
+                    group:          itemGroup.text!,
+                    quantity:       Double(itemQuantityVal!)!,
+                    unit:           itemUnit.text!,
+                    calories:       itemCaloriesInput,
+                    isArchive:      0,
+                    expiration:     expirationDate,
+                    purchase:       purchaseDate,
+                    archive:        archiveDate,
+                    toggle:         0,
+                    search:         0)
+                _ = createPantryItem(itemInfo: newPantryItem)
             } else {
-                res = SQLiteDB.instance.updatePantryItem(pantryId: viewItem.id, name: itemNameString!, group: itemGroup.text!, quantity: Double(itemQuantityVal!)!, unit: itemUnit.text!, calories: itemCaloriesInput, expiration: expireString, purchase: purchaseString, archive: "")
-                    message = "Pantry Item successfully updated!"
+                
+                let newPantryItem = PantryItem(
+                    id:             viewItem.id,
+                    name:           itemNameString!,
+                    group:          itemGroup.text!,
+                    quantity:       Double(itemQuantityVal!)!,
+                    unit:           itemUnit.text!,
+                    calories:       itemCaloriesInput,
+                    isArchive:      0,
+                    expiration:     expirationDate,
+                    purchase:       purchaseDate,
+                    archive:        archiveDate,
+                    toggle:         0,
+                    search:         0)
+                
+                _ = updatePantryItem(itemInfo: newPantryItem)
             }
                 
             if (res == nil) {

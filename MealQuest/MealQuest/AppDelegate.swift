@@ -18,6 +18,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UINavigationBar.appearance().barTintColor = Constants.mqBlueColour
         UINavigationBar.appearance().tintColor = Constants.mqWhiteColour
         UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName:Constants.mqWhiteColour]
+        UISearchBar.appearance().barTintColor = Constants.mqBlueColour
+        UISearchBar.appearance().tintColor = Constants.mqWhiteColour
+        UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).tintColor = Constants.mqBlueColour
+        UITabBarItem.appearance().setTitleTextAttributes([NSFontAttributeName: UIFont.systemFont(ofSize: 12, weight: UIFontWeightBold)], for: .normal)
+        
+        if (SQLiteDB.instance.expirationDaysCount() < 1) {
+            _ = SQLiteDB.instance.initializeExpiration()
+        }
         
         return true
     }
@@ -42,7 +50,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-        _ = SQLiteDB.instance.deleteNonFavouriteRecipeDB()
     }
 
 

@@ -21,7 +21,13 @@ class ShoppingAddItemViewController: UIViewController, UIPickerViewDelegate, UIP
     var observer: Observer!
     
     let groupPickerView = UIPickerView()
+    var groupSelected: String {
+        return UserDefaults.standard.string(forKey: "selected") ?? ""
+    }
     let unitPickerView = UIPickerView()
+    var unitSelected: String {
+        return UserDefaults.standard.string(forKey: "selected") ?? ""
+    }
     
     @IBOutlet weak var selectFromHistoryButton: UIButton!
     @IBOutlet weak var addItemButton: UIBarButtonItem!
@@ -48,12 +54,14 @@ class ShoppingAddItemViewController: UIViewController, UIPickerViewDelegate, UIP
         groupPickerView.delegate = self
         groupPickerView.tag = 1
         groupTextField.inputView = groupPickerView
-        groupTextField.text = Constants.pantryGroups[0][0]
+        groupTextField.text = Constants.validPantryGroups[0]
+        groupPickerView.selectRow(Constants.validPantryGroups.index(of: groupTextField.text!)!, inComponent:0, animated:true)
         
         unitPickerView.delegate = self
         unitPickerView.tag = 2
         unitTextField.inputView = unitPickerView
         unitTextField.text = Constants.units[0]
+        unitPickerView.selectRow(Constants.units.index(of: unitTextField.text!)!, inComponent:0, animated:true)
 
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = DateFormatter.Style.medium
@@ -69,7 +77,7 @@ class ShoppingAddItemViewController: UIViewController, UIPickerViewDelegate, UIP
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         if (pickerView.tag == 1) {
-            return Constants.pantryGroups.count
+            return Constants.validPantryGroups.count
         } else if (pickerView.tag == 2) {
             return Constants.units.count
         } else {
@@ -79,7 +87,7 @@ class ShoppingAddItemViewController: UIViewController, UIPickerViewDelegate, UIP
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         if (pickerView.tag == 1) {
-            return Constants.pantryGroups[row][0]
+            return Constants.validPantryGroups[row]
         } else if (pickerView.tag == 2) {
             return Constants.units[row]
         } else {
@@ -89,9 +97,11 @@ class ShoppingAddItemViewController: UIViewController, UIPickerViewDelegate, UIP
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if (pickerView.tag == 1) {
-            groupTextField.text = Constants.pantryGroups[row][0]
+            groupTextField.text = Constants.validPantryGroups[row]
+            UserDefaults.standard.set(Constants.validPantryGroups[row], forKey: "groupSelected")
         } else if (pickerView.tag == 2) {
             unitTextField.text = Constants.units[row]
+            UserDefaults.standard.set(Constants.units[row], forKey: "unitSelected")
         }
     }
     
@@ -99,6 +109,11 @@ class ShoppingAddItemViewController: UIViewController, UIPickerViewDelegate, UIP
         let datePickerView:UIDatePicker = UIDatePicker()
         datePickerView.datePickerMode = UIDatePickerMode.date
         sender.inputView = datePickerView
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = DateFormatter.Style.medium
+        dateFormatter.timeStyle = DateFormatter.Style.none
+        let date = dateFormatter.date(from: expirationTextField.text!)!
+        datePickerView.date = date
         datePickerView.addTarget(self, action: #selector(ShoppingAddItemViewController.datePickerValueChanged), for: UIControlEvents.valueChanged)
     }
     
@@ -117,20 +132,36 @@ class ShoppingAddItemViewController: UIViewController, UIPickerViewDelegate, UIP
         let quantity = quantityTextField.text!
         let unit = unitTextField.text!
         let group = groupTextField.text!
-        if ((name != "") && (cost != "") && (quantity != "") && (group != "") && (unit != "")) {
+        if (name != "") {
 
             let newDetails = ShoppingItem(
                 listID: -1,
                 itemID: -1,
                 itemName: name,
-                itemCost: Double(cost)!,
-                unit: unit,
-                quantity: Double(quantity)!,
-                group: group,
+                itemCost: Double(0),
+                unit: Constants.UnitBlank,
+                quantity: Double(0),
+                group: Constants.PantryOther,
                 purchased: purchasedState,
                 expirationDate: expirationDate,
                 repurchase: false
             )
+            
+            if (group != "") {
+                newDetails.group = group
+            }
+            
+            if (unit != "") {
+                newDetails.unit = unit
+            }
+            
+            if (cost != "") {
+                newDetails.itemCost = Double(cost)!
+            }
+            
+            if (quantity != "") {
+                newDetails.quantity = Double(quantity)!
+            }
             
             saveNewShoppingItem(newDetails)
             print("Saving edits to database!")
@@ -154,13 +185,12 @@ class ShoppingAddItemViewController: UIViewController, UIPickerViewDelegate, UIP
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any!){
         
-        if (segue.identifier == "viewOldItems") {
+        if (segue.identifier == "selectFromHistory") {
             // initialize new view controller and cast it as your view controller
             let historicItemsVC = segue.destination as! HistoryItemTableViewController
             // Your new view controller should have property that will store passed value
             historicItemsVC.observer = self
         }
-        
     }
     
 }

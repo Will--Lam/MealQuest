@@ -15,218 +15,228 @@ extension Date {
     }
 }
 
-// resultSize is the number of results that are returned to the user
-let resultSize: Int = 10
-
-enum recipeData {
-    case servings
-    case readyInMinutes
-    case preparationMinutes
-    case cookingMinutes
+func createRecipe(recipeItem: RecipeItem) -> Int64 {
+    return SQLiteDB.instance.insertRecipe(
+        title:          recipeItem.title,
+        calories:       recipeItem.calories,
+        servings:       recipeItem.servings,
+        readyTime:      recipeItem.readyTime,
+        prepTime:       recipeItem.prepTime,
+        cookTime:       recipeItem.cookTime,
+        instructions:   recipeItem.instructions,
+        primary:        recipeItem.primary,
+        secondary:      recipeItem.secondary,
+        tertiary:       recipeItem.tertiary,
+        imagePath:      recipeItem.imagePath)!
 }
 
-// TODO: remove unnecessary recipe fields
-func addNewRecipeToDB(_ recipeDict: [String:Any]) {
-    let id = Date().toMillis() * (-1)
-    _ = SQLiteDB.instance.storeRecipeToDB(recipeID: id , field: "title", data: recipeDict["title"] as! String)
-    _ = SQLiteDB.instance.storeRecipeToDB(recipeID: id , field: "calorie", data: recipeDict["calorie"] as! String)
-    _ = SQLiteDB.instance.storeRecipeToDB(recipeID: id , field: "servings", data: recipeDict["servings"] as! String)
-    _ = SQLiteDB.instance.storeRecipeToDB(recipeID: id , field: "imageURL", data: "")
-    _ = SQLiteDB.instance.storeRecipeToDB(recipeID: id , field: "readyInMinutes", data: recipeDict["readyInMinutes"] as! String)
-    _ = SQLiteDB.instance.storeRecipeToDB(recipeID: id , field: "preparationMinutes", data: recipeDict["preparationMinutes"] as! String)
-    _ = SQLiteDB.instance.storeRecipeToDB(recipeID: id , field: "cookingMinutes", data: recipeDict["cookingMinutes"] as! String)
-    _ = SQLiteDB.instance.storeRecipeToDB(recipeID: id , field: "healthScore", data: recipeDict["healthScore"] as! String)
-    _ = SQLiteDB.instance.storeRecipeToDB(recipeID: id , field: "ingredients", data: recipeDict["ingredients"] as! String )
-    _ = SQLiteDB.instance.storeRecipeToDB(recipeID: id , field: "analyzedInstructions", data: recipeDict["analyzedInstructions"] as! String )
-    _ = SQLiteDB.instance.addRecipeToFavouriteDB(recipeID: id)
+func updateRecipe(recipeItem: RecipeItem) {
+    _ = SQLiteDB.instance.updateRecipe(
+        id: recipeItem.recipeID,
+        title:          recipeItem.title,
+        calories:       recipeItem.calories,
+        servings:       recipeItem.servings,
+        readyTime:      recipeItem.readyTime,
+        prepTime:       recipeItem.prepTime,
+        cookTime:       recipeItem.cookTime,
+        instructions:   recipeItem.instructions,
+        primary:        recipeItem.primary,
+        secondary:      recipeItem.secondary,
+        tertiary:       recipeItem.tertiary,
+        imagePath:      recipeItem.imagePath)!
 }
 
-// TODO: same as above
-func updateRecipeInDB(_ recipeDict: [String:Any]) {
-    let id = recipeDict["id"] as! Int64
-    _ = SQLiteDB.instance.updateRecipeInDB(recipeID: id , field: "title", data: recipeDict["title"] as! String)
-    _ = SQLiteDB.instance.updateRecipeInDB(recipeID: id , field: "calorie", data: recipeDict["calorie"] as! String)
-    _ = SQLiteDB.instance.updateRecipeInDB(recipeID: id , field: "servings", data: recipeDict["servings"] as! String)
-    _ = SQLiteDB.instance.updateRecipeInDB(recipeID: id , field: "imageURL", data: recipeDict["imageURL"] as! String)
-    _ = SQLiteDB.instance.updateRecipeInDB(recipeID: id , field: "readyInMinutes", data: recipeDict["readyInMinutes"] as! String)
-    _ = SQLiteDB.instance.updateRecipeInDB(recipeID: id , field: "preparationMinutes", data: recipeDict["preparationMinutes"] as! String)
-    _ = SQLiteDB.instance.updateRecipeInDB(recipeID: id , field: "cookingMinutes", data: recipeDict["cookingMinutes"] as! String)
-    _ = SQLiteDB.instance.updateRecipeInDB(recipeID: id , field: "healthScore", data: recipeDict["healthScore"] as! String)
-    _ = SQLiteDB.instance.updateRecipeInDB(recipeID: id , field: "ingredients", data: recipeDict["ingredients"] as! String )
-    _ = SQLiteDB.instance.updateRecipeInDB(recipeID: id , field: "analyzedInstructions", data: recipeDict["analyzedInstructions"] as! String )
+func updateRecipeIngredients(recipeID: Int64, ingredients: [Int: RecipeIngredient]) -> Int64 {
+    for ingredient in SQLiteDB.instance.getIngredientsByRecipeID(recipeID: recipeID) {
+        _ = SQLiteDB.instance.deleteIngredient(
+            ingredientID: ingredient.ingredientID)
+    }
+    for i in 0...(ingredients.count - 1) {
+        _ = SQLiteDB.instance.insertIngredient(
+            recipeID:       recipeID,
+            name:           (ingredients[i]?.name)!,
+            unit:           (ingredients[i]?.unit)!,
+            quantity:       (ingredients[i]?.quantity)!)
+    }
+    return recipeID
 }
 
-func getRandomRecipe() -> [String: Any] {
+func deleteRecipe(recipeID: Int64) {
+    _ = SQLiteDB.instance.deleteRecipe(id: recipeID)
+}
+
+func getRecipeDetails(recipeID: Int64) -> RecipeItem {
+    let recipe = RecipeItem(id: -1)
+    let temp = SQLiteDB.instance.getRecipeByID(id: recipeID)
     
-    let recipeIDList = SQLiteDB.instance.getFavouriteRecipeFieldFromDB()
-    
-    let randomIndex = Int(arc4random_uniform(UInt32(recipeIDList.count)))
-    
-    if(recipeIDList.count == 0) {
-        let returnDict = [String: Any]()
-        return returnDict
+    if (temp != nil) {
+        return temp!
     } else {
-        var returnDict = [String: Any]()
-        returnDict = SQLiteDB.instance.getRecipeFieldFromDB(recipeID: recipeIDList[randomIndex])
-        print(randomIndex)
-        returnDict["id"] = recipeIDList[randomIndex]
-        return returnDict
+        return recipe
     }
 }
 
-
-func isFavorite(_ recipeID: Int64) -> Bool {
-    let recipeIDList = SQLiteDB.instance.getFavouriteRecipeFieldFromDB()
+func getRecipes(category: String) -> [RecipeItem] {
+    var recipes = [RecipeItem]()
     
-    if recipeIDList.contains(recipeID) {
-        return true
+    if (category == Constants.RecipeAll) {
+        for recipeID in SQLiteDB.instance.getAllRecipes() {
+            recipes.append(SQLiteDB.instance.getRecipeByID(id: recipeID)!)
+        }
     } else {
-        return false
+        for recipeID in SQLiteDB.instance.getRecipeIDsByCategory(category: category) {
+            recipes.append(SQLiteDB.instance.getRecipeByID(id: recipeID)!)
+        }
+    }
+    return Array(recipes)
+}
+
+func getIngredientsByRecipe(recipeID: Int64) -> [RecipeIngredient] {
+    return SQLiteDB.instance.getIngredientsByRecipeID(recipeID: recipeID)
+}
+
+func getRandomRecipe(category: String) -> RecipeItem {
+    var recipe = RecipeItem(id: -1)
+    var recipeIDs = [Int64]()
+    if (category == Constants.RecipeAll) {
+        recipeIDs = SQLiteDB.instance.getAllRecipes()
+    } else {
+        recipeIDs = SQLiteDB.instance.getRecipeIDsByCategory(category: category)
+    }
+    let randomIndex = Int(arc4random_uniform(UInt32(recipeIDs.count)))
+    if(recipeIDs.count != 0) {
+        recipe = SQLiteDB.instance.getRecipeByID(id: recipeIDs[randomIndex])!
+    }
+
+    return recipe
+}
+
+func searchRecipes(query: [String], category: String) -> [RecipeItem] {
+    var recipes = [RecipeItem]()
+    var recipeIDs = [Int64]()
+    if (category == Constants.RecipeAll) {
+        recipeIDs = SQLiteDB.instance.getAllRecipes()
+    } else {
+        recipeIDs = SQLiteDB.instance.getRecipeIDsByCategory(category: category)
+    }
+    var results = [Int64:Int]()
+    
+    for id in recipeIDs {
+        results[id] = 0
     }
     
-}
-
-func getFavoriteRecipes( ) -> [[String: Any]] {
-    
-    var searchResults = [[String: Any]]()
-    
-    let recipeIDList = SQLiteDB.instance.getFavouriteRecipeFieldFromDB() 
-    
-    for id in recipeIDList {
-        let recipeDict = SQLiteDB.instance.getRecipeFieldFromDB(recipeID: id) as [String:Any]
-        
-        var recipeOverview  = [String: Any]()
-        recipeOverview["id"]  = id
-        recipeOverview["title"]     = recipeDict["title"]       as! String
-        recipeOverview["calorie"]   = recipeDict["calorie"]    as! String
-        recipeOverview["imageURL"]  = recipeDict["imageURL"]       as! String
-        
-        searchResults.append(recipeOverview)
+    // case insensitive comparison
+    for searchString in query {
+        let recipeIDsFromIngredientsTable = SQLiteDB.instance.getRecipeIDByIngredient(ingredient: searchString)
+        let commonRecipeIDs = recipeIDsFromIngredientsTable.filter{ recipeIDs.contains($0) }
+        for id in commonRecipeIDs {
+                results[id]! += 1
+        }
     }
-
-    return searchResults.sorted{(($0)["title"] as! String).lowercased() < (($1)["title"] as! String).lowercased()}
+    
+    for recipe in results {
+        if (recipe.value >=  Int(ceil(Double(results.count / 2)))) {
+            recipes.append(SQLiteDB.instance.getRecipeByID(id: recipe.key)!)
+        }
+    }
+    
+    return recipes
 }
 
-// param
-func searchRecipes(_ ingredients: String,_ searchCallBack: @escaping ([[String: Any]]) -> Void) {
-    // TODO
+func searchWPantryRecipes(category: String) -> [RecipeItem] {
+    var recipes = [RecipeItem]()
+    
+    var searchQuery = [String]()
+    
+    // Get pantry items marked for search
+    let pantrySearchItems = SQLiteDB.instance.getSearchPantryItems()
+    
+    for pantryItem in pantrySearchItems {
+        searchQuery.append(pantryItem.name)
+    }
+    
+    let recipeSearchResult = searchRecipes(query: searchQuery, category: category)
+    
+    for recipe in recipeSearchResult {
+        recipes.append(recipe)
+    }
+    
+    // Reset search flags in pantry
+    _ = SQLiteDB.instance.revertSearchPantryItems()
+    
+    return recipes
 }
 
+
+// TODO
 func sendMissingIngredientsToShoppingCart(_ recipeID: Int64) {
     
-    let recipeDict = SQLiteDB.instance.getRecipeFieldFromDB(recipeID: recipeID) as [String:Any]
-    let ingredients = recipeDict["ingredients"] as! String
-    var ingredientsArray = [[String:String]]()
-    
-    let tempArray = ingredients.components(separatedBy: "@")
-    for ingredient in tempArray {
-        var item = ingredient.components(separatedBy: "|")
-        var tempDict = [String:String]()
-        tempDict = [
-            "amount": item[0],
-            "unit": item[1],
-            "ingredient": item[2]
-        ]
-        ingredientsArray.append(tempDict)
-    }
-    let date = Date()
+    let recipeIngredients = SQLiteDB.instance.getIngredientsByRecipeID(recipeID: recipeID)
     
     var activeListID = SQLiteDB.instance.getActiveListID()
+    let date = Date()
+    
     if(activeListID == 0) {
         _ = SQLiteDB.instance.insertNewList(listCost: 0, listDate: date, isActive: true)
         activeListID = SQLiteDB.instance.getActiveListID()
     }
-    for ingredient in ingredientsArray {
-        var amountVal = Double(ingredient["amount"]!)!
-        let unit = ingredient["unit"]!
-        let name = ingredient["ingredient"]!
-        // TODO: Check pantry item for quantity -> use converter -> subtract & round for remaining quantity
-        let pantryItems = SQLiteDB.instance.getPantryItemsByName(itemName: name)
-        //let pantryItems = [PantryItem]()
+    
+    for ingredientItem in recipeIngredients {
+        var amountVal = ingredientItem.quantity
+        
+        let pantryItems = SQLiteDB.instance.getPantryItemsByName(itemName: ingredientItem.name)
         var aggregateQuantity = 0.0
         for item in pantryItems {
-            aggregateQuantity += convert(item.quantity, item.unit, unit)
-            
+            aggregateQuantity += convert(item.quantity, item.unit, ingredientItem.unit)
+            // round to 5 decimal places to ensure proper double subtraction
+            amountVal = amountVal.roundTo(places: Constants.roundingPlaces) - aggregateQuantity.roundTo(places: Constants.roundingPlaces)
         }
-        // round to 5 decimal places to ensure proper double subtraction
-        amountVal = amountVal.roundTo(places: Constants.roundingPlaces) - aggregateQuantity.roundTo(places: Constants.roundingPlaces)
+        
         if(amountVal > 0) {
-            let relevantItem = SQLiteDB.instance.getShoppingItemByName(listID: activeListID!, name: name.lowercased())
+            let relevantItem = SQLiteDB.instance.getShoppingItemByName(listID: activeListID!, name: ingredientItem.name)
             
             if(relevantItem.listID == -1) {
-                var itemGroup = Constants.pantryGroups[4][0]
+                var itemGroup = Constants.PantryOther
                 for item in pantryItems {
                     if(item.group != "") {
                         itemGroup = item.group
                     }
                 }
-                _ = SQLiteDB.instance.insertNewItem(listID: activeListID!, itemName: name, itemCost: 0, unit: unit, quantity: amountVal, group: itemGroup, purchased: false, expirationDate: date, repurchase: false)
+                _ = SQLiteDB.instance.insertNewItem(listID: activeListID!, itemName: ingredientItem.name, itemCost: 0, unit: ingredientItem.unit, quantity: amountVal, group: itemGroup, purchased: false, expirationDate: date, repurchase: false)
             } else {
-                let shoppingQuantity = relevantItem.quantity + convert(amountVal, unit, relevantItem.unit)
+                let shoppingQuantity = relevantItem.quantity + convert(amountVal, ingredientItem.unit, relevantItem.unit)
                 _ = SQLiteDB.instance.updateItem(listID: activeListID!, itemID: relevantItem.id, itemName: relevantItem.name, itemCost: 0, unit: relevantItem.unit, quantity: shoppingQuantity, group: relevantItem.group, purchased: relevantItem.purchased, expirationDate: relevantItem.expirationDate, repurchase: relevantItem.repurchase)
             }
         }
     }
 }
 
-func consumePantryItemsFromRecipe(_ recipeID: Int64, _ multiplier :Double) {
-    let recipeDict = SQLiteDB.instance.getRecipeFieldFromDB(recipeID: recipeID) as [String:Any]
-    let ingredients = recipeDict["ingredients"] as! String
-    var ingredientsArray = [[String:String]]()
-    
-    let tempArray = ingredients.components(separatedBy: "@")
-    for ingredient in tempArray {
-        var item = ingredient.components(separatedBy: "|")
-        var tempDict = [String:String]()
-        tempDict = [
-            "amount": item[0],
-            "unit": item[1],
-            "ingredient": item[2]
-        ]
-        ingredientsArray.append(tempDict)
-    }
-    
-    for ingredient in ingredientsArray {
-        let amountVal = Double(ingredient["amount"]!)!
-        let unit = ingredient["unit"]!
-        let name = ingredient["ingredient"]!
 
-        let pantryItems = SQLiteDB.instance.getPantryItemsByName(itemName: name)
-        var amountLeft = amountVal
-        if(pantryItems.count > 0) {
-//**            Need to re-evaluate how to decrement ingredients from recipe creation
-        }
-        // while amountLeft is positive, keep deleting pantry items
+//TODO
+func consumePantryItemsFromRecipe(_ recipeID: Int64, _ multiplier :Double) {
+    
+    let recipeIngredients = SQLiteDB.instance.getIngredientsByRecipeID(recipeID: recipeID)
+    
+    for ingredient in recipeIngredients {
+        
+        let pantryItems = SQLiteDB.instance.getPantryItemsByName(itemName: ingredient.name)
+        
+        var amountLeft = ingredient.quantity * multiplier
+        
         for item in pantryItems {
-            let itemAmount = convert(item.quantity, item.unit, unit)
-            print("item amount")
-            print(itemAmount)
+            let itemAmount = convert(item.quantity, item.unit, ingredient.unit)
             
             // round to 5 decimal places to ensure proper double subtraction
             amountLeft = amountLeft.roundTo(places: Constants.roundingPlaces) - itemAmount.roundTo(places: Constants.roundingPlaces)
-            
-            // delete item and break
-            if (amountLeft <= 0.0) {
-                if (amountLeft == 0.0) {
-                    _ = SQLiteDB.instance.archivePantryItem(pantryId: item.id)
-                } else {
-                    let updateAmount = -1 * amountLeft
-                    print(updateAmount)
-                    _ = SQLiteDB.instance.updatePantryItem(pantryId: item.id, name: item.name, group: item.group, quantity: updateAmount, unit: item.unit, calories: item.calories, expiration: item.expiration.datatypeValue, purchase: item.purchase.datatypeValue, archive: item.archive.datatypeValue)
-                    
-                }
-                
-                break
+
+            if (amountLeft >= 0.0) {
+                _ = SQLiteDB.instance.archivePantryItem(pantryId: item.id)
+            } else {
+                let newAmount = (-1) * amountLeft
+                _ = SQLiteDB.instance.updatePantryItem(pantryId: item.id, name: item.name, group: item.group, quantity: newAmount, unit: item.unit, calories: item.calories, expiration: item.expiration, purchase: item.purchase, archive: item.archive)
             }
-            
-            // just archive item
-            _ = SQLiteDB.instance.archivePantryItem(pantryId: item.id)
         }
     }
-    // Kushal's function with recipeDict[title], recipeDict[calorie], recipeDict[servingsize], plus 4 group amount
-    // multiplier for individual groups
-    // let specifiedServing = Double(recipeDict["servings"] as! String)! * multiplier
-    // addRecipeFoodItem(name: recipeDict["title"] as! String, calories: Double(recipeDict["calorie"] as! String)! * specifiedServing, proteins: groups["Proteins"]! * multiplier, vegetables: groups["Fruits and Veggies"]! * multiplier, dairy: groups["Dairy"]! * multiplier, grains: groups["Wheat and Bakery"]! * multiplier, servings: specifiedServing)
 }
 
 

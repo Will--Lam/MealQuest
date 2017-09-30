@@ -8,38 +8,64 @@
 
 import UIKit
 
-class ResultsTableViewController: UITableViewController {
-
-    var resultsPassed = [[String:Any]]()
-    var detailsPassed = [String:Any]()
-    var cellID = Int64()
-    var favoriteTable = false
+class ResultsTableViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     @IBOutlet var resultsTable: UITableView!
     @IBOutlet weak var addRecipeButton: UIButton!
+    @IBOutlet weak var searchFooter: SearchFooter!
+    
+    let searchController = UISearchController(searchResultsController: nil)
+    
+    var resultsPassed = [RecipeItem]()
+    var filteredResults = [RecipeItem]()
+    var recipeDetails = RecipeItem(id: -1)
+    var recipeIngredients = [RecipeIngredient]()
+    var cellID = Int64()
+    var group = "Search Results"
     
     func redrawTable( ) {
+        if (group != "Search Results") {
+            resultsPassed = getRecipes(category: group)
+        }
         resultsTable.reloadData()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        let logo = UIImage(named: "logoWhite.png")
-        let imageView = UIImageView(image:logo)
-        self.navigationItem.titleView = imageView
         
-        if (!favoriteTable) {
+        let titleAttributes = [
+            NSFontAttributeName: UIFont.systemFont(ofSize: 20, weight: UIFontWeightBold),
+            NSForegroundColorAttributeName: Constants.mqWhiteColour
+        ]
+        
+        self.navigationItem.title = group
+        self.navigationController!.navigationBar.titleTextAttributes = titleAttributes
+        
+        if (group == "Search Results") {
             addRecipeButton.isEnabled = false
             addRecipeButton.isHidden = true
         } else {
             addRecipeButton.isEnabled = true
             addRecipeButton.isHidden = false
         }
+        
+        self.resultsTable.dataSource = self
+        self.resultsTable.delegate = self
+        
+        searchController.searchResultsUpdater = self
+        searchController.dimsBackgroundDuringPresentation = false
+        definesPresentationContext = true
+        searchController.searchBar.scopeButtonTitles = [Constants.scopeName, Constants.scopeGroup, Constants.scopeGreaterCookTime, Constants.scopeLesserCookTime]
+        searchController.searchBar.delegate = self
+        resultsTable.tableHeaderView = searchController.searchBar
+        
+        self.hideKeyboardWhenTappedAround()
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        if (!favoriteTable) {
+        redrawTable()
+        
+        if (group == "Search Results") {
             addRecipeButton.isEnabled = false
             addRecipeButton.isHidden = true
         } else {
@@ -50,54 +76,89 @@ class ResultsTableViewController: UITableViewController {
 
     // MARK: - Table view data source
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return resultsPassed.count
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if isFiltering() {
+            searchFooter.setIsFilteringToShow(filteredItemCount: filteredResults.count, of: resultsPassed.count)
+            return filteredResults.count
+        } else {
+            searchFooter.setNotFiltering()
+            return resultsPassed.count
+        }
     }
 
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ResultsTableViewCell", for: indexPath) as! ResultsTableViewCell
         
-        let idVal = resultsPassed[indexPath.item]["id"] as! Int64
-        let titleText = resultsPassed[indexPath.item]["title"] as? String
-        let calorieVal = resultsPassed[indexPath.item]["calorie"] as? String
-        // let calorieText = "\(calorieVal!)"
+        let item: RecipeItem
         
-        let imageURL = resultsPassed[indexPath.item]["imageURL"] as? String
-        var imageRendered = false
-        cell.recipeImage.contentMode = .scaleAspectFit
-        if let checkedUrl = URL(string: imageURL!) {
-            getDataFromUrl(url: checkedUrl) { (data, response, error)  in
-                guard let data = data, error == nil else { return }
-                // print(response?.suggestedFilename ?? checkedUrl.lastPathComponent)
-                DispatchQueue.main.async() { () -> Void in
-                    cell.recipeImage.image = UIImage(data: data)
-                    imageRendered = true
-                }
-            }
+        if isFiltering() {
+            item = filteredResults[indexPath.item]
+        } else {
+            item = resultsPassed[indexPath.item]
         }
-        if (!imageRendered) {
-            print("Attempting to set default photo now in search results")
-            cell.recipeImage.image = UIImage(named: "defaultPhoto")
-        }
+        
+        let idVal = item.recipeID
+        let titleText = item.title
+        let calorieVal = item.calories
+        let recipeCategory = item.primary
         
         // Configure the cell...
-        print("idVal is: " + "\(idVal)")
         cell.id = idVal
+        cell.category = recipeCategory
         cell.titleLabel.text = titleText
-        cell.calorieLabel.text = calorieVal
-        cell.imageURL = imageURL!
+        cell.calorieLabel.text = "\(calorieVal)"
+        cell.categoryIcon.image = UIImage(named: Constants.recipeIconMap[recipeCategory]!)
         
         return cell
     }
     
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("You selected cell #\(indexPath.row)!")
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if (group != "Search Results") {
+            let currentCell = tableView.cellForRow(at: indexPath)! as! ResultsTableViewCell
+        
+            cellID = currentCell.id as Int64
+        
+            if editingStyle == .delete {
+                //1. Create the alert controller.
+                let alert = UIAlertController(title: "Confirm to delete the recipe?", message: "", preferredStyle: .alert)
+                // 3. Grab the value from the text field, and print it when the user clicks OK.
+                alert.addAction(UIAlertAction(title: "Cancel", style: .default))
+                alert.addAction(UIAlertAction(title: "Confirm", style: .default, handler: { _ in
+                    let recipeItem = getRecipeDetails(recipeID: self.cellID)
+                    let oldImagePath = recipeItem.imagePath
+                    if (oldImagePath != "") {
+                        // Need to delete the old image on success
+                        do {
+                            let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
+                            // Get the Document directory path
+                            let documentDirectoryPath:String = paths[0]
+                            // Create a new path for the new images folder
+                            let imagesDirectoryPath = documentDirectoryPath.appending("/RecipeImages")
+                            let imagePath = imagesDirectoryPath.appending(oldImagePath)
+                            print(imagePath)
+                            try FileManager.default.removeItem(atPath: imagePath)
+                        } catch let error as NSError {
+                            print(error.debugDescription)
+                        }
+                    }
+                    
+                    deleteRecipe(recipeID: self.cellID)
+                    print("Delete item from database!")
+                
+                    self.redrawTable()
+                
+                }))
+                // 4. Present the alert.
+                self.present(alert, animated: true, completion: nil)
+            }
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         // Get Cell Label
         let indexPath = tableView.indexPathForSelectedRow!
@@ -105,18 +166,20 @@ class ResultsTableViewController: UITableViewController {
         
         cellID = currentCell.id as Int64
         
-        if (cellID != -1) {
-            print("id is: " + "\(cellID)")
-            detailsPassed = SQLiteDB.instance.getRecipeFieldFromDB(recipeID: cellID)
+        recipeDetails = getRecipeDetails(recipeID: cellID)
+        
+        if (recipeDetails.recipeID == -1) {
+            //1. Create the alert controller.
+            let alert = UIAlertController(title: "Data corrupted and recipe could not be found. Delete and recreate recipe.", message: "", preferredStyle: .alert)
+            // 3. Grab the value from the text field, and print it when the user clicks OK.
+            alert.addAction(UIAlertAction(title: "OK", style: .default))
+            // 4. Present the alert.
+            self.present(alert, animated: true, completion: nil)
         } else {
-            detailsPassed = [
-                "title": currentCell.titleLabel.text!,
-                "calorie": currentCell.calorieLabel.text!,
-                "imageURL": currentCell.imageURL as String
-            ]
-        }
+            recipeIngredients = getIngredientsByRecipe(recipeID: cellID)
 
-        performSegue(withIdentifier: "viewDetails", sender: self)
+            performSegue(withIdentifier: "viewDetails", sender: self)
+        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any!){
@@ -125,16 +188,78 @@ class ResultsTableViewController: UITableViewController {
             // initialize new view controller and cast it as your view controller
             let recipeVC = segue.destination as! RecipeViewController
             // your new view controller should have property that will store passed value
-            recipeVC.recipeDetails = detailsPassed
+            recipeVC.recipeDetails = recipeDetails
+            recipeVC.ingredientsArray = recipeIngredients
             recipeVC.id = cellID
             recipeVC.observer = self
-            recipeVC.redrawFavorite = favoriteTable
         }
         
         if (segue.identifier == "addRecipe") {
             let addVC = segue.destination as! AddRecipeViewController
             addVC.resultsObserver = self
+            addVC.category = group
         }
     }
+    
+    // MARK: Search Bar Configuration
+    func filterContentForSearchText(searchText: String, scope: String) {
+        
+        // Filter the array using the filter method
+        if self.resultsPassed.isEmpty {
+            self.filteredResults = []
+            return
+        }
+        self.filteredResults = self.resultsPassed.filter({( anItem: RecipeItem) -> Bool in
+            if searchBarIsEmpty() {
+                return true
+            } else if (scope == Constants.scopeName) {
+                return anItem.title.lowercased().contains(searchText.lowercased())
+            } else if (scope == Constants.scopeGroup) {
+                return (anItem.primary.lowercased().contains(searchText.lowercased()) || anItem.secondary.lowercased().contains(searchText.lowercased()) || anItem.tertiary.lowercased().contains(searchText.lowercased()))
+            } else if (scope == Constants.scopeGreaterCookTime) {
+                if let value = Double(searchText) {
+                    return (anItem.cookTime > value)
+                } else {
+                    return false
+                }
+            } else if (scope == Constants.scopeLesserCookTime) {
+                if let value = Double(searchText) {
+                    return (anItem.cookTime < value)
+                } else {
+                    return false
+                }
+            } else {
+                return true
+            }
+        })
+        
+        resultsTable.reloadData()
+    }
+    
+    func searchBarIsEmpty() -> Bool {
+        // Returns true if the text is empty or nil
+        return searchController.searchBar.text?.isEmpty ?? true
+    }
+    
+    func isFiltering() -> Bool {
+        let searchBarScopeIsFiltering = searchController.searchBar.selectedScopeButtonIndex != 0
+        return searchController.isActive && (!searchBarIsEmpty() || searchBarScopeIsFiltering)
+    }
 
+}
+
+extension ResultsTableViewController: UISearchBarDelegate {
+    // MARK: - UISearchBar Delegate
+    func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
+        filterContentForSearchText(searchText: searchBar.text!, scope: searchBar.scopeButtonTitles![selectedScope])
+    }
+}
+
+extension ResultsTableViewController: UISearchResultsUpdating {
+    // MARK: - UISearchResultsUpdating Delegate
+    func updateSearchResults(for searchController: UISearchController) {
+        let searchBar = searchController.searchBar
+        let scope = searchBar.scopeButtonTitles![searchBar.selectedScopeButtonIndex]
+        filterContentForSearchText(searchText: searchController.searchBar.text!, scope: scope)
+    }
 }

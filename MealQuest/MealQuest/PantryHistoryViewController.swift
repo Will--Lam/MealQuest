@@ -13,8 +13,12 @@ class PantryHistoryViewController: UIViewController, UITableViewDataSource, UITa
     @IBOutlet weak var addShoppingButton: UIBarButtonItem!
     
     @IBOutlet weak var archiveTable: UITableView!
+    @IBOutlet weak var searchFooter: SearchFooter!
+    
+    let searchController = UISearchController(searchResultsController: nil)
     
     var archiveArray = [PantryItem]()
+    var filteredArray = [PantryItem]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,6 +30,7 @@ class PantryHistoryViewController: UIViewController, UITableViewDataSource, UITa
         
         self.navigationItem.title = "Historic Items"
         self.navigationController!.navigationBar.titleTextAttributes = titleAttributes
+        self.hideKeyboardWhenTappedAround()
         // Do any additional setup after loading the view.
         
         // set data source for tables
@@ -35,6 +40,13 @@ class PantryHistoryViewController: UIViewController, UITableViewDataSource, UITa
         // register cell nib
         let cellNib = UINib(nibName: "PantryArchiveCell", bundle: nil)
         archiveTable.register(cellNib, forCellReuseIdentifier: "PantryArchiveCell")
+        
+        searchController.searchResultsUpdater = self
+        searchController.dimsBackgroundDuringPresentation = false
+        definesPresentationContext = true
+        searchController.searchBar.scopeButtonTitles = [Constants.scopeName, Constants.scopeGroup]
+        searchController.searchBar.delegate = self
+        archiveTable.tableHeaderView = searchController.searchBar
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -44,7 +56,7 @@ class PantryHistoryViewController: UIViewController, UITableViewDataSource, UITa
     }
     
     func refreshData() {
-        archiveArray = SQLiteDB.instance.getGroupPantryItemArchived()
+        archiveArray = getGroupPantryItemArchived()
         archiveTable.reloadData()
     }
     
@@ -53,54 +65,101 @@ class PantryHistoryViewController: UIViewController, UITableViewDataSource, UITa
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return archiveArray.count
+        if isFiltering() {
+            searchFooter.setIsFilteringToShow(filteredItemCount: filteredArray.count, of: archiveArray.count)
+            return filteredArray.count
+        } else {
+            searchFooter.setNotFiltering()
+            return archiveArray.count
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "PantryArchiveCell", for: indexPath) as! PantryArchiveCell
         
-        cell.itemName.text = archiveArray[indexPath.item].name
-        if (archiveArray[indexPath.item].toggle == 0) {
+        let item: PantryItem
+        
+        if isFiltering() {
+            item = filteredArray[indexPath.item]
+        } else {
+            item = archiveArray[indexPath.item]
+        }
+        cell.itemName.text = item.name
+        if (item.toggle == 0) {
             cell.checkBox.setImage(UIImage(named: "uncheckedBox"), for: .normal)
         } else {
             cell.checkBox.setImage(UIImage(named: "checkedBox"), for: .normal)
         }
         
-        let date = self.archiveArray[indexPath.item].archive
+        let date = item.archive
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = DateFormatter.Style.medium
         dateFormatter.timeStyle = DateFormatter.Style.none
         cell.itemExpire.text = "Archived on " + dateFormatter.string(from: date)
         
-        cell.groupImage.image = UIImage(named: archiveArray[indexPath.item].group)
+        cell.groupImage.image = UIImage(named: Constants.pantryIconMap[item.group]!)
         
         cell.observer = self
-        cell.pantryItem = archiveArray[indexPath.item]
+        cell.pantryItem = item
 
         return cell
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            var currentCell: PantryItem
+            
+            if isFiltering() {
+                currentCell = filteredArray[indexPath.row]
+            } else {
+                currentCell = archiveArray[indexPath.row]
+            }
+            
+            //1. Create the alert controller.
+            let alert = UIAlertController(title: "Confirm to delete the current item from your pantry history?", message: "", preferredStyle: .alert)
+            
+            // 3. Grab the value from the text field, and print it when the user clicks OK.
+            alert.addAction(UIAlertAction(title: "Cancel", style: .default))
+            alert.addAction(UIAlertAction(title: "Confirm", style: .default, handler: { _ in
+                
+                _ = deletePantryItem(pantryId: currentCell.id)
+                
+                // initialize new view controller and cast it as your view controller
+                self.archiveTable.reloadData()
+                
+            }))
+            
+            self.present(alert, animated: true, completion: nil)
+        }
     }
     
     // add all toggled items to shopping list
     @IBAction func addShoppingAction(_ sender: Any) {
-
+        var response = -1
+        
         //1. Create the alert controller.
         let alert = UIAlertController(title: "Confirm to add the selected items to your current shopping list?", message: "", preferredStyle: .alert)
         // 3. Grab the value from the text field, and print it when the user clicks OK.
         alert.addAction(UIAlertAction(title: "Cancel", style: .default))
         alert.addAction(UIAlertAction(title: "Confirm", style: .default, handler: { _ in
             // get all toggled items
-            let items = SQLiteDB.instance.getToggledPantryItems()
-            
-            // delete all toggled items
-            // _ = SQLiteDB.instance.deleteToggledPantryItems()
+            let items = getToggledPantryItems()
             
             // add toggled items to shopping list
+//**        Need to get a response from addPantryItems to signal success
             addPantryItemsToShoppingList(items)
+            response = 1
+            
+            if (response != -1) {
+                //1. Create the alert controller.
+                let alert = UIAlertController(title: "Selected pantry items have been added to the active shopping list.", message: "", preferredStyle: .alert)
+                
+                // 3. Grab the value from the text field, and print it when the user clicks OK.
+                alert.addAction(UIAlertAction(title: "OK", style: .default))
+                
+                // 4. Present the alert.
+                self.present(alert, animated: true, completion: nil)
+            }
             
             self.refreshData()
         }))
@@ -109,5 +168,54 @@ class PantryHistoryViewController: UIViewController, UITableViewDataSource, UITa
         self.present(alert, animated: true, completion: nil)
 
     }
+    
+    // MARK: Search Bar Configuration
+    func filterContentForSearchText(searchText: String, scope: String) {
+        
+        // Filter the array using the filter method
+        if self.archiveArray.isEmpty {
+            self.filteredArray = []
+            return
+        }
+        self.filteredArray = self.archiveArray.filter({( anItem: PantryItem) -> Bool in
+            if searchBarIsEmpty() {
+                return true
+            } else if (scope == Constants.scopeName) {
+                return anItem.name.lowercased().contains(searchText.lowercased())
+            } else if (scope == Constants.scopeGroup) {
+                return anItem.group.lowercased().contains(searchText.lowercased())
+            } else {
+                return true
+            }
+        })
+        
+        archiveTable.reloadData()
+    }
+    
+    func searchBarIsEmpty() -> Bool {
+        // Returns true if the text is empty or nil
+        return searchController.searchBar.text?.isEmpty ?? true
+    }
+    
+    func isFiltering() -> Bool {
+        let searchBarScopeIsFiltering = searchController.searchBar.selectedScopeButtonIndex != 0
+        return searchController.isActive && (!searchBarIsEmpty() || searchBarScopeIsFiltering)
+    }
 
+}
+
+extension PantryHistoryViewController: UISearchBarDelegate {
+    // MARK: - UISearchBar Delegate
+    func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
+        filterContentForSearchText(searchText: searchBar.text!, scope: searchBar.scopeButtonTitles![selectedScope])
+    }
+}
+
+extension PantryHistoryViewController: UISearchResultsUpdating {
+    // MARK: - UISearchResultsUpdating Delegate
+    func updateSearchResults(for searchController: UISearchController) {
+        let searchBar = searchController.searchBar
+        let scope = searchBar.scopeButtonTitles![searchBar.selectedScopeButtonIndex]
+        filterContentForSearchText(searchText: searchController.searchBar.text!, scope: scope)
+    }
 }

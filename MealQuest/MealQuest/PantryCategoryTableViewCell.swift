@@ -11,7 +11,8 @@ import UIKit
 class PantryCategoryTableViewCell: UITableViewCell {
 
     @IBOutlet weak var categoryIcon: UIImageView!
-    @IBOutlet weak var categoryName: UILabel!
+    @IBOutlet weak var categoryName: UITextField!
+    @IBOutlet weak var categoryStaleFactor: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()

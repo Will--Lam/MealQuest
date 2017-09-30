@@ -36,7 +36,8 @@ class ShoppingHistoryListViewController: UITableViewController {
         self.navigationController!.navigationBar.titleTextAttributes = titleAttributes
         
         historicLists = getHistoricLists()
-
+        
+        self.hideKeyboardWhenTappedAround()
     }
         
     override func numberOfSections(in tableView: UITableView) -> Int {

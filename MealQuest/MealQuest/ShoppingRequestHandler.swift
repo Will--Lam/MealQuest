@@ -182,25 +182,27 @@ func addSelectedItemsToShoppingList(_ listID: Int64) {
     let activeListID = SQLiteDB.instance.getActiveListID()
     for itemID in markedItemIDs {
         let itemInfo = SQLiteDB.instance.getItemInformation(listID: listID, itemID: itemID)
-        _ = SQLiteDB.instance.insertNewItem(listID: activeListID!, itemName: itemInfo.name , itemCost: itemInfo.itemCost, unit: itemInfo.unit, quantity: itemInfo.quantity, group: itemInfo.group, purchased: false, expirationDate: itemInfo.expirationDate, repurchase: false)
+        let relevantItem = SQLiteDB.instance.getShoppingItemByName(listID: activeListID!, name: itemInfo.name)
+        if(relevantItem.listID == -1) {
+            var itemGroup = Constants.PantryOther
+                if(itemInfo.group != "") {
+                    itemGroup = itemInfo.group
+                }
+            
+            _ = SQLiteDB.instance.insertNewItem(listID: activeListID!, itemName: itemInfo.name , itemCost: itemInfo.itemCost, unit: itemInfo.unit, quantity: itemInfo.quantity, group: itemGroup, purchased: false, expirationDate: itemInfo.expirationDate, repurchase: false)
+        } else {
+            let shoppingQuantity = relevantItem.quantity + convert(itemInfo.quantity, itemInfo.unit, relevantItem.unit)
+            _ = SQLiteDB.instance.updateItem(listID: activeListID!, itemID: relevantItem.id, itemName: relevantItem.name, itemCost: 0, unit: relevantItem.unit, quantity: shoppingQuantity, group: relevantItem.group, purchased: relevantItem.purchased, expirationDate: relevantItem.expirationDate, repurchase: relevantItem.repurchase)
+        }
+
+        
+        changeRepurchaseState(ListID: listID, ItemID: itemID, repurchaseState: false)
     }
 }
 
 // add array of ShoppingItems to pantry db
 func addCheckedOutItemsToPantry(items: [ShoppingItem]) {
     for item in items {
-        let expireDate = SQLDateFormatter.string(from: item.expirationDate)
-        _ = SQLiteDB.instance.storePantryItem(name: item.name, group: item.group, quantity: item.quantity, unit: item.unit, calories: 0, expiration: expireDate, purchase: Date().datatypeValue, archive: "")
+        _ = SQLiteDB.instance.storePantryItem(name: item.name, group: item.group, quantity: item.quantity, unit: item.unit, calories: 0, expiration: item.expirationDate, purchase: Date(), archive: Date())
     }
 }
-
-func addPantryItemsToShoppingList(_ pantryItems: [PantryItem]) {
-    let activeListID = SQLiteDB.instance.getActiveListID()
-    let date = Date()
-    for item in pantryItems {
-        _ = SQLiteDB.instance.insertNewItem(listID: activeListID!, itemName: item.name, itemCost: 0, unit: item.unit, quantity: Double(item.quantity), group: item.group, purchased: false, expirationDate: date, repurchase: false)
-    }
-}
-
-
-

@@ -15,9 +15,9 @@ class ButtonCell: UITableViewCell, UIPickerViewDelegate, UIPickerViewDataSource 
     
     var index = Int()
     var unit = String()
-    var amount = Double()
+    var quantity = Double()
     var ingredient = String()
-    var ingredientsArray = [[String:String]]()
+    var ingredientsArray = [RecipeIngredient]()
     
     let unitPickerView = UIPickerView()
     var alert = UIAlertController()
@@ -42,14 +42,14 @@ class ButtonCell: UITableViewCell, UIPickerViewDelegate, UIPickerViewDataSource 
         self.alert.addAction(UIAlertAction(title: "Confirm", style: .default, handler: { _ in
             
             let newUnit = self.alert.textFields?[0].text!
-            let newAmount = self.convert(self.amount, self.unit, newUnit!)
+            let newAmount = self.convert(self.quantity, self.unit, newUnit!)
             if (newAmount < 0) {
                 self.convertFailedAlert(self.unit, newUnit!)
             } else {
                 self.unit = newUnit!
-                self.amount = newAmount
+                self.quantity = newAmount
                 // TODO: update the label of the cell
-                self.name.text = self.amount.formatString(places: 2) + " " + self.unit + " " + self.ingredient
+                self.name.text = self.quantity.formatString(places: 2) + " " + self.unit + " " + self.ingredient
                 self.updateIngredientsTable()
             }
         }))
@@ -69,28 +69,15 @@ class ButtonCell: UITableViewCell, UIPickerViewDelegate, UIPickerViewDataSource 
     }
     
     func updateIngredientsTable( ) {
-        var ingredients = String()
         for (index, item) in ingredientsArray.enumerated() {
-            var amount = String()
-            var unit = String()
-            var ingredient = String()
-            print("index is: " + "\(index)")
-            print("index is: " + "\(self.index)")
-            if (index == self.index) {
-                amount = self.amount.formatString(places: 2)
-                unit = self.unit
-                ingredient = self.ingredient
-            } else {
-                amount = item["amount"]!
-                unit = item["unit"]!
-                ingredient = item["ingredient"]!
+            if (index != self.index) {
+                ingredientsArray[index].quantity = item.quantity
+                ingredientsArray[index].unit = item.unit
+                ingredientsArray[index].name = item.name
             }
-            ingredients += amount + "|" + unit + "|" + ingredient + "@"
         }
         
-        ingredients.remove(at: ingredients.index(before: ingredients.endIndex))
-        
-        observer.recipeDetails["ingredients"] = ingredients
+        observer.ingredientsArray = ingredientsArray
         observer.redrawView()
     }
     

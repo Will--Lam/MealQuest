@@ -15,56 +15,80 @@ extension RecipeViewController {
             NSForegroundColorAttributeName: Constants.mqWhiteColour
         ]
         
-        self.navigationItem.title = recipeDetails["title"] as? String
+        self.navigationItem.title = recipeDetails.title
         self.navigationController!.navigationBar.titleTextAttributes = titleAttributes
         
-        let titleText = recipeDetails["title"] as! String
-        let calorieText = recipeDetails["calorie"] as! String
-        let imageURL = recipeDetails["imageURL"] as! String
-        let servingSizeText = recipeDetails["servings"] as! String
-        servingSize = Int(servingSizeText)!
-        let totalTime = recipeDetails["readyInMinutes"] as! String
-        let cookTime = recipeDetails["cookingMinutes"] as! String
-        let prepTime = recipeDetails["preparationMinutes"] as! String
-        let healthScore = recipeDetails["healthScore"] as! String
+        let titleText = recipeDetails.title
+        let calorieVal = recipeDetails.calories
+        servingSize = recipeDetails.servings
+        let totalTime = recipeDetails.readyTime
+        let cookTime = recipeDetails.cookTime
+        let prepTime = recipeDetails.prepTime
+        let primary = recipeDetails.primary
+        let secondary = recipeDetails.secondary
+        let tertiary = recipeDetails.tertiary
         
-        var imageRendered = false
-        overviewView.recipeImage.contentMode = .scaleAspectFit
-        if let checkedUrl = URL(string: imageURL) {
-            getDataFromUrl(url: checkedUrl) { (data, response, error)  in
-                guard let data = data, error == nil else { return }
-                // print(response?.suggestedFilename ?? checkedUrl.lastPathComponent)
-                DispatchQueue.main.async() { () -> Void in
-                    self.overviewView.recipeImage.image = UIImage(data: data)
-                    imageRendered = true
-                }
-            }
-        }
-        if (!imageRendered) {
-            print("Attempting to set default photo now in search results")
-            overviewView.recipeImage.image = UIImage(named: "defaultPhoto")
-        }
-            
         overviewView.titleLabel.text = titleText
         overviewView.titleLabel.adjustsFontSizeToFitWidth = true
-        overviewView.calorieLabel.text = "Calories/Serving " + calorieText
-        overviewView.totalTimeLabel.text = "Total Time: " + totalTime
-        overviewView.prepTimeLabel.text = "Prep Time: " + prepTime
-        overviewView.cookTimeLabel.text = "Cook Time: " + cookTime
-        overviewView.healthScoreLabel.text = healthScore
+        overviewView.calorieLabel.text = "Calories: " + "\(calorieVal)"
+        var hours = ceil(totalTime/60)
+        var minute = totalTime.truncatingRemainder(dividingBy: 60)
+        overviewView.totalTimeLabel.text = "Total Time: " + "\(hours) hour(s)" + " \(minute) minute(s)"
+        hours = ceil(prepTime/60)
+        minute = prepTime.truncatingRemainder(dividingBy: 60)
+        overviewView.prepTimeLabel.text = "Prep Time: " + "\(hours) hour(s)" + " \(minute) minute(s)"
+        hours = ceil(cookTime/60)
+        minute = cookTime.truncatingRemainder(dividingBy: 60)
+        overviewView.cookTimeLabel.text = "Cook Time: " + "\(hours) hour(s)" + " \(minute) minute(s)"
+        overviewView.servingSizeLabel.text = "Serving Size: " + "\(servingSize)"
+        overviewView.primaryCategoryLabel.text = "Primary Category: " + primary
+        overviewView.secondaryCategoryLabel.text = "Secondary Category: " + secondary
+        overviewView.tertiaryCategoryLabel.text = "Tertiary Category: " + tertiary
+        overviewView.categoryImage.image = UIImage(named: Constants.recipeIconMap[primary]!)
         
-        if (favorite) {
-            overviewView.newImageButton.isHidden = false
-            overviewView.newImageButton.isEnabled = true
+        // 9DE8B21A-3E0E-4DDE-8D25-35674D2F6F0B
+        
+        // /var/mobile/Containers/Data/Application/9AF5E9BF-A718-4F60-A098-3FA8F315C5D3/Documents/RecipeImages/2017-09-2902:59:25+0000.png
+        // /var/mobile/Containers/Data/Application/9AF5E9BF-A718-4F60-A098-3FA8F315C5D3/Documents/RecipeImages/2017-09-2902:59:25+0000.png
+        
+        let fileManager = FileManager.default
+        let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
+        // Get the Document directory path
+        let documentDirectoryPath:String = paths[0]
+        // Create a new path for the new images folder
+        imagesDirectoryPath = documentDirectoryPath.appending("/RecipeImages")
+        if (recipeDetails.imagePath == "") {
+            overviewView.recipeImage.image = UIImage(named: "imageNotFound")
         } else {
-            overviewView.newImageButton.isHidden = true
-            overviewView.newImageButton.isEnabled = false
+            let imagePath = imagesDirectoryPath.appending(recipeDetails.imagePath)
+            print(imagePath)
+            if fileManager.fileExists(atPath: imagePath) {
+                overviewView.recipeImage.image = UIImage(contentsOfFile: imagePath)
+            } else {
+                print("No Image")
+                overviewView.recipeImage.image = UIImage(named: "imageNotFound")
+            }
         }
         
-        overviewView.servingSizeLabel.text = "Serving Size: " + "\(servingSize)"
+        var objcBool:ObjCBool = true
+        let isExist = FileManager.default.fileExists(atPath: imagesDirectoryPath, isDirectory: &objcBool)
+        // If the folder with the given path doesn't exist already, create it
+        if isExist == false {
+            do {
+                try FileManager.default.createDirectory(atPath: imagesDirectoryPath, withIntermediateDirectories: true, attributes: nil)
+            } catch {
+                print("Something went wrong")
+            }
+        }
         
         overviewView.observer = self
         
+    }
+    
+    func getDirectoryPath() -> String {
+        let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
+        let documentsDirectory = paths[0]
+        return documentsDirectory
     }
     
     func imagePickerController(_ picker:UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
@@ -74,10 +98,49 @@ extension RecipeViewController {
             overviewView.recipeImage.image = overviewView.imagePicked.image
             print("WORKING")
             
-            // let imageData = UIImageJPEGRepresentation(overviewView.imagePicked.image!, 0.6)
-            // let compressedJPGImage = UIImage(data: imageData!)
-            //UIImageWriteToSavedPhotosAlbum(compressedJPGImage!, nil, nil, nil)
-            // print("image saved")
+            var imagePath = NSDate().description
+            imagePath = imagePath.replacingOccurrences(of: " ", with: "")
+            let newImagePath = "/\(imagePath).jpeg"
+            imagePath = imagesDirectoryPath.appending("/\(imagePath).jpeg")
+            let data = UIImageJPEGRepresentation(overviewView.recipeImage.image!, 0.25)
+            let success = FileManager.default.createFile(atPath: imagePath, contents: data, attributes: nil)
+            
+            if (!success) {
+                print("error")
+            }
+            
+            let oldImagePath = recipeDetails.imagePath
+            // Update the database that the image has been saved successfully
+            print(recipeDetails.imagePath)
+            recipeDetails.imagePath = newImagePath
+            print(recipeDetails.imagePath)
+//**        Need response from the update
+            var response = -1
+            updateRecipe(recipeItem: recipeDetails)
+            print(recipeDetails.imagePath)
+            
+            if (oldImagePath != "") {
+                do {
+                    let imagePath = imagesDirectoryPath.appending(oldImagePath)
+                    print(imagePath)
+                    try FileManager.default.removeItem(atPath: imagePath)
+                } catch let error as NSError {
+                    print(error.debugDescription)
+                }
+            }
+            
+            response = 1
+            if (response != -1) {
+                //1. Create the alert controller.
+                let alert = UIAlertController(title: "New recipe image has been successfully saved.", message: "", preferredStyle: .alert)
+                
+                // 3. Grab the value from the text field, and print it when the user clicks OK.
+                alert.addAction(UIAlertAction(title: "OK", style: .default))
+                
+                // 4. Present the alert.
+                self.present(alert, animated: true, completion: nil)
+            }
+            
         }
         
         self.dismiss(animated: true, completion: nil)

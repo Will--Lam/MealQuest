@@ -54,7 +54,7 @@ class ShoppingHistoryDetailsViewController: UIViewController, UITableViewDataSou
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        print("drawing table now")
+        // print("drawing table now")
         return listDetails.count
     }
     
@@ -78,7 +78,7 @@ class ShoppingHistoryDetailsViewController: UIViewController, UITableViewDataSou
             cell.toggleButton.setImage(UIImage(named: "uncheckedBox.png"), for: .normal)
         }
         
-        cell.shoppingGroupImage.image = UIImage(named: cell.group)
+        cell.shoppingGroupImage.image = UIImage(named: Constants.pantryIconMap[cell.group]!)
         
         cell.observer = self
         cell.shopping = false
@@ -90,20 +90,29 @@ class ShoppingHistoryDetailsViewController: UIViewController, UITableViewDataSou
     }
     
     @IBAction func addToCartAction(_ sender: Any) {
+        var response = -1
         //1. Create the alert controller.
         let alert = UIAlertController(title: "Confirm to add the selected items to your current shopping list?", message: "", preferredStyle: .alert)
         // 3. Grab the value from the text field, and print it when the user clicks OK.
         alert.addAction(UIAlertAction(title: "Cancel", style: .default))
         alert.addAction(UIAlertAction(title: "Confirm", style: .default, handler: { _ in
-            addSelectedItemsToShoppingList(self.itemID)
-            print("Adding items to active list!")
+//**        Need to add a response from addSelectedItems to signal success
+            addSelectedItemsToShoppingList(self.listID)
+            self.historicListTable.reloadData()
             
-            let stack = self.navigationController?.viewControllers
-            if ((stack?.count)! > 1) {
-                addSelectedItemsToShoppingList(self.listID)
-                self.observer.redrawTable()
-                self.navigationController?.popToRootViewController(animated: true)
+            response = 1
+            
+            if (response != -1) {
+                //1. Create the alert controller.
+                let alert = UIAlertController(title: "Selected items have been added to the shopping list.", message: "", preferredStyle: .alert)
+                
+                // 3. Grab the value from the text field, and print it when the user clicks OK.
+                alert.addAction(UIAlertAction(title: "OK", style: .default))
+                
+                // 4. Present the alert.
+                self.present(alert, animated: true, completion: nil)
             }
+            print("Adding items to active list!")
         }))
         // 4. Present the alert.
         self.present(alert, animated: true, completion: nil)
