@@ -88,7 +88,10 @@ func getRecipes(category: String) -> [RecipeItem] {
             recipes.append(SQLiteDB.instance.getRecipeByID(id: recipeID)!)
         }
     }
-    return Array(recipes)
+    
+    recipes.sort(by: sortByTitle(this:that:))
+    
+    return recipes
 }
 
 func getIngredientsByRecipe(recipeID: Int64) -> [RecipeIngredient] {
@@ -140,6 +143,8 @@ func searchRecipes(query: [String], category: String) -> [RecipeItem] {
         }
     }
     
+    recipes.sort(by: sortByTitle(this:that:))
+    
     return recipes
 }
 
@@ -163,6 +168,8 @@ func searchWPantryRecipes(category: String) -> [RecipeItem] {
     
     // Reset search flags in pantry
     _ = SQLiteDB.instance.revertSearchPantryItems()
+    
+    recipes.sort(by: sortByTitle(this:that:))
     
     return recipes
 }
