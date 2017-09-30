@@ -15,14 +15,12 @@ class SQLiteDB {
     private let db: Connection?
     
     // Testing constants to reset databases
-    private let testingConstant         = false
     private let deleteCategoryTable     = false
     private let deleteExpirationTable   = false
     private let deletePantryTable       = false
     private let deleteShoppingLists     = false
     private let deleteShoppingItem      = false
-    private let deleteRecipeTable       = false      // recipe table and ingredient table tightly coupled, should treat as such, remove option to delete separately and just couple it
-    private let deleteIngredientTable   = false
+    private let deleteRecipeTables      = false
     
     // Recipe table
     private let recipeTable         = Table("recipes")
@@ -118,7 +116,7 @@ class SQLiteDB {
     
     func createRecipeTable() {
         do {
-            if (deleteRecipeTable) {
+            if (deleteRecipeTables) {
                 try db?.run(recipeTable.drop(ifExists: true))
             }
             
@@ -279,7 +277,7 @@ class SQLiteDB {
     func createIngredientTable() {
         do {
             
-            if (deleteIngredientTable) {
+            if (deleteRecipeTables) {
                 try db?.run(ingredientTable.drop(ifExists: true))
             }
             
