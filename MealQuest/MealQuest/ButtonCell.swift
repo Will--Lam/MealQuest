@@ -11,7 +11,7 @@ import UIKit
 class ButtonCell: UITableViewCell, UIPickerViewDelegate, UIPickerViewDataSource {
     
     @IBOutlet var name: UILabel!
-    @IBOutlet var changeUnit: UIButton!
+//    @IBOutlet var changeUnit: UIButton!
     
     var index = Int()
     var unit = String()
@@ -22,7 +22,7 @@ class ButtonCell: UITableViewCell, UIPickerViewDelegate, UIPickerViewDataSource 
     let unitPickerView = UIPickerView()
     var alert = UIAlertController()
     var observer: RecipeViewController!
-    
+    /*
     @IBAction func changeUnitClicked(sender: UIButton) {
         //set the pickers datasource and delegate
         self.unitPickerView.delegate = self
@@ -66,7 +66,7 @@ class ButtonCell: UITableViewCell, UIPickerViewDelegate, UIPickerViewDataSource 
         alert.addAction(UIAlertAction(title: "OK", style: .default))
         // 4. Present the alert.
         observer.present(alert, animated: true, completion: nil)
-    }
+    } */
     
     func updateIngredientsTable( ) {
         for (index, item) in ingredientsArray.enumerated() {
@@ -96,7 +96,7 @@ class ButtonCell: UITableViewCell, UIPickerViewDelegate, UIPickerViewDataSource 
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         alert.textFields?[0].text = Constants.units[row]
     }
-    
+    /*
     func convert(_ amount: Double, _ from:String, _ to: String) -> Double {
         
         var fromBase = ""
@@ -141,15 +141,5 @@ class ButtonCell: UITableViewCell, UIPickerViewDelegate, UIPickerViewDataSource 
             print("Cannot convert from "+from+" to "+to)
             return -1
         }
-    }
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-    }
-    
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-        
-        // Configure the view for the selected state
-    }
+    }*/
 }
